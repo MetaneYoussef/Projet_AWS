@@ -1,71 +1,104 @@
-body {
-  background-color: black; /* Met le fond de toute la page en noir */
-  color: white; /* Change la couleur du texte en blanc pour qu'il soit visible sur fond noir */
-  margin: 0; /* Supprime la marge par défaut du corps de la page */
-  padding: 0; /* Supprime le remplissage par défaut du corps de la page */
-  font-family: Arial, sans-serif; /* Définit la police par défaut pour le texte */
+.connexion-container {
+  display: flex;
+  height: 100vh;
 }
 
-#login-form {
-  width: 500px;
-  max-width: 100%;
-  margin: 100px auto;
-  background-color: lightblue;
-  border-radius: 10px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  font-family: "Poppins", sans-serif;
+.left-section {
+  flex: 1;
+  background: url(DesignC.png); /* Remplacez 'votre_image.jpg' par le chemin de votre image */
+  background-size: cover;
 }
 
-#login-form h1 {
-  text-align: center;
-  margin: 0;
-  padding: 20px 0;
-  font-size: 28px;
-  font-weight: bold;
-  color: white;
+.right-section {
+  flex: 1;
+  background-color: #242424;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-#login-form form {
-  padding: 20px;
-  background-color: white;
-  border-radius: 10px;
-  font-family: "Poppins", sans-serif;
-}
-
-#login-form form label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 14px;
-  color: gray;
-  font-family: "Poppins", sans-serif;
-}
-
-#login-form form input[type="text"],
-#login-form form input[type="password"] {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid lightgray;
-  border-radius: 5px;
-  font-size: 16px;
-  box-sizing: border-box;
+.logo-container {
   margin-bottom: 20px;
 }
 
-#login-form form input[type="submit"] {
-  width: 100%;
-  padding: 12px;
-  background-color: dodgerblue;
-  border: none;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease;
+.circle-logo-background {
+  width: 122px;
+  height: 122px;
+  background-color: white;
+  box-shadow: 0 0 10px rgb(255, 255, 255);
+  border-radius: 50%;
+  position: absolute;
+  top: 49%;
+  left: 54.5%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
 }
 
-#login-form form input[type="submit"]:hover {
-  background-color: deepskyblue;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+
+.login-box {
+  background-color: #5d5d5d;
+  padding: 40px; /* Elargir la boîte de connexion */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgb(255, 255, 255);
+  width: 300px;
+  /*text-align: center;*/
+}
+
+.login-box h2 {
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-family: 'Gotham', sans-serif; 
+  color: #ffffff;
+  font-weight: bold;
+}
+
+form {
+  display: flex;
+  font-family: 'Gotham', sans-serif; 
+  color: #ffffff;
+  flex-direction: column;
+  font-weight: bold;
+}
+
+label {
+  margin-bottom: 8px;
+}
+
+input {
+  padding: 10px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #000000;
+  color: #ffffff;
+  padding: 15px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.signup-link {
+  margin-top: 20px;
+  padding: 0;
+  font-family: 'Gotham', sans-serif; 
+  text-align: center;
+}
+
+.signup-link a {
+  color: #ffffff; /* Couleur du lien */
+  font-family: 'Gotham', sans-serif; 
+  text-decoration: solid;
+  font-weight: bold;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+  text-decoration: solid;
 }
