@@ -1,0 +1,217 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Réinitialise les marges et les paddings */
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.white-section {
+  background-color: #e9e9e9; /* Couleur de fond blanc */
+  color: #000; /* Couleur du texte noir pour contraster */
+  padding: 40px; /* Ajoutez du padding selon les besoins */
+  /* Définissez une hauteur spécifique si nécessaire, par exemple: height: 200px; */
+}
+
+.btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-right: 10px; /* Ajoutez une marge à droite pour tous les boutons sauf le dernier */
+  background-color: black; /* Définit la couleur de fond des boutons */
+  color: white; /* Définit la couleur du texte des boutons */
+  border-radius: 5px; /* Supprime les bordures du bouton pour un look plus propre */
+  cursor: pointer; /* Change le curseur en main au survol pour une meilleure UX */
+  border : 4px solid #e9e9e9;
+}
+
+.btn:last-child {
+  margin-right: 0;
+}
+
+/* Ajoutez un peu de style pour le survol */
+.btn:hover {
+  background-color: #333; /* Assombrissez le bouton lors du survol */
+}
+
+
+
+.btn-films {
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 5px;
+  color: #e74c3c;
+  border-color: #e74c3c;
+  padding: 10px 35px;
+  margin-right: 15px;
+  margin-left: 15px;
+} /* Rouge */
+
+
+.btn-films:hover {
+  background-color: #e74c3c;
+  border-radius: 5px;
+  color: #ffffff;
+}
+
+.btn-series {
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 5px;
+  color: #f8ae00;
+  border-color: #f8ae00;
+  padding: 10px 35px;
+  margin-right: 15px;
+  margin-left: 15px;
+} /* Vert */
+
+.btn-series:hover {
+  background-color: #f8ae00;
+  border-radius: 5px;
+  color: #ffffff;
+}
+
+.btn-anime {
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 5px;
+  color: #3498db;
+  border-color: #3498db;
+  padding: 10px 35px;
+  margin-right: 15px;
+  margin-left: 15px;
+} /* Bleu */
+
+.btn-anime:hover {
+  background-color: #3498db;
+  border-radius: 5px;
+  color: #ffffff;
+}
+
+.btn-qcm {
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 5px;
+  color: #13c200;
+  border-color: #13c200;
+  padding: 10px 35px;
+  margin-right: 15px;
+  margin-left: 15px;
+} /* Jaune */
+
+.btn-qcm:hover {
+  background-color: #13c200;
+  border-radius: 5px;
+  color: #ffffff;
+}
+
+.btn-evenements {
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 5px;
+  color: #9b59b6;
+  border-color: #9b59b6;
+  padding: 10px 35px;
+  margin-right: 15px;
+  margin-left: 15px;
+} /* Violet */
+
+.btn-evenements:hover {
+  background-color: #9b59b6;
+  border-radius: 5px;
+  color: #ffffff;
+}
+
+.navigation-bar-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Assurez-vous que le dernier bouton n'a pas de marge à droite */
+.NavigationBar .btn:last-child {
+  margin-right: 0;
+}
+
+.main-content {
+  background-color: #1d1d1d; /* Couleur de fond noir */
+  color: #fff; /* Couleur du texte blanc pour contraster */
+  padding: 20px; /* Ajoutez du padding selon les besoins */
+  min-height: calc(
+    100vh - 200px
+  ); /* Assurez-vous que cela prend le reste de la hauteur */
+  /* La hauteur est calculée en soustrayant la hauteur de la partie haute blanche */
+}
+
+/* Style général pour les boutons de navigation */
+.btn-navigation {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0); /* Semi-transparent */
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 40px;
+  height: 60px; /* Augmenté de 40px à 60px pour plus d'épaisseur */
+  border-radius: 50%;
+  display: flex;
+  overflow-x: "hidden";
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+  font-size: 50px; /* Augmenté pour agrandir le texte */
+  padding: 10px; /* Ajouté pour plus d'espace à l'intérieur */
+}
+
+.btn-left {
+  left: 10px;
+}
+
+.btn-right {
+  right: 10px;
+}
+
+/* Style pour améliorer l'apparence au survol */
+.btn-navigation:hover {
+  background-color: rgba(88, 88, 88, 0.8); /* Plus foncé au survol */
+}
+
+
+/* Style du bouton, comme précédemment */
+.bouton-titre {
+  background-color: #e9e9e9;
+  border: none;
+  color: black;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 50px;
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+
+.bouton-titre:hover {
+  background-color: #45a049;
+}
+
+/* Style du conteneur pour centrer le bouton */
+.conteneur-titre {
+  display: flex; /* Utilise flexbox */
+  justify-content: center; /* Centre horizontalement */
+  align-items: start; /* Alignement au début verticalement (en haut) */
+  width: 100%; /* Prend toute la largeur */
+  margin-top: 20px; /* Espace en haut */
+}
