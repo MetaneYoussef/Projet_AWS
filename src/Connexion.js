@@ -1,34 +1,56 @@
-import React from "react";
-import "./Connexion.css";
-import { NavLink } from "react-router-dom";
-import "./styles.css"
+import React, { useState } from "react";
+import './Connexion.css';
+import { Link } from "react-router-dom";
 
+function Connexion() {
+  const [rememberMe, setRememberMe] = useState(false);
 
-const Connexion = () => {
+  const handleRememberMeChange = () => {
+    setRememberMe(!rememberMe);
+  };
+
   return (
-    <div>
-    <header style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      padding: "10px",
-    }}>
-    <NavLink to="/" className="bouton-titre">What You Watched</NavLink>
-    </header>
-  
-    <div id="login-form">
+    <div className="connexion-container">
+      <div className="left-section">
+        {/* Insérez votre image ici */}
+      </div>
+      <div className="right-section">
+        <div className="logo-container" style={{ position: 'relative', textAlign: 'center' }}>
+          <Link to="/"> {/* Use Link component with the destination path */}
+            <img src={require("./RondSansFond.png")} alt="Votre logo" style={{ width: '140px', height: 'auto', zIndex: 1, position: 'relative' }} />
+          </Link>
+          <div className="circle-logo-background"></div>
+        </div>
+        <div className="login-box">
+          <h2>S'identifier</h2>
+          <form>
+            <label htmlFor="email" >Adresse e-mail</label>
+            <input type="email" id="email" name="email" required />
 
-      <h1>Connexion</h1>
-      <form>
-        <label htmlFor="username">Nom d'Utilisateur:</label>
-        <input type="text" id="username" name="username" />
-        <label htmlFor="password">Mot de Passe:</label>
-        <input type="password" id="password" name="password" />
-        <input type="submit" value="Submit" />
-      </form>
-    </div>
+            <label htmlFor="password">Mot de passe</label>
+            <input type="password" id="password" name="password" required />
+
+            <button type="submit">S'identifier</button>
+            <br></br>
+            <div className="remember-me">
+              <input
+                type="checkbox"
+                id="rememberMe"
+                name="rememberMe"
+                checked={rememberMe}
+                onChange={handleRememberMeChange}
+              />
+              <label htmlFor="rememberMe">Se souvenir de moi</label>
+            </div>
+          </form>
+          <div className="signup-link">
+            <p>Première visite sur What To Watched ?</p>
+            <p><a href="/inscription">Inscrivez-vous</a></p>
+          </div>
+        </div>
+      </div>
     </div>
   );
-};
+}
 
 export default Connexion;
