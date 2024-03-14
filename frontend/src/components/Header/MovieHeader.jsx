@@ -24,6 +24,7 @@ function Header() {
       <SearchComponent isExpanded={isSearchExpanded} setExpanded={setIsSearchExpanded} />
       {!isSearchExpanded && (
         <div className="flex items-center space-x-4">
+          <Link to="/UserProfile" className="hover:text-yellow-200">Profil</Link>
           <Link to="/watchlist" className="hover:text-yellow-200">Ma Watchlist</Link>
           <Link to="/connexion" className="bg-white hover:bg-red-600 hover:text-white text-black font-bold py-2 px-4 rounded">Connexion</Link>
         </div>

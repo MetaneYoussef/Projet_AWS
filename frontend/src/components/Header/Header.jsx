@@ -21,6 +21,7 @@ function Header() {
         <SearchComponent />
       </div>
       <div className="flex items-center space-x-4">
+        <Link to="/UserProfile" className="hover:text-yellow-200">Profil</Link>
         <Link to="/watchlist" className="hover:text-yellow-200">Ma Watchlist</Link>
         <Link to="/connexion" className="border-2 bg-white text-black hover:bg-black hover:text-white hover:border-2 hover:border-white font-bold py-2 px-4 rounded">Connexion</Link>
       </div>
