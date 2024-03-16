@@ -1,83 +1,152 @@
 const mongoose = require('mongoose');
 const Utilisateur = require('../models/utilisateursModel');
 
-// creation d'un utilisateur
-const creerUtilisateur = async (req, res) => {
+// Création d'un utilisateur
+const creerUtilisateur = async(req, res) => {
     const { nom, prenom, email, mot_de_passe } = req.body;
 
     try {
-        const utilisateur = await Utilisateur.create({ nom, prenom, email, mot_de_passe });
-        res.status(200).json(utilisateur)
-
+        const utilisateur = await Utilisateur.create({
+            nom,
+            prenom,
+            email,
+            mot_de_passe
+        });
+        res.status(200).json(utilisateur);
     } catch (error) {
-        res.status(400).json({ error: error.message })
+        res.status(400).json({ error: error.message });
     }
-}
+};
 
-// voir tous les utilisateur
-const obtenirUtilisateurs = async (req, res) => {
-    const utilisateurs = await Utilisateur.find({}).sort({ createdAt: -1 })
-    res.status(200).json(utilisateurs)
-}
-
-
-//voir un seul utilisateur
-const obtenirUtilisateur = async (req, res) => {
-    const { id } = req.params
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ error: 'Cet utilisteur n\'existe pas' })
+// Voir tous les utilisateurs
+const obtenirUtilisateurs = async(req, res) => {
+    try {
+        const utilisateurs = await Utilisateur.find({}).sort({ createdAt: -1 });
+        res.status(200).json(utilisateurs);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
+};
 
-    const utilisateur = await Utilisateur.findById(id)
+// Voir un seul utilisateur
+const obtenirUtilisateur = async(req, res) => {
+    const { id } = req.params;
 
-    if (!utilisateur) {
-        return res.status(400).json({ error: 'Cet utilisteur n\'existe pas' })
+    try {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ error: "Cet utilisateur n'existe pas" });
+        }
+
+        const utilisateur = await Utilisateur.findById(id);
+
+        if (!utilisateur) {
+            return res.status(404).json({ error: "Utilisateur non trouvé" });
+        }
+        res.status(200).json(utilisateur);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
-    res.status(200).json(utilisateur)
+};
 
-}
+// Suppression d'un utilisateur
+const supprimerUtilisateur = async(req, res) => {
+    const { id } = req.params;
 
+    try {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ error: "Cet utilisateur n'existe pas" });
+        }
 
+        const utilisateur = await Utilisateur.findOneAndDelete({ _id: id });
 
-//suppression d'un utilisateur
-const supprimerUtilisateur = async (req, res) => {
-    const { id } = req.params
+        if (!utilisateur) {
+            return res.status(404).json({ error: "Utilisateur non trouvé" });
+        }
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ error: 'Cet utilisteur n\'existe pas' })
+        res.status(200).json({ message: "Utilisateur supprimé avec succès" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
+};
 
-    const utilisateur = await Utilisateur.findOneAndDelete({ _id: id })
+// Mise à jour d'un utilisateur
+const majUtilisateur = async(req, res) => {
+    const { id } = req.params;
 
-    if (!utilisateur) {
-        return res.status(400).json({ error: 'Cet utilisteur n\'existe pas' })
+    try {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ error: "Cet utilisateur n'existe pas" });
+        }
+
+        const utilisateur = await Utilisateur.findOneAndUpdate({ _id: id }, {...req.body }, { new: true });
+
+        if (!utilisateur) {
+            return res.status(404).json({ error: "Utilisateur non trouvé" });
+        }
+
+        res.status(200).json(utilisateur);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
+};
 
-    res.status(200).json(utilisateur)
-}
+// Ajouter un film à la watchlist d'un utilisateur
+const ajouterAWatchlist = async(req, res) => {
+    const { id } = req.params; // ID de l'utilisateur
+    const { filmId } = req.body; // ID du film à ajouter
 
-const majUtilisateur = async (req, res) => {
-    const { id } = req.params
+    try {
+        // Utilisez 'addToSet' pour éviter les doublons
+        const utilisateur = await Utilisateur.findByIdAndUpdate(id, { $addToSet: { watchlist: filmId } }, { new: true }).populate('watchlist');
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ error: 'Cet utilisteur n\'existe pas' })
+        if (!utilisateur) {
+            return res.status(404).json({ message: "Utilisateur non trouvé" });
+        }
+        res.status(200).json(utilisateur.watchlist);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
+};
 
-    const utilisateur = await Utilisateur.findOneAndUpdate({ _id: id }, {
-        ...req.body
-    })
+// Retirer un film de la watchlist d'un utilisateur
+const retirerDeWatchlist = async(req, res) => {
+    const { id } = req.params; // ID de l'utilisateur
+    const { filmId } = req.body; // ID du film à retirer
 
-    if (!utilisateur) {
-        return res.status(400).json({ error: 'Cet utilisteur n\'existe pas' })
+    try {
+        const utilisateur = await Utilisateur.findByIdAndUpdate(id, { $pull: { watchlist: filmId } }, { new: true }).populate('watchlist');
+
+        if (!utilisateur) {
+            return res.status(404).json({ message: "Utilisateur non trouvé" });
+        }
+        res.status(200).json(utilisateur.watchlist);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
+};
 
-    res.status(200).json(utilisateur)
-}
+// Obtenir la watchlist d'un utilisateur
+const obtenirWatchlist = async(req, res) => {
+    const { id } = req.params; // ID de l'utilisateur
+
+    try {
+        const utilisateur = await Utilisateur.findById(id).populate('watchlist');
+        if (!utilisateur) {
+            return res.status(404).json({ message: "Utilisateur non trouvé" });
+        }
+        res.status(200).json(utilisateur.watchlist);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
 module.exports = {
     creerUtilisateur,
     obtenirUtilisateurs,
     supprimerUtilisateur,
     obtenirUtilisateur,
-    majUtilisateur
-}
+    majUtilisateur,
+    ajouterAWatchlist,
+    retirerDeWatchlist,
+    obtenirWatchlist
+};
