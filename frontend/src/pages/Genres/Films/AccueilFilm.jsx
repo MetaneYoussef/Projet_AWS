@@ -182,7 +182,7 @@ const MovieHomePage = () => {
 
           {/* Section "Les Tendances" */}
           <div className="relative mb-14">
-            <h2 className="text-white text-2xl font-semibold mb-4 ml-28">Les Tendances</h2>
+            <h2 className="text-white text-2xl font-bold mb-4 ml-28">Les Tendances</h2>
             <div className="flex items-center justify-between">
                 <FaArrowAltCircleLeft onClick={() => scrollCategory('left')} className="absolute cursor-pointer text-black text-5xl left-0 z-10 ml-5 opacity-50 hover:opacity-70" style={{ top: '50%', transform: 'translateY(-50%)' }} />
                 <div className="overflow-hidden w-full px-5">
@@ -196,9 +196,9 @@ const MovieHomePage = () => {
             </div>
           </div>
 
-          {/* Section "Les Tendances" */}
+          {/* Section "Les Plus Ajoutés" */}
           <div className="relative mb-14">
-            <h2 className="text-white text-2xl font-semibold mb-4 ml-28">Les Tendances</h2>
+            <h2 className="text-white text-2xl font-bold mb-4 ml-28 bg-red-800">Les Plus Ajoutées</h2>
             <div className="flex items-center justify-between">
                 <FaArrowAltCircleLeft onClick={() => scrollCategory('left')} className="absolute cursor-pointer text-black text-5xl left-0 z-10 ml-5 opacity-50 hover:opacity-70" style={{ top: '50%', transform: 'translateY(-50%)' }} />
                 <div className="overflow-hidden w-full px-5">
