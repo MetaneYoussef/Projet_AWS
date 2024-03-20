@@ -1,73 +1,91 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import Header from '../../../components/Header/MovieHeader';
+import Header from '../../../components/Header/SeriesHeader';
 import Footer from '../../../components/Footer/Footer';
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 
 
-// Template pour de l'affichage des films en bannière
-const MovieBanner = ({ movie }) => {
+// Template pour de l'affichage des Series en bannière
+const SeriesBanner = ({ Series }) => {
   // Création de l'URL de manière dynamique basée sur le titre du film
-  const movieDetailUrl = `/films/detail/${movie.title.toLowerCase()
+  const seriesDetailUrl = `/series/detail/${Series.title.toLowerCase()
     .replace(/[^a-z0-9]/g, '-')  // Remplace tout ce qui n'est pas alphanumérique par un tiret
     .replace(/-+/g, '-')}`;      // Remplace les séquences de tirets par un seul tiret
 
   return (
     <div className="inline-block cursor-pointer mr-4 mb-2 mt-3">
-      <Link to={movieDetailUrl}>
-        <img src={movie.poster} alt={movie.title} className="rounded-lg shadow-lg w-[650px] h-[350px] object-cover" />
+      <Link to={seriesDetailUrl}>
+        <img src={Series.poster} alt={Series.title} className="rounded-lg shadow-lg w-[650px] h-[350px] object-cover" />
       </Link>
     </div>
   );
-};
-
+  };
 
 // Pour chaque genre, utilisez Link pour naviguer
 const GenreBanner = ({ genre }) => (
-  <Link to={`/films/${genre.name}`} className="inline-block cursor-pointer mr-4 mb-2 mt-3 bg-red-800 hover:bg-red-900 text-white">
+  <Link to={`/series/${genre.name}`} className="inline-block cursor-pointer mr-4 mb-2 mt-3 bg-yellow-500 text-white">
     <img src={genre.image} alt={genre.name} className='rounded-lg shadow-xl w-[220px] h-[150px] object-cover border-2 border-white hover:brightness-75'/>
   </Link>
 );
 
-// Template pour de l'affichage des films dans les catégories
-const CategoryMovieCard = ({ movie }) => (
+// Template pour de l'affichage des Series dans les catégories
+const CategorySeriesCard = ({ Series }) => (
   <div className="inline-block cursor-pointer mr-4 mb-2 mt-3" style={{ maxWidth: '200px' }}>
-    <img src={movie.poster} alt={movie.title} className="rounded-lg shadow-lg w-[200px] h-[325px] object-cover" />
-    <p className="text-white mt-2 text-center break-words line-clamp-2 font-semibold" style={{ maxWidth: '200px' }}>{movie.title}</p>
+    <img src={Series.poster} alt={Series.title} className="rounded-lg shadow-lg w-[200px] h-[325px] object-cover" />
+    <p className="text-white mt-2 text-center break-words line-clamp-2 font-semibold" style={{ maxWidth: '200px' }}>{Series.title}</p>
   </div>
 );
 
 
-const MovieHomePage = () => {
-    {/*BASE DE DONNEES FICTIVES POUR L'EXEMPLE*/}
-  // Base de données des films
-  const moviesscroll = [
-    { title: "Dune : Part Two", poster: "https://quefairedesmomes.fr/wp-content/uploads/2023/12/dune-2.jpg" },
-    { title: "Spider-Man : Accross the Spider-Verse", poster: "https://www.murphysmultiverse.com/wp-content/uploads/2022/12/Across-the-Spider-Verse.jpg" },
-    { title: "Super Mario Bros. : Le Film", poster: "https://proxymedia.woopic.com/api/v1/images/331%2FSUPERMARIOBW0198474_BAN1_2424_NEWTV_UHD.jpg" },
-    { title: "Barbie", poster: "https://images8.alphacoders.com/133/1331131.jpeg" },
-    { title: "En Eaux Très Troubles", poster: "https://proxymedia.woopic.com/api/v1/images/331%2FENEAUXTRESTW0201687_BAN1_2424_NEWTV_UHD.jpg" },
-    { title: "Oppenheimer", poster: "https://www.blibli.com/friends-backend/wp-content/uploads/2023/07/B700219-Cover-Sinopsis-Oppenheimer.jpg" },
-    { title: "Demon Slayer : Le Film.", poster: "https://www.manga-news.com/public/2022/news_12/Demon_Slayer_village_des_forgerons_film_annonce.jpg" },
+const SeriesHomePage = () => {
+  // Index pour le défilement des catégories
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentGenreIndex, setCurrentGenreIndex] = useState(0);
+  const [trendingIndex, setTrendingIndex] = useState(0);
+  const [recentIndex, setRecentIndex] = useState(0);
+  const [watchedIndex, setWatchedIndex] = useState(0);
+  const [addedIndex, setAddedIndex] = useState(0);
+
+  // Constantes pour la taille des affiches (nécessaires aux défilemens des catégories)
+  const SeriessToShow = 2; // Nombre d'affiches à montrer à la fois
+  const bannerWidth = 650; // Largeur de l'affiche
+  const marginRight = 16; // Margin-right de chaque affiche
+  const moveWidth = bannerWidth + marginRight; // Calcul de la distance de déplacement total par clic
+  const moveWidth2 = 200 + 16; // Calcul de la distance de déplacement total par clic
+  const moveWidth3 = 5*(220 + 16); // Calcul de la distance de déplacement total par clic (CATEGORIE)
+
+  {/*BASE DE DONNEES FICTIVES POUR L'EXEMPLE*/}
+  // Base de données des Series
+  const Seriesscroll = [
+    { title: "SnowFall", poster: "https://lubieenserie.fr/wp-content/uploads/2017/11/snowfall-avis-srie.jpg" },
+    { title: "Solo Leveling", poster: "https://images6.alphacoders.com/132/1320541.png" },
+    { title: "Shogun", poster: "https://tv-fanatic-res.cloudinary.com/iu/s--rDpVwGrk--/f_auto,q_auto/v1707763870/shogun-poster" },
+    { title: "YOU.", poster: "https://trendy.letudiant.fr/wp-content/uploads/trendy/2023/02/1673430273043_widget_netflix_you_s4_png-729x410.jpeg" },
+    { title: "Lupin", poster: "https://bocir-prod-bucket.s3.amazonaws.com/medias/Vsj0LZpM34/image/AAAABQhFFW_tbpg3RISB2IOFXruk5DQxejckJecw5HZycFnZodxl67TekY2mcBdZv8zTlLpiZE1LvILSAQAVRD9jRvjz5Fft3BcSRMah_BtkiDPj_pKvEL_uoW7U0aEJEeotY3JELw1696596437779.jpg" },
+    { title: "Power", poster: "https://m.media-amazon.com/images/S/pv-target-images/3917978093e5d3b7835b7c3de422748814f4ef364efa1a1b7b0998a872d1ae85.jpg" },
+    { title: "Vikings", poster: "https://media.distractify.com/brand-img/xjOFShg0-/0x0/vikings-season-6-promo-2-1622915370289.jpg" },
+    { title: "Peaky Blinders", poster: "https://m.media-amazon.com/images/I/71mXmB41psS._AC_UF894,1000_QL80_.jpg" },
+    { title: "Game Of Thrones", poster: "https://wallpapers.com/images/hd/ned-stark-of-game-of-thrones-yny5e9tb3tvw8r3m.jpg" },
+    { title: "Top Boy", poster: "https://tvseriesfinale.com/wp-content/uploads/2022/07/AAAABW5YUQjmJLiA4ex-tAX5aGI8IvNl.jpg" },
   ];
 
   // Base de données des genres
   const genres = [
-    { name: "Tous les films", image: `${process.env.PUBLIC_URL}/images/Genres/Films/TousLesFilms.png` },
-    { name: "Classiques", image: `${process.env.PUBLIC_URL}/images/Genres/Films/Classiques.png` },
-    { name: "Action", image: `${process.env.PUBLIC_URL}/images/Genres/Films/Action.png` },
-    { name: "Comédie", image: `${process.env.PUBLIC_URL}/images/Genres/Films/Comedie.png` },
-    { name: "Science-Fiction", image: `${process.env.PUBLIC_URL}/images/Genres/Films/S-FX.png` },
-    { name: "Émotion", image: `${process.env.PUBLIC_URL}/images/Genres/Films/Emotion.png` },
-    { name: "Policier", image: `${process.env.PUBLIC_URL}/images/Genres/Films/Policier.png` },
-    { name: "Animation", image: `${process.env.PUBLIC_URL}/images/Genres/Films/Animation.png` },
-    { name: "Horreur", image: `${process.env.PUBLIC_URL}/images/Genres/Films/Horreur.png` },
-    { name: "Suspense", image: `${process.env.PUBLIC_URL}/images/Genres/Films/Suspense.png` },
-    { name: "Jeunesse", image: `${process.env.PUBLIC_URL}/images/Genres/Films/Jeunesse.png` },
+    { name: "Toutes les séries", image: `${process.env.PUBLIC_URL}/images/Genres/Series/ToutesLesSeries.jpg` },
+    { name: "Classiques", image: `${process.env.PUBLIC_URL}/images/Genres/Series/Classiques.png` },
+    { name: "Action", image: `${process.env.PUBLIC_URL}/images/Genres/Series/Action.png` },
+    { name: "Comédie", image: `${process.env.PUBLIC_URL}/images/Genres/Series/Comedie.png` },
+    { name: "Science-Fiction", image: `${process.env.PUBLIC_URL}/images/Genres/Series/S-FX.jpg` },
+    { name: "Émotion", image: `${process.env.PUBLIC_URL}/images/Genres/Series/Emotion.png` },
+    { name: "Policier", image: `${process.env.PUBLIC_URL}/images/Genres/Series/Policier.png` },
+    { name: "Animation", image: `${process.env.PUBLIC_URL}/images/Genres/Series/Animation.png` },
+    { name: "Horreur", image: `${process.env.PUBLIC_URL}/images/Genres/Series/Horreur.png` },
+    { name: "Suspense", image: `${process.env.PUBLIC_URL}/images/Genres/Series/Suspense.png` },
+    { name: "Jeunesse", image: `${process.env.PUBLIC_URL}/images/Genres/Series/Jeunesse.png` },
   ];
 
-  // Les films en Tendances
-  const trendingMovies = [
+  // Les series en Tendances
+  const trendingSeriess = [
     { title: "Dune : Deuxieme Partie", poster: "https://www.tvtime.com/_next/image?url=https%3A%2F%2Fartworks.thetvdb.com%2Fbanners%2Fv4%2Fmovie%2F290272%2Fposters%2F65ede951e6a8d.jpg&w=256&q=75" },
     { title: "Lala Land", poster: "https://www.tvtime.com/_next/image?url=https%3A%2F%2Fartworks.thetvdb.com%2Fbanners%2Fv4%2Fmovie%2F139%2Fposters%2F637096fb47a60.jpg&w=256&q=75" },
     { title: "Wonka", poster: "https://www.tvtime.com/_next/image?url=https%3A%2F%2Fartworks.thetvdb.com%2Fbanners%2Fv4%2Fmovie%2F95846%2Fposters%2F65413559d33c6.jpg&w=256&q=75" },
@@ -84,8 +102,8 @@ const MovieHomePage = () => {
     { title: "Ricky Stanicky", poster: "https://www.tvtime.com/_next/image?url=https%3A%2F%2Fartworks.thetvdb.com%2Fbanners%2Fv4%2Fmovie%2F352452%2Fposters%2F65b53ccf06063.jpg&w=256&q=75" },
   ]; 
 
-  // Les films en Tendances
-  const recentMovies = [
+  // Les series en Tendances
+  const recentSeriess = [
     { title: "Harry Potter et la chambre des secrets", poster: "https://www.tvtime.com/_next/image?url=https%3A%2F%2Fartworks.thetvdb.com%2Fbanners%2Fmovies%2F63%2Fposters%2F5ef25ed160dbc_t.jpg&w=384&q=75" },
     { title: "Titanic", poster: "https://www.tvtime.com/_next/image?url=https%3A%2F%2Fartworks.thetvdb.com%2Fbanners%2Fv4%2Fmovie%2F231%2Fposters%2F642d748b22859_t.jpg&w=384&q=75" },
     { title: "Harry Potter et le Prisonnier d'Azkaban", poster: "https://www.tvtime.com/_next/image?url=https%3A%2F%2Fartworks.thetvdb.com%2Fbanners%2Fv4%2Fmovie%2F154%2Fposters%2F65a8ffe8a3d1e_t.jpg&w=384&q=75" },
@@ -102,8 +120,8 @@ const MovieHomePage = () => {
     { title: "Les Gardiens de la Galaxie", poster: "https://www.tvtime.com/_next/image?url=https%3A%2F%2Fartworks.thetvdb.com%2Fbanners%2Fmovies%2F26%2Fposters%2F5e9cafc74b5a1_t.jpg&w=384&q=75" },
   ];
 
-  // Les films les plus regardés
-  const mostWatchedMovies = [
+  // Les series les plus regardés
+  const mostWatchedSeriess = [
     { title: "Dune : Deuxieme Partie", poster: "https://www.tvtime.com/_next/image?url=https%3A%2F%2Fartworks.thetvdb.com%2Fbanners%2Fv4%2Fmovie%2F290272%2Fposters%2F65ede951e6a8d.jpg&w=256&q=75" },
     { title: "Lala Land", poster: "https://www.tvtime.com/_next/image?url=https%3A%2F%2Fartworks.thetvdb.com%2Fbanners%2Fv4%2Fmovie%2F139%2Fposters%2F637096fb47a60.jpg&w=256&q=75" },
     { title: "Wonka", poster: "https://www.tvtime.com/_next/image?url=https%3A%2F%2Fartworks.thetvdb.com%2Fbanners%2Fv4%2Fmovie%2F95846%2Fposters%2F65413559d33c6.jpg&w=256&q=75" },
@@ -120,8 +138,8 @@ const MovieHomePage = () => {
     { title: "Ricky Stanicky", poster: "https://www.tvtime.com/_next/image?url=https%3A%2F%2Fartworks.thetvdb.com%2Fbanners%2Fv4%2Fmovie%2F352452%2Fposters%2F65b53ccf06063.jpg&w=256&q=75" },
   ];
 
-  // Les films les plus ajoutés
-  const mostAddedMovies = [
+  // Les series les plus ajoutés
+  const mostAddedSeriess = [
     { title: "Harry Potter et la chambre des secrets", poster: "https://www.tvtime.com/_next/image?url=https%3A%2F%2Fartworks.thetvdb.com%2Fbanners%2Fmovies%2F63%2Fposters%2F5ef25ed160dbc_t.jpg&w=384&q=75" },
     { title: "Titanic", poster: "https://www.tvtime.com/_next/image?url=https%3A%2F%2Fartworks.thetvdb.com%2Fbanners%2Fv4%2Fmovie%2F231%2Fposters%2F642d748b22859_t.jpg&w=384&q=75" },
     { title: "Harry Potter et le Prisonnier d'Azkaban", poster: "https://www.tvtime.com/_next/image?url=https%3A%2F%2Fartworks.thetvdb.com%2Fbanners%2Fv4%2Fmovie%2F154%2Fposters%2F65a8ffe8a3d1e_t.jpg&w=384&q=75" },
@@ -137,33 +155,17 @@ const MovieHomePage = () => {
     { title: "Ratatouille", poster: "https://www.tvtime.com/_next/image?url=https%3A%2F%2Fartworks.thetvdb.com%2Fbanners%2Fmovies%2F534%2Fposters%2F2195292_t.jpg&w=384&q=75" },
     { title: "Les Gardiens de la Galaxie", poster: "https://www.tvtime.com/_next/image?url=https%3A%2F%2Fartworks.thetvdb.com%2Fbanners%2Fmovies%2F26%2Fposters%2F5e9cafc74b5a1_t.jpg&w=384&q=75" },
   ];
-  
-  // Index pour le défilement des catégories
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentGenreIndex, setCurrentGenreIndex] = useState(0);
-  const [trendingIndex, setTrendingIndex] = useState(0);
-  const [recentIndex, setRecentIndex] = useState(0);
-  const [watchedIndex, setWatchedIndex] = useState(0);
-  const [addedIndex, setAddedIndex] = useState(0);
-
-  // Constantes pour la taille des affiches (nécessaires aux défilemens des catégories)
-  const moviesToShow = 2; // Nombre d'affiches à montrer à la fois
-  const bannerWidth = 650; // Largeur de l'affiche
-  const marginRight = 16; // Margin-right de chaque affiche
-  const moveWidth = bannerWidth + marginRight; // Calcul de la distance de déplacement total par clic (BANNIERE)
-  const moveWidth2 = 200 + 16; // Calcul de la distance de déplacement total par clic (CATEGORIE)
-  const moveWidth3 = 5*(220 + 16); // Calcul de la distance de déplacement total par clic (CATEGORIE)
 
   {/*LOGIQUE DU DEFILEMENT*/}
-  // Scroll des films en bannière
-  const scrollMovies = (direction) => {
+  // Scroll des Series en bannière
+  const scrollSeriess = (direction) => {
     // Nombre total d'affiches qui peuvent être déplacées en tenant compte des affiches visibles à l'écran
-    const maxScrollableMovies = moviesscroll.length - (moviesToShow);
+    const maxScrollableSeriess = Seriesscroll.length - (SeriessToShow);
   
     if (direction === 'left') {
       setCurrentIndex(prevIndex => Math.max(prevIndex - 1, 0));
     } else if (direction === 'right') {
-      setCurrentIndex(prevIndex => Math.min(prevIndex + 1, maxScrollableMovies));
+      setCurrentIndex(prevIndex => Math.min(prevIndex + 1, maxScrollableSeriess));
     }
   };
   
@@ -177,11 +179,11 @@ const MovieHomePage = () => {
     } else if (direction === 'right') {
       setCurrentGenreIndex(prevIndex => Math.min(prevIndex + 1, maxScroll));
     }
-  };
+  }
 
   // Fonction pour gérer le défilement des différentes catégories
   const scrollCategory = (category, direction) => {
-    const maxScroll = trendingMovies.length - 6; // Assume toutes les catégories ont la même longueur
+    const maxScroll = trendingSeriess.length - 6; // Assume toutes les catégories ont la même longueur
 
     if (direction === 'left') {
       if (category === 'trending') {
@@ -210,25 +212,25 @@ const MovieHomePage = () => {
   {/*AFFICHAGE DE LA PAGE WEB*/}
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="bg-red-700">
+      <div className="bg-yellow-600">
         <Header />
       </div>
-      <div className="flex-grow bg-red-700">
-        <section className="bg-red-700">
+      <div className="flex-grow bg-yellow-600">
+        <section className="bg-yellow-600">
           <div className="container mx-auto py-6">
             <div>
-              <h1 className="text-white text-3xl font-semibold mx-12 mb-8 mt-8 ml-20">Films</h1>
+              <h1 className="text-white text-3xl font-semibold mx-12 mb-8 mt-8 ml-20">Series</h1>
               {/*LOGIQUE IMPLEMENTER POUR L'AFFICHAGE DE LA BANNIERE*/}
               <div className="flex items-center">
-                  <FaArrowAltCircleLeft onClick={() => scrollMovies('left')} className="cursor-pointer text-white text-3xl ml-5 hover:brightness-75" />
+                  <FaArrowAltCircleLeft onClick={() => scrollSeriess('left')} className="cursor-pointer text-white text-3xl ml-5 hover:brightness-75" />
                   <div className="overflow-hidden w-full mx-5">
                     <div className="whitespace-nowrap transition-transform duration-300" style={{ transform: `translateX(-${currentIndex * moveWidth}px)` }}>
-                      {moviesscroll.map((movie, index) => (
-                        <MovieBanner key={index} movie={movie} />
+                      {Seriesscroll.map((Series, index) => (
+                        <SeriesBanner key={index} Series={Series} />
                       ))}
                     </div>
                   </div>
-                  <FaArrowAltCircleRight onClick={() => scrollMovies('right')} className="cursor-pointer text-white text-3xl mr-5 hover:brightness-75" />
+                  <FaArrowAltCircleRight onClick={() => scrollSeriess('right')} className="cursor-pointer text-white text-3xl mr-5 hover:brightness-75" />
                 </div>
             </div>
           </div>
@@ -237,7 +239,7 @@ const MovieHomePage = () => {
           <div className="constainer mx-auto">
             <div>
               <div className="flex items-center mb-8">
-                <FaArrowAltCircleLeft onClick={() => scrollGenres('left')} className="cursor-pointer text-white text-xl ml-8 hover:brightness-75" />
+                <FaArrowAltCircleLeft onClick={() => scrollGenres('left')} className="cursor-pointer text-white text-xl ml-5 hover:brightness-75" />
                 <div className="overflow-hidden w-full mx-5">
                   <div className="whitespace-nowrap transition-transform duration-300" style={{ transform: `translateX(-${currentGenreIndex * moveWidth3}px)` }}>
                     {genres.map((genre, index) => (
@@ -257,8 +259,8 @@ const MovieHomePage = () => {
                 <FaArrowAltCircleLeft onClick={() => scrollCategory('trending','left')} className="absolute cursor-pointer text-black text-5xl left-0 z-10 ml-2 opacity-50 hover:opacity-70" style={{ top: '50%', transform: 'translateY(-50%)' }} />
                 <div className="overflow-hidden w-full px-5">
                   <div className="whitespace-nowrap transition-transform duration-300" style={{ transform: `translateX(-${trendingIndex * moveWidth2}px)` }}>
-                    {trendingMovies.map((movie, index) => (
-                      <CategoryMovieCard key={index} movie={movie} />
+                    {trendingSeriess.map((Series, index) => (
+                      <CategorySeriesCard key={index} Series={Series} />
                     ))}
                   </div>
                 </div>
@@ -273,8 +275,8 @@ const MovieHomePage = () => {
                 <FaArrowAltCircleLeft onClick={() => scrollCategory('recent','left')} className="absolute cursor-pointer text-black text-5xl left-0 z-10 ml-2 opacity-50 hover:opacity-70" style={{ top: '50%', transform: 'translateY(-50%)' }} />
                 <div className="overflow-hidden w-full px-5">
                   <div className="whitespace-nowrap transition-transform duration-300" style={{ transform: `translateX(-${recentIndex * moveWidth2}px)` }}>
-                    {recentMovies.map((movie, index) => (
-                      <CategoryMovieCard key={index} movie={movie} />
+                    {recentSeriess.map((Series, index) => (
+                      <CategorySeriesCard key={index} Series={Series} />
                     ))}
                   </div>
                 </div>
@@ -289,8 +291,8 @@ const MovieHomePage = () => {
                 <FaArrowAltCircleLeft onClick={() => scrollCategory('watched','left')} className="absolute cursor-pointer text-black text-5xl left-0 z-10 ml-2 opacity-50 hover:opacity-70" style={{ top: '50%', transform: 'translateY(-50%)' }} />
                 <div className="overflow-hidden w-full px-5">
                   <div className="whitespace-nowrap transition-transform duration-300" style={{ transform: `translateX(-${watchedIndex * moveWidth2}px)` }}>
-                    {mostWatchedMovies.map((movie, index) => (
-                      <CategoryMovieCard key={index} movie={movie} />
+                    {mostWatchedSeriess.map((Series, index) => (
+                      <CategorySeriesCard key={index} Series={Series} />
                     ))}
                   </div>
                 </div>
@@ -305,8 +307,8 @@ const MovieHomePage = () => {
                 <FaArrowAltCircleLeft onClick={() => scrollCategory('added','left')} className="absolute cursor-pointer text-black text-5xl left-0 z-10 ml-2 opacity-50 hover:opacity-70" style={{ top: '50%', transform: 'translateY(-50%)' }} />
                 <div className="overflow-hidden w-full px-5">
                   <div className="whitespace-nowrap transition-transform duration-300" style={{ transform: `translateX(-${addedIndex * moveWidth2}px)` }}>
-                    {mostAddedMovies.map((movie, index) => (
-                      <CategoryMovieCard key={index} movie={movie} />
+                    {mostAddedSeriess.map((Series, index) => (
+                      <CategorySeriesCard key={index} Series={Series} />
                     ))}
                   </div>
                 </div>
@@ -320,4 +322,4 @@ const MovieHomePage = () => {
   );
 };
 
-export default MovieHomePage;
+export default SeriesHomePage;

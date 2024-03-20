@@ -1,13 +1,13 @@
 import React from 'react';
-import Header from '../../components/Header/EventHeader';
+import Header from '../../components/Header/QcmHeader';
 import Footer from '../../components/Footer/Footer';
 import CustomScrollBarS from '../../utiles/CustomScrollBar.css';
 
-const Evenement = () => {
+const QCM = () => {
   return (
     <div className="">
       <Header />
-      <div className="bg-green-700 py-56 flex flex-col">
+      <div className="bg-blue-800 py-56 flex flex-col">
         <div className="flex-grow flex justify-center items-center">
           <div aria-label="Loading..." role="status" className="flex items-center space-x-2">
             <svg className="h-20 w-20 animate-spin stroke-white" viewBox="0 0 256 256">
@@ -30,7 +30,7 @@ const Evenement = () => {
           </div>
         </div>
         <div className="py-5 items-center flex flex-col">
-          <p className="text-green-500 text-3xl font-bold">(Pas encore implémenté, j'avoue... #Smeh)</p>
+          <p className="text-blue-500 text-3xl font-bold">(Pas encore implémenté, j'avoue... #Smeh)</p>
         </div>
       </div>
       <Footer />
@@ -38,4 +38,4 @@ const Evenement = () => {
   );
 };
 
-export default Evenement;
+export default QCM;
