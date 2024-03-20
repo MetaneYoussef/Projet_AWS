@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 function Signup() {
   return (
@@ -44,15 +45,38 @@ function Signup() {
         <p className="relative text-white text-center text-3xl">
           Prêt à Watched ? Saisissez votre adresse e-mail pour créer un compte.
         </p>
+      </div>  
+
+      <div className="w-full absolute bottom-0 flex justify-center p-24">
+        <input
+          type="email"
+          placeholder="Adresse e-mail"
+          className="appearance-none w-1/2 py-4 px-6 text-white leading-tight focus:outline-none bg-gray-700" 
+        />
+          <Link 
+            to="/FormulaireInscription"
+            className="bg-white hover:bg-gray-500 text-black font-bold py-2 px-4  focus:outline-none focus:shadow-outline">
+            Commencez »
+          </Link>
       </div>
+
+
+
+      
 
 
     
-    {/* Conteneur du contenu défilable */}
-    <div className="relative bg-black">
-        {/* Ici, vous pouvez placer le reste de votre page, comme des formulaires d'inscription, du texte, etc. */}
+      {/* Conteneur du contenu défilable */}
+      <div className=" relative bg-black">
+          {/* Ici, vous pouvez placer le reste de votre page, comme des formulaires d'inscription, du texte, etc. */}
+
+          <p className="text-white text-center text-5xl">
+          ▽▽ En savoir plus sur nous ▽▽
+          </p>
+
+
         
-      </div>
+        </div>
     </div>
 
   );

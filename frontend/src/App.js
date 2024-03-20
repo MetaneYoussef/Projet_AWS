@@ -11,6 +11,7 @@ import Evenement from "./pages/Divers/Evenement";
 import Signup from "./pages/Inscription/Inscription";
 import Dune from "./pages/Genres/Films/Dune2";
 import MovieHomePage from "./pages/Genres/Films/AccueilFilm";
+import FormulaireInscription from "./pages/FormulaireInscription/FormulaireInscription";  
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/qcm" element={<QCM />} />
           <Route path="/Evenement" element={<Evenement />} />
           <Route path="/Inscription" element={<Signup />} />
+          <Route path="/FormulaireInscription" element={<FormulaireInscription />} />
           <Route path="/Dune" component={<Dune />} />
         </Routes>
         {/* Vous pouvez ajouter plus de sections ou de contenu ici */}
