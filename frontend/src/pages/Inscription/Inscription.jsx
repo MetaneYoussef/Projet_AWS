@@ -5,6 +5,7 @@ function Signup() {
     <div>
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 relative bg-cover bg-center" style={{ backgroundImage: 'url("/images/SignUp_Background.png")' }}>
       {/* Couche d'assombrissement */}
+      
       <div className="absolute inset-0 bg-black opacity-50"></div>
 
       {/* Bouton "Accéder au site" en haut à gauche */}
@@ -18,7 +19,7 @@ function Signup() {
       </a>
 
  
-      <a href="/" className="mt-0">
+      <a href="/" className="absolute top-5">
         <img src="/images/WYW.png" alt="Logo1" className="mb-7 w-25 h-25" />
       </a>
 
@@ -26,56 +27,25 @@ function Signup() {
       {/* Contenu principal */}
       <div className="relative z-10">
         <a href="/">
-          <img src="/images/RondAvecFond.png" alt="Logo" className="mt-7 mb-7 w-25 h-25" />
+          <img src="/images/RondAvecFond.png" alt="Logo" className="mt-24 mb-7 w-52 h-52 " />
         </a>
 
-        <div className="max-w-md w-full bg-black shadow-md rounded px-8 pt-6 pb-8 mb-4">
-          {/* Les autres éléments restent inchangés */}
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-              Nom d'utilisateur
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="username"
-              type="text"
-              placeholder="UserName"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-              Email
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="email"
-              type="email"
-              placeholder="example@wyw.fr"
-            />
-          </div>
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-              Mot de passe
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-              id="password"
-              type="password"
-              placeholder="******************"
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              type="button"
-            >
-              S'inscrire
-            </button>
-
-          </div>
-        </div>
+        
       </div>
-    </div>
+        <p className="relative text-white font-bold text-center text-5xl mt-10">
+          N'oubliez plus jamais ce que vous aimez regarder !
+        </p>
+
+        <p className="relative text-white text-center mt-2 mb-10 text-3xl">
+          Accumulez vos séries et films préférés sans jamais en perdre le fil.
+        </p>
+        <hr className="w-full border-1 border-white my-2 mb-10" />
+
+        <p className="relative text-white text-center text-3xl">
+          Prêt à Watched ? Saisissez votre adresse e-mail pour créer un compte.
+        </p>
+      </div>
+
 
     
     {/* Conteneur du contenu défilable */}
