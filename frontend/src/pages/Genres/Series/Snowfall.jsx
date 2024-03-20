@@ -3,7 +3,7 @@ import Header from '../../components/Header/SeriesDetailHeader';
 import Footer from '../../components/Footer/Footer';
 import CustomScrollBarS from '../../utiles/CustomScrollBar.css';
 
-const QCM = () => {
+const Snowfall = () => {
   const serie = {
     title: "Snowfall",
     poster: "https://i.ebayimg.com/images/g/elQAAOSwQOxdTn7S/s-l1200.jpg",
@@ -142,4 +142,4 @@ const QCM = () => {
   );
 }
 
-export default QCM;
+export default Snowfall;
