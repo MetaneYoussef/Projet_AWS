@@ -14,6 +14,7 @@ import MovieHomePage from "./pages/Genres/Films/AccueilFilm";
 import SeriesHomePage from "./pages/Genres/Series/AccueilSeries";
 import MovieDetailPage from "./pages/Genres/Films/MovieDetailPage";
 import SeriesDetailPage from "./pages/Genres/Series/SeriesDetailPage";
+import UserProfile from "./pages/Divers/UserProfile";
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <Route path="/Evenement" element={<Evenement />} />
           <Route path="/Inscription" element={<Signup />} />
           <Route path="/Dune" component={<Dune />} />
+          <Route path="/UserProfile" component={<UserProfile />} />
         </Routes>
         {/* Vous pouvez ajouter plus de sections ou de contenu ici */}
     </Router>
