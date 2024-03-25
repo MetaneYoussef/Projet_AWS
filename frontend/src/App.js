@@ -19,56 +19,28 @@ import UserProfile from "./pages/UserProfile/UserProfile";
 
 
 function App() {
-    return ( <
-        Router >
-        <
-        Routes >
-        <
-        Route path = "/"
-        element = { < Accueil / > }
-        /> <
-        Route path = "/connexion"
-        element = { < Connexion / > }
-        /> <
-        Route path = "/films"
-        element = { < MovieHomePage / > }
-        /> <
-        Route path = "/films/:genre"
-        element = { < FilmsPage / > }
-        /> <
-        Route path = "/films/detail/:movieId"
-        element = { < MovieDetailPage / > }
-        /> <
-        Route path = "/series"
-        element = { < SeriesHomePage / > }
-        /> <
-        Route path = "/series/:genre"
-        element = { < Series / > }
-        /> <
-        Route path = "/series/detail/:seriesId"
-        element = { < SeriesDetailPage / > }
-        /> <
-        Route path = "/qcm"
-        element = { < QCM / > }
-        /> <
-        Route path = "/Evenement"
-        element = { < Evenement / > }
-        /> <
-        Route path = "/Inscription"
-        element = { < Signup / > }
-        /> <
-        Route path = "/FormulaireInscription"
-        element = { < FormulaireInscription / > }
-        /> <
-        Route path = "/UserProfile"
-        element = { < UserProfile / > }
-        /> <
-        Route path = "/Dune"
-        component = { < Dune / > }
-        /> < /
-        Routes > <
-        /Router>
-    );
+  return (
+    <Router>
+      <Routes>
+        <Route path="/connexion" element={<Connexion />} />
+        <Route path="/films" element={<MovieHomePage />} />
+        <Route path="/films/:genre" element={<FilmsPage />} />
+        <Route path="/films/detail/:movieId" element={<MovieDetailPage />} />
+        <Route path="/series" element={<SeriesHomePage />} />
+        <Route path="/series/:genre" element={<Series />} />
+        <Route path="/series/detail/:seriesId" element={<SeriesDetailPage />} />
+        <Route path="/qcm" element={<QCM />} />
+        <Route path="/Evenement" element={<Evenement />} />
+        <Route path="/Inscription" element={<Signup />} />
+        <Route path="/FormulaireInscription" element={<FormulaireInscription />} />
+        <Route path="/UserProfile" element={<UserProfile />} />
+        <Route path="/Dune" component={<Dune />} />
+        <Route path="/" element={<Accueil />} />
+
+      </Routes>
+      {/* Vous pouvez ajouter plus de sections ou de contenu ici */}
+    </Router>
+  );
 }
 
 export default App;
