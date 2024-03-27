@@ -15,14 +15,13 @@ import SeriesHomePage from "./pages/Genres/Series/AccueilSeries";
 import MovieDetailPage from "./pages/Genres/Films/MovieDetailPage";
 import SeriesDetailPage from "./pages/Genres/Series/SeriesDetailPage";
 import FormulaireInscription from "./pages/FormulaireInscription/FormulaireInscription";
-import UserProfile from "./pages/UserProfile/UserProfile";  
+import UserProfile from "./pages/UserProfile/UserProfile";
 
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Accueil />} />
         <Route path="/connexion" element={<Connexion />} />
         <Route path="/films" element={<MovieHomePage />} />
         <Route path="/films/:genre" element={<FilmsPage />} />
@@ -36,6 +35,8 @@ function App() {
         <Route path="/FormulaireInscription" element={<FormulaireInscription />} />
         <Route path="/UserProfile" element={<UserProfile />} />
         <Route path="/Dune" component={<Dune />} />
+        <Route path="/" element={<Accueil />} />
+
       </Routes>
       {/* Vous pouvez ajouter plus de sections ou de contenu ici */}
     </Router>
