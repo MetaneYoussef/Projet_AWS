@@ -8,7 +8,6 @@ function Signup() {
   return (
     <div className="relative bg-black">
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 relative bg-cover bg-center " style={{ backgroundImage: 'url("/images/SignUp_Background.png")' }}>
-      
       {/* Couche d'assombrissement */}
       <div className="absolute inset-0 bg-black opacity-55"></div>
 
@@ -21,12 +20,10 @@ function Signup() {
       <a href="/Connexion" className="absolute top-5 right-5 z-20 bg-black hover:bg-gray text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
         Connexion
       </a>
-
  
       <a href="/" className="absolute top-5">
         <img src="/images/WYW.png" alt="Logo1" className="mb-7 w-25 h-16" />
       </a>
-
 
       {/* Contenu principal */}
       <div className="relative z-10">
