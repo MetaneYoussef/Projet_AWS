@@ -3,6 +3,7 @@ import Footer from '../../components/Footer/Footer';
 import Newsletter from './Newsletter';
 import Features from './Features';
 import FAQ from './FAQ';
+import { Link } from "react-router-dom";
 
 function Signup() {
   return (
@@ -42,9 +43,23 @@ function Signup() {
         </p>
         <hr className="w-full border-1 border-white my-2 mb-10" />
 
-        <p className="relative text-white text-center text-3xl mb-24">
+        <p className="relative text-white text-center text-3xl ">
           Prêt à Watched ? Saisissez votre adresse e-mail pour créer un compte.
         </p>
+
+        <div className="md w-full relative bottom-0 flex justify-center p-24">
+        <input
+          type="email"
+          placeholder="Adresse e-mail"
+          className="appearance-none w-1/2 py-4 px-6 text-white leading-tight focus:outline-none bg-gray-700" 
+        />
+          <Link 
+            to="/FormulaireInscription"
+            className="bg-white hover:bg-gray-500 text-black font-bold py-4 px-6 focus:outline-none focus:shadow-outline">
+            Commencez »
+          </Link>
+      </div>
+
 
         <div class="absolute w-full opacity-60" style={{ bottom: '0px', zIndex: '30' }}>
         <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -1,9 +1,9 @@
 import React from 'react';
-import Header from '../../../components/Header/SeriesHeader';
-import Footer from '../../../components/Footer/Footer';
-import CustomScrollBarS from '../../../utiles/CustomScrollBar.css';
+import Header from '../../components/Header/SeriesDetailHeader';
+import Footer from '../../components/Footer/Footer';
+import CustomScrollBarS from '../../utiles/CustomScrollBar.css';
 
-const SeriesDetailPage = () => {
+const QCM = () => {
   const serie = {
     title: "Snowfall",
     poster: "https://i.ebayimg.com/images/g/elQAAOSwQOxdTn7S/s-l1200.jpg",
@@ -142,4 +142,4 @@ const SeriesDetailPage = () => {
   );
 }
 
-export default SeriesDetailPage;
+export default QCM;
