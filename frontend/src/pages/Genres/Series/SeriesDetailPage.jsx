@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from '../../../components/Header/SeriesDetailHeader';
+import Header from '../../../components/Header/SeriesHeader';
 import Footer from '../../../components/Footer/Footer';
 import CustomScrollBarS from '../../../utiles/CustomScrollBar.css';
 

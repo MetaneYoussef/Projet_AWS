@@ -6,7 +6,7 @@ function Header() {
 
   return (
     <><header className="hidden md:flex bg-black text-white p-4 justify-between items-center border-b border-green-900 relative">
-      <Link to="/" className="flex items-center ml-5">
+      <Link to="/" className="flex items-center ml-5 md:ml-5">
         <img src={`${process.env.PUBLIC_URL}/images/WYW.png`} alt="Logo" className="h-10 mr-5"/>
       </Link>
       <nav className={`flex-grow mx-4`}>
@@ -26,12 +26,10 @@ function Header() {
     </header>
 
     <header className="flex md:hidden lg:hidden bg-black text-white p-4 justify-between items-center border-b border-green-900 relative">
-      <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="z-20 font-semibold">
+      <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="z-20 font-semibold text-4xl">
         {/* Icône du bouton menu ici, peut être une image ou un svg */}
         ☰
-        MENU
       </button>
-      <SearchComponentMobile classname="items-center justify-center"/>
       <div className={`absolute top-0 left-0 w-4/5 h-screen bg-black bg-opacity-95 z-10 transform ${isMenuOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out`}>
           <div className="flex flex-col items-center">
             {/* Ici tu peux ajouter ton logo et tes liens */}

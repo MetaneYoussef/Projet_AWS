@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import Header from '../../components/Header/SeriesDetailHeader';
+import Header from '../../components/Header/SeriesHeader';
 import Footer from '../../components/Footer/Footer';
 import { Link } from 'react-router-dom';
 
