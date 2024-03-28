@@ -12,12 +12,12 @@ function Signup() {
       <div className="absolute inset-0 bg-black opacity-55"></div>
 
       {/* Bouton "Accéder au site" en haut à gauche */}
-      <a href="/" className="absolute top-5 left-5 z-20 bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+      <a href="/" className="absolute top-5 left-5 z-20 bg-black border-2 border-black hover:bg-gray-700 hover:border-2 hover:border-white text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
         Accéder au site
       </a>
 
       {/* Bouton "Connexion" en haut à droite */}
-      <a href="/Connexion" className="absolute top-5 right-5 z-20 bg-black hover:bg-gray text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+      <a href="/Connexion" className="absolute top-5 right-5 z-20 bg-black border-2 border-black hover:bg-gray-700 hover:border-2 hover:border-white text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
         Connexion
       </a>
  
