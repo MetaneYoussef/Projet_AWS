@@ -26,7 +26,7 @@ function Header() {
     </header>
 
     <header className="flex md:hidden lg:hidden bg-black text-white p-4 justify-between items-center border-b border-blue-900 relative">
-      <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="z-20 font-semibold text-4xl">
+      <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="z-20 font-semibold text-5xl -mt-2 mr-4">
         {/* Icône du bouton menu ici, peut être une image ou un svg */}
         ☰
       </button>
@@ -48,8 +48,8 @@ function Header() {
             </ul>
           </div>
         </div>
-      <Link to="/" className="flex items-center ml-5">
-        <img src={`${process.env.PUBLIC_URL}/images/WYW.png`} alt="Logo" className="h-10 mr-5" />
+      <Link to="/" className="flex items-center">
+        <img src={`${process.env.PUBLIC_URL}/images/RondSansFond.png`} alt="Logo" className="h-20 shadow-sm rounded-full shadow-blue-600" />
       </Link>
     </header></>
   );

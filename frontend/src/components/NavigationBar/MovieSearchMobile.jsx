@@ -31,7 +31,7 @@ const SearchComponentMobile = () => {
         placeholder="Recherchez..."
         value={query}
         onChange={handleSearch}
-        className="p-1.5 bg-red-700 text-white border-2 border-red-900 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 hover:bg-red-600 w-68"
+        className="p-1.5 bg-red-700 text-white border-2 border-red-900 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 hover:bg-red-600 w-40"
       />
       <div className={`absolute top-full mt-2 w-full bg-red-900 text-white rounded-lg shadow-lg overflow-hidden ${query.length > 0 ? 'block' : 'hidden'}`}>
         {results.length > 0 ? (

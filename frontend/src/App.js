@@ -16,6 +16,7 @@ import MovieDetailPage from "./pages/Genres/Films/MovieDetailPage";
 import SeriesDetailPage from "./pages/Genres/Series/SeriesDetailPage";
 import FormulaireInscription from "./pages/FormulaireInscription/FormulaireInscription";
 import UserProfile from "./pages/UserProfile/UserProfile";
+import Watchlist from "./pages/Watchlist/Watchlist";
 
 
 function App() {
@@ -34,7 +35,7 @@ function App() {
         <Route path="/Inscription" element={<Signup />} />
         <Route path="/FormulaireInscription" element={<FormulaireInscription />} />
         <Route path="/UserProfile" element={<UserProfile />} />
-        <Route path="/Dune" component={<Dune />} />
+        <Route path="/Watchlist" element={<Watchlist />} />
         <Route path="/" element={<Accueil />} />
 
       </Routes>
