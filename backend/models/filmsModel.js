@@ -7,7 +7,19 @@ const filmsSchema = new Schema({
         type: String,
         required: true
     },
-    description: {
+    synopsis: {
+        type: String,
+        required: true
+    },
+    tmdb_id: {
+        type: Number,
+        required: true
+    },
+    poster: {
+        type: String,
+        required: true
+    },
+    background: {
         type: String,
         required: true
     },
@@ -15,13 +27,14 @@ const filmsSchema = new Schema({
         type: Date,
         required: true
     },
-    Longueur: {
-        type: Number,
-        min: 1,
-        required: true
-    },
     genre: {
         type: [String],
+        required: true
+    },
+    rating: {
+        type: Number,
+        min: 0,
+        max: 10,
         required: true
     },
     acteurs: {

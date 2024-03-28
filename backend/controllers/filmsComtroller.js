@@ -1,10 +1,50 @@
+require('dotenv').config();
+
 const mongoose = require('mongoose');
 const Acteur = require('../models/acteurModel');
 const Film = require('../models/filmsModel');
+const fetch = require('node-fetch');
+
+
+const base_url = 'https://image.tmdb.org/t/p/original/'
+const options = {
+    method: 'GET',
+    headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer ' + process.env.TMDBAPIKEY
+    }
+};
+
+const fetchMoviedetails = async (name) => {
+    const url = 'https://api.themoviedb.org/3/search/movie?query=' +
+        name.split(' ').join('%20') + '&include_adult=false&language=fr-FR&page=1';
+
+
+    details = await fetch(url, options)
+        .then(res => res.json())
+        .then(json => {
+            const titre = json.results[0].title
+            const id = json.results[0].id
+            const poster = base_url + json.results[0].poster_path
+            const background = base_url + json.results[0].backdrop_path
+            const synopsis = json.results[0].overview
+            const date_sortie = json.results[0].release_date
+            const rating = json.results[0].vote_average
+            const genre = json.results[0].genre_ids
+            return { id, titre, date_sortie, poster, background, synopsis, rating, genre };
+        })
+        .catch(err => console.error('error:' + err));
+    if (!details) {
+        return { error: 'Aucun film trouvé' };
+    }
+    return details;
+}
+
 
 
 const creerFilm = async (req, res) => {
     const film = req.body;
+
     if (film.acteurs) {
         let idActeurs = [];
         for (let acteur of film.acteurs) {
@@ -18,8 +58,62 @@ const creerFilm = async (req, res) => {
         }
         film.acteurs = idActeurs;
     }
+    let details = await fetchMoviedetails(film.titre);
+    if (details.error) {
+        return res.status(400).json({ error: details.error });
+    }
+    film.date_sortie = new Date(details.date_sortie);
+    film.tmdb_id = details.id;
+    film.titre = details.titre;
+    film.poster = details.poster;
+    film.background = details.background;
+    film.synopsis = details.synopsis;
+    film.rating = details.rating;
+    film.genre = details.genre.map((id) => {
+        parseInt(id);
+        switch (id) {
+            case 28:
+                return 'Action';
+            case 12:
+                return 'Aventure';
+            case 16:
+                return 'Animation';
+            case 35:
+                return 'Comédie';
+            case 80:
+                return 'Crime';
+            case 99:
+                return 'Documentaire';
+            case 18:
+                return 'Drame';
+            case 10751:
+                return 'Familial';
+            case 14:
+                return 'Fantastique';
+            case 36:
+                return 'Histoire';
+            case 27:
+                return 'Horreur';
+            case 10402:
+                return 'Musique';
+            case 9648:
+                return 'Mystère';
+            case 10749:
+                return 'Romance';
+            case 878:
+                return 'Science-Fiction';
+            case 10770:
+                return 'Téléfilm';
+            case 53:
+                return 'Thriller';
+            case 10752:
+                return 'Guerre';
+            case 37:
+                return 'Western';
+        }
+    });
 
-
+    console.log(film)
     try {
         const fiilm = await Film.create(film);
         res.status(200).json(fiilm)
