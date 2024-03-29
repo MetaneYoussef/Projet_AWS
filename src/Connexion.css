@@ -1,0 +1,104 @@
+.connexion-container {
+  display: flex;
+  height: 100vh;
+}
+
+.left-section {
+  flex: 1;
+  background: url(DesignC.png); /* Remplacez 'votre_image.jpg' par le chemin de votre image */
+  background-size: cover;
+}
+
+.right-section {
+  flex: 1;
+  background-color: #242424;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-container {
+  margin-bottom: 20px;
+}
+
+.circle-logo-background {
+  width: 122px;
+  height: 122px;
+  background-color: white;
+  box-shadow: 0 0 10px rgb(255, 255, 255);
+  border-radius: 50%;
+  position: absolute;
+  top: 49%;
+  left: 54.5%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+
+.login-box {
+  background-color: #5d5d5d;
+  padding: 40px; /* Elargir la boîte de connexion */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgb(255, 255, 255);
+  width: 300px;
+  /*text-align: center;*/
+}
+
+.login-box h2 {
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-family: 'Gotham', sans-serif; 
+  color: #ffffff;
+  font-weight: bold;
+}
+
+form {
+  display: flex;
+  font-family: 'Gotham', sans-serif; 
+  color: #ffffff;
+  flex-direction: column;
+  font-weight: bold;
+}
+
+label {
+  margin-bottom: 8px;
+}
+
+input {
+  padding: 10px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #000000;
+  color: #ffffff;
+  padding: 15px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.signup-link {
+  margin-top: 20px;
+  padding: 0;
+  font-family: 'Gotham', sans-serif; 
+  text-align: center;
+}
+
+.signup-link a {
+  color: #ffffff; /* Couleur du lien */
+  font-family: 'Gotham', sans-serif; 
+  text-decoration: solid;
+  font-weight: bold;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+  text-decoration: solid;
+}
