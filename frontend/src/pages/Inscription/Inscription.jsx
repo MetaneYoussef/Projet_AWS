@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 function Signup() {
   return (
-    <div className="relative bg-black">
+    <div className="relative bg-black overflow-hidden">
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 relative bg-cover bg-center " style={{ backgroundImage: 'url("/images/SignUp_Background.png")' }}>
       {/* Couche d'assombrissement */}
       <div className="absolute inset-0 bg-black opacity-55"></div>
@@ -22,14 +22,10 @@ function Signup() {
         Connexion
       </a>
  
-      <a href="/" className="absolute top-5">
-        <img src="/images/WYW.png" alt="Logo1" className="mb-7 w-25 h-16" />
-      </a>
-
       {/* Contenu principal */}
-      <div className="relative z-10">
+      <div className="relative z-10 mt-10 sm:mt-0 flex justify-center">
         <a href="/">
-          <img src="/images/RondAvecFond.png" alt="Logo" className="mt-24 mb-7 w-52 h-52 " />
+          <img src="/images/RondSansFond.png" alt="Logo" className="mb-7 w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-52 lg:h-52" />
         </a>
 
         
@@ -47,18 +43,19 @@ function Signup() {
           Prêt à Watched ? Saisissez votre adresse e-mail pour créer un compte.
         </p>
 
-        <div className="md w-full relative bottom-0 flex justify-center p-24">
-        <input
-          type="email"
-          placeholder="Adresse e-mail"
-          className="appearance-none w-1/2 py-4 px-6 text-white leading-tight focus:outline-none bg-gray-700" 
-        />
+        <div className="w-full relative bottom-0 flex justify-center p-4 sm:p-24 ">
+          <input
+            type="email"
+            placeholder="Adresse e-mail"
+            className="appearance-none w-3/4 sm:w-1/2 py-4 px-6 text-white leading-tight border-4 rounded-lg border-gray-500 focus:outline-none bg-gray-700"
+          />
           <Link 
             to="/FormulaireInscription"
-            className="bg-white hover:bg-gray-500 text-black font-bold py-4 px-6 focus:outline-none focus:shadow-outline">
+            className="bg-slate-200 text-xl ml-4 hover:bg-gray-500 text-black font-bold rounded-lg py-4 px-6 focus:outline-none border-4 border-black focus:shadow-outline"
+          >
             Commencez »
           </Link>
-      </div>
+        </div>
 
 
         <div class="absolute w-full opacity-60" style={{ bottom: '0px', zIndex: '30' }}>
