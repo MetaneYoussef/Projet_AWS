@@ -43,7 +43,7 @@ function Signup() {
           Prêt à Watched ? Saisissez votre adresse e-mail pour créer un compte.
         </p>
 
-        <div className="w-full relative bottom-0 flex justify-center p-4 mt-10 sm:mt-20 ">
+        <div className="w-full relative bottom-0 flex justify-center p-4 mt-10  ">
           <input
             type="email"
             placeholder="Adresse e-mail"
