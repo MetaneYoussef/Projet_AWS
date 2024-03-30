@@ -25,7 +25,7 @@ function Connexion() {
       <div className="flex h-screen">
         <div className="w-1/2 bg-cover brightness-50" style={{ backgroundImage: "url('/images/SignUp_Background.png')" }}></div>
         <div className="w-1/2 flex flex-col items-center justify-center bg-neutral-900">
-          <div className="relative text-center mb-8">
+          <div className="relative text-center -mb-8">
             <Link to="/">
               <img src={require("./RondSansFond.png")} alt="Votre logo" className="w-36 h-auto relative z-20" />
             </Link>
@@ -34,22 +34,16 @@ function Connexion() {
           </div>
           {/* Boîte de connexion avec ombrage personnalisé */}
           <div className="p-10 rounded-lg shadow-xl w-96 bg-neutral-800" style={{ boxShadow: "0 0 15px 5px #fff" }}>
-            <p class="mb-8 text-2xl font-bold leading-5 text-white">S'identifier</p>
-            
-            <button class="inline-flex h-10 w-full items-center justify-center gap-2 rounded border border-slate-300 bg-white p-2 text-sm font-medium text-black outline-none focus:ring-2 focus:ring-[#333] focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-60">
-              <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="h-[18px] w-[18px]" />
-              Continuer avec Google
-            </button>
+            <p class="mb-1 text-2xl font-bold leading-5 text-white">Connexion</p>
 
-            <div class="flex w-full items-center gap-2 py-6 text-sm text-white font-semibold">
-                <div class="h-px w-full bg-white"></div>
-                OR
-                <div class="h-px w-full bg-white"></div>
+            {/* Ligne séparatrice*/}
+            <div class="flex w-full items-center gap-2 py-4 mb-4 text-sm text-gray-400 font-semibold">
+                <div class="h-px w-full bg-gray-400"></div>
             </div>
 
 
             <form class="w-full">
-              <p className="text-white font-semibold mb-4">Adresse Email</p>
+              <p className="text-white font-semibold mb-2">Adresse Email</p>
               <label for="email" class="sr-only">Email Address</label>
               <input 
                 name="email" 
@@ -61,7 +55,7 @@ function Connexion() {
                 value={email}
                 onChange={handleEmailChange}
               />
-              <p className="text-white font-semibold my-4">Mot de passe</p>
+              <p className="text-white font-semibold mt-4 mb-2">Mot de passe</p>
               <label for="password" class="sr-only">Password</label>
               <input 
                 name="password" 
@@ -74,6 +68,8 @@ function Connexion() {
                 onChange={handlePasswordChange}
               />
             </form>
+
+            <button type="submit" className="bg-black text-white border-2 border-black hover:bg-white hover:text-black p-2 px-2 mt-3 rounded-lg cursor-pointer font-bold">Se Connecter</button>
 
             <div className="mt-4 text-start">
               <p className="text-white text-sm">Première visite sur What You Watched ?
