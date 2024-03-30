@@ -17,7 +17,8 @@ import SeriesDetailPage from "./pages/Genres/Series/SeriesDetailPage";
 import FormulaireInscription from "./pages/FormulaireInscription/FormulaireInscription";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import Watchlist from "./pages/Watchlist/Watchlist";
-
+import Contact from "./pages/InsideFooter/Contact";
+import FAQ from "./pages/Inscription/FAQ";
 
 function App() {
   return (
@@ -36,6 +37,8 @@ function App() {
         <Route path="/FormulaireInscription" element={<FormulaireInscription />} />
         <Route path="/UserProfile" element={<UserProfile />} />
         <Route path="/Watchlist" element={<Watchlist />} />
+        <Route path="/Contact" element={<Contact />} />
+        <Route path="/FAQ" element={<FAQ />} />
         <Route path="/" element={<Accueil />} />
 
       </Routes>

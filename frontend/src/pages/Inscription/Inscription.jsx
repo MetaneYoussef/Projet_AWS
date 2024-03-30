@@ -23,9 +23,9 @@ function Signup() {
       </a>
  
       {/* Contenu principal */}
-      <div className="relative z-10 mt-10 sm:mt-0 flex justify-center">
+      <div className="relative z-10 mt-10 flex justify-center">
         <a href="/">
-          <img src="/images/RondSansFond.png" alt="Logo" className="mb-7 w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-52 lg:h-52" />
+          <img src="/images/RondSansFond.png" alt="Logo" className="mb-7 w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-40 lg:h-40" />
         </a>
 
         
@@ -43,7 +43,7 @@ function Signup() {
           Prêt à Watched ? Saisissez votre adresse e-mail pour créer un compte.
         </p>
 
-        <div className="w-full relative bottom-0 flex justify-center p-4 sm:p-24 ">
+        <div className="w-full relative bottom-0 flex justify-center p-4 mt-10  ">
           <input
             type="email"
             placeholder="Adresse e-mail"
