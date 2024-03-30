@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <><div>
+    <><div >
       <div className="container h-30 mx-auto flex flex-col md:flex-row justify-between items-center">
         {/* Section Logo et Nom */}
         <div className="mb-4 md:mb-0 flex flex-col md:flex-row items-center">
@@ -26,12 +26,12 @@ function Footer() {
             <Link to="/FAQ" className="mb-2 md:mb-3 md:mx-2 hover:underline">FAQ</Link>
             <Link to="/CGU" className="mb-2 md:mb-3 md:mx-2 hover:underline">CGU</Link>
           </div>
-          <div className="ml-4 pt-12 justify-center flex flex-col font-bold items-center mb-14">
+          <div className="ml-4 md:ml-14 pt-12 md:pt-0 justify-center flex flex-col font-bold items-center mb-14">
             <p className="mb-3 md:mb-3 md:mx-2 text-gray-500 text-xs" >LIENS UTILES</p>
             <Link to="/A-Propos" className="mb-3 md:mb-3 md:mx-2 hover:underline">Support</Link>
             <Link to="/Creators" className="mb-3 md:mb-3 md:mx-2 hover:underline">Contact</Link>
           </div>
-          <div className="ml-4 justify-center flex flex-col font-bold items-center mb-5">
+          <div className="ml-4 md:ml-14 justify-center flex flex-col font-bold items-center mb-5">
             <p className="mb-3 md:mb-3 md:mx-2 text-gray-500 text-xs" >NOUS SUIVRE</p>
             <Link to="Facebook" className="mb-3 md:mb-3 md:mx-2 hover:underline">Facebook</Link>
             <Link to="/Twitter" className="mb-3 md:mb-3 md:mx-2 hover:underline">Twitter</Link>
