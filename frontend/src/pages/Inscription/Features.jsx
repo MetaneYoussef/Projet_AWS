@@ -4,14 +4,14 @@ import React from 'react';
 function Features() {
   return (
     
-    <div class="relative bg-black">     
-      <div class="relative">
+    <div className="relative bg-black">     
+    <div className="relative">
       <div className='bg-black py-14'/>
-        <div class="lg:mx-auto lg:grid lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-2 lg:gap-24 lg:px-8 ">
-          <div class="mx-auto max-w-xl px-6 lg:mx-0 lg:max-w-none lg:py-16 lg:px-0 lg:col-end-2">
+        <div className="mx-auto grid max-w-7xl gap-24 px-8 lg:grid-flow-col-dense lg:grid-cols-2 mb-24">
+          <div className="px-6 mx-auto max-w-xl lg:mx-0 lg:max-w-none lg:py-16">
               <div>
                 <div>
-                  <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-pink-800">
+                  <span className="flex items-center justify-center h-12 w-12 rounded-xl bg-pink-800">  
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                       stroke-width="1.5" stroke="currentColor" aria-hidden="true"
                       class="h-8 w-8 text-white">
@@ -21,11 +21,11 @@ function Features() {
                     </svg>
                   </span>
                 </div>
-                <div class="mt-6">
-                  <h2 class="text-3xl font-bold tracking-tight text-white">
+                <div className="mt-6">
+                  <h2 className="text-3xl font-bold tracking-tight text-white">
                     Tenez à jour votre historique de visionnage !
                   </h2>
-                  <p class="mt-4 text-lg text-gray-300">
+                  <p className="mt-4 text-lg text-gray-300">
                     Explorez 'What You Watched' pour garder une trace facilement de vos séries, animes et films préférés.
                   </p>
                 </div>
@@ -33,16 +33,19 @@ function Features() {
             </div>
             <div class="mt-12 sm:mt-16 lg:mt-0">
               <div class="-mr-48 pl-6 md:-mr-16 lg:relative lg:m-0 lg:h-full lg:px-8">
-                <img loading="lazy" width="646" height="485"
-                  class="w-full rounded-xl shadow-2xl ring-1 ring-black ring-opacity-5 lg:absolute lg:left-0 lg:h-full lg:w-auto lg:max-w-none"
-                  src="https://www.energyclubgarches.com/media/uploaded/sites/746/actualite/5e1bed16da53a_DSC0007.JPG"/>
+              <img
+                loading="lazy"
+                className="w-full h-auto max-w-xs sm:max-w-sm md:max-w-md lg:w-auto lg:h-full rounded-xl shadow-2xl ring-1 ring-black ring-opacity-5 lg:absolute lg:left-0 lg:max-w-none"
+                src="https://www.energyclubgarches.com/media/uploaded/sites/746/actualite/5e1bed16da53a_DSC0007.JPG"
+                alt=""
+              />
             </div>
           </div>
         </div>
       </div>
       
       <div>
-        <div class="lg:mx-auto lg:grid lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-2 lg:gap-24 lg:px-8 ">
+        <div class="lg:mx-auto lg:grid lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-2 lg:gap-24 lg:px-8 mb-24 ">
           <div class="mx-auto max-w-xl px-6 lg:mx-0 lg:max-w-none lg:py-16 lg:px-0 lg:col-start-2">
             <div>
               <div>
@@ -73,13 +76,13 @@ function Features() {
               </div>
             </div>
         </div>
-        <div class="mt-12 sm:mt-16 lg:mt-0">
-          <div class="-ml-48 pr-6 md:-ml-16 lg:relative lg:m-0 lg:h-full lg:px-0">
-            <img alt="Inbox user interface" loading="lazy" width="647" height="486"
-              class="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:right-0 lg:h-full lg:w-auto lg:max-w-none"
-              src="https://www.energyclubgarches.com/media/uploaded/sites/746/actualite/5e1bed16da53a_DSC0007.JPG"/>
-          </div>
+        <div class="mt-12 sm:mt-16 lg:mt-0 flex justify-center lg:block">
+        <div class="lg:relative lg:m-0 lg:h-full lg:px-0">
+          <img alt="Inbox user interface" loading="lazy"
+            class="max-w-xs sm:max-w-sm md:max-w-md lg:w-auto lg:h-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5"
+            src="https://s3.static-footeo.com/1200/uploads/fcc78/teams/debutant-1__mxjgkz.jpg"/>
         </div>
+      </div>
       </div>
     </div>
 
@@ -108,13 +111,16 @@ function Features() {
           </div>
       </div>
         </div>
-        <div class="mt-12 sm:mt-16 lg:mt-0">
-          <div class="-mr-48 pl-6 md:-mr-16 lg:relative lg:m-0 lg:h-full lg:px-8">
-              <img loading="lazy" width="646" height="485"
-                  class="w-full rounded-xl shadow-2xl ring-1 ring-black ring-opacity-5 lg:absolute lg:left-0 lg:h-full lg:w-auto lg:max-w-none"
-                  src="https://www.energyclubgarches.com/media/uploaded/sites/746/actualite/5e1bed16da53a_DSC0007.JPG"/>
+        <div class="mt-12 sm:mt-16 lg:mt-16">
+              <div class="-mr-48 pl-6 md:-mr-16 lg:relative lg:m-0 lg:h-full lg:px-8">
+              <img
+                loading="lazy"
+                className="w-full h-auto max-w-xs sm:max-w-sm md:max-w-md lg:w-auto lg:h-full rounded-xl shadow-2xl ring-1 ring-black ring-opacity-5 lg:absolute lg:left-0 lg:max-w-none"
+                src="	http://easqy.athle.org/upload/ssites/news/72/78272_small.jpg"
+                alt=""
+              />
+            </div>
           </div>
-        </div>
       </div>
     </div>
     <div className='bg-black py-14'/>

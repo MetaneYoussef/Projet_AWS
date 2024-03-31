@@ -24,9 +24,14 @@
     "mongodb": "^6.5.0",
     "mongoose": "^8.2.1",
     "morgan": "^1.10.0",
+<<<<<<< HEAD
     "nodemon": "^3.1.0",
     "swagger-ui-express": "^5.0.0",
     "validator": "^13.11.0",
     "winston": "^3.13.0"
+=======
+    "node-fetch": "^2.7.0",
+    "nodemon": "^3.1.0"
+>>>>>>> b64e09e6d9c7de50ddaab6088e7fdaf5f7904b2b
   }
 }

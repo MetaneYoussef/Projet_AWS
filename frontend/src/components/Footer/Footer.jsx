@@ -4,21 +4,21 @@ import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <><div>
+    <><div >
       <div className="container h-30 mx-auto flex flex-col md:flex-row justify-between items-center">
         {/* Section Logo et Nom */}
-        <div className="mb-4 md:mb-0 flex items-center">
+        <div className="mb-4 md:mb-0 flex flex-col md:flex-row items-center">
           <div>
-            <img src={`${process.env.PUBLIC_URL}/images/RondAvecFond.png`} className="h-28 ml-14 mr-10" />
+            <img src={`${process.env.PUBLIC_URL}/images/RondSansFond.png`} className="h-28 ml-14 mr-10" />
             <br></br>
             <div className="relative">
-              <select className="bg-black text-white p-2 rounded cursor-pointer ml-16">
+              <select className="bg-black text-white p-2 rounded items-center cursor-pointer ml-16">
                 <option value="fr">Français</option>
                 <option value="en">English</option>
               </select>
           </div>
           </div>
-          <div className="ml-14 pt-12 justify-center flex flex-col font-bold">
+          <div className="ml-4 pt-12 justify-center flex flex-col font-bold items-center">
             <p className="mb-3 md:mb-3 md:mx-2 text-gray-500 text-xs" >ENTREPRISE</p>
             <Link to="/A-Propos" className="mb-3 md:mb-3 md:mx-2 hover:underline">À propos</Link>
             <Link to="/Creators" className="mb-3 md:mb-3 md:mx-2 hover:underline">Créateurs</Link>
@@ -26,16 +26,16 @@ function Footer() {
             <Link to="/FAQ" className="mb-2 md:mb-3 md:mx-2 hover:underline">FAQ</Link>
             <Link to="/CGU" className="mb-2 md:mb-3 md:mx-2 hover:underline">CGU</Link>
           </div>
-          <div className="ml-16 justify-center flex flex-col font-bold mb-14">
+          <div className="ml-4 md:ml-14 pt-12 md:pt-0 justify-center flex flex-col font-bold items-center mb-14">
             <p className="mb-3 md:mb-3 md:mx-2 text-gray-500 text-xs" >LIENS UTILES</p>
             <Link to="/A-Propos" className="mb-3 md:mb-3 md:mx-2 hover:underline">Support</Link>
-            <Link to="/Creators" className="mb-3 md:mb-3 md:mx-2 hover:underline">Contact</Link>
+            <Link to="/Contact" className="mb-3 md:mb-3 md:mx-2 hover:underline">Contact</Link>
           </div>
-          <div className="ml-16 justify-center flex flex-col font-bold mb-5">
+          <div className="ml-4 md:ml-14 justify-center flex flex-col font-bold items-center mb-5">
             <p className="mb-3 md:mb-3 md:mx-2 text-gray-500 text-xs" >NOUS SUIVRE</p>
-            <Link to="Facebook" className="mb-3 md:mb-3 md:mx-2 hover:underline">Facebook</Link>
-            <Link to="/Twitter" className="mb-3 md:mb-3 md:mx-2 hover:underline">Twitter</Link>
-            <Link to="/Instragram" className="mb-3 md:mb-3 md:mx-2 hover:underline">Instagram</Link>
+            <a href="https://www.facebook.com/soufianee.elm78" className="mb-3 md:mb-3 md:mx-2 hover:underline">Facebook</a>
+            <a href="https://twitter.com/42Yellow_" className="mb-3 md:mb-3 md:mx-2 hover:underline">Twitter</a>
+            <a href="https://www.instagram.com/aruncgss/" className="mb-3 md:mb-3 md:mx-2 hover:underline">Instagram</a>
           </div>
         </div>
 
@@ -51,5 +51,6 @@ function Footer() {
       </div></>
   );
 }
+
 
 export default Footer;

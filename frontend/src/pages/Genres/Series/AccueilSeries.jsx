@@ -239,7 +239,7 @@ const SeriesHomePage = () => {
           <div className="constainer mx-auto">
             <div>
               <div className="flex items-center mb-8">
-                <FaArrowAltCircleLeft onClick={() => scrollGenres('left')} className="cursor-pointer text-white text-xl ml-5 hover:brightness-75" />
+                <FaArrowAltCircleLeft onClick={() => scrollGenres('left')} className="cursor-pointer text-white text-xl ml-8 hover:brightness-75" />
                 <div className="overflow-hidden w-full mx-5">
                   <div className="whitespace-nowrap transition-transform duration-300" style={{ transform: `translateX(-${currentGenreIndex * moveWidth3}px)` }}>
                     {genres.map((genre, index) => (
