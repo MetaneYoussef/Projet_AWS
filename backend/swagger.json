@@ -1,0 +1,95 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "API de gestion de films",
+        "description": "Cette API permet de gérer une collection de films.",
+        "version": "1.0.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/api",
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/films": {
+            "get": {
+                "summary": "Liste tous les films",
+                "description": "Renvoie une liste de tous les films dans la base de données.",
+                "responses": {
+                    "200": {
+                        "description": "Une liste de films",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Film"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Crée un nouveau film",
+                "description": "Ajoute un nouveau film à la collection.",
+                "parameters": [{
+                    "in": "body",
+                    "name": "film",
+                    "description": "Les données du film à créer",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/Film"
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Film créé"
+                    }
+                }
+            }
+        },
+        "/films/{id}": {
+            "get": {
+                "summary": "Trouve un film par son ID",
+                "description": "Renvoie un seul film correspondant à l'ID fourni.",
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Un film",
+                        "schema": {
+                            "$ref": "#/definitions/Film"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Film": {
+            "type": "object",
+            "required": [
+                "id",
+                "titre",
+                "realisateur"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "titre": {
+                    "type": "string"
+                },
+                "realisateur": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
