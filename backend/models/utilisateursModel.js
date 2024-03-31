@@ -38,8 +38,9 @@ utilisateursSchema.pre('save', async function(next) {
 });
 
 // Méthode pour comparer le mot de passe entré avec le mot de passe haché
-utilisateursSchema.methods.matchMotDePasse = async function(enteredPassword) {
-    return await bcrypt.compare(enteredPassword, this.mot_de_passe);
+utilisateursSchema.methods.matchMotDePasse = async function(enteredPassword, password) {
+    return await bcrypt.compare(enteredPassword, password);
 };
 
-module.exports = mongoose.model('Utilisateurs', utilisateursSchema);
+const Utilisateurs = mongoose.model('Utilisateurs', utilisateursSchema)
+module.exports = Utilisateurs
