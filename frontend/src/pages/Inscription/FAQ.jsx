@@ -50,7 +50,7 @@ function FAQ() {
           <div class="py-5">
             <details class="group">
               <summary class="flex cursor-pointer list-none items-center justify-between font-medium">
-                  <span> How do I cancel my subscription?</span>
+                  <span> Quand a été créé What You Watched ?</span>
                   <span class="transition group-open:rotate-180">
                     <svg fill="none" height="24" shape-rendering="geometricPrecision"
                       stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -59,9 +59,7 @@ function FAQ() {
                     </svg>
                   </span>
               </summary>
-              <p class="group-open:animate-fadeIn mt-3 text-neutral-600">To cancel your subscription, you can
-                log in to your account and navigate to the subscription management page. From there, you
-                should be able to cancel your subscription and stop future billing.
+              <p class="group-open:animate-fadeIn mt-3 text-neutral-600">Le site a été lancé en mai 2024.
               </p>
             </details>
           </div>
@@ -86,7 +84,7 @@ function FAQ() {
           <div class="py-5">
             <details class="group">
               <summary class="flex cursor-pointer list-none items-center justify-between font-medium">
-                  <span> How do I contact support?</span>
+                  <span> Comment je contacte le support ?</span>
                   <span class="transition group-open:rotate-180">
                     <svg fill="none" height="24" shape-rendering="geometricPrecision"
                       stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -95,9 +93,9 @@ function FAQ() {
                     </svg>
                   </span>
               </summary>
-              <p class="group-open:animate-fadeIn mt-3 text-neutral-600">If you need help with our platform or
-                have any other questions, you can contact the company's support team by submitting a support
-                request through the website or by emailing support@ourwebsite.com.
+              <p class="group-open:animate-fadeIn mt-3 text-neutral-600">Si vous avez besoin d'aide avec notre plateforme ou
+                si vous avez d'autres questions, vous pouvez contacter l'équipe d'assistance en soumettant un rapport via la
+                section "Contact" au pied de la page du site Web ou par e-mail à cestjusteunprojet@wyw.com.
               </p>
             </details>
           </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Header from "../../components/Header/QcmHeader";
+import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer"
 import WatchlistItem from './Items';
 
@@ -46,7 +46,7 @@ function Watchlist() {
   return (
     <div className="flex flex-col min-h-screen bg-black">
       <Header />
-      <div className='bg-black text-center py-4 font-bold text-2xl text-white'>
+      <div className='bg-black text-center py-4 font-bold text-4xl text-white'>
         <h1> MA WATCHLIST</h1>
       </div>
       <div className="flex justify-center border-2 border-black font-bold bg-black mb-4">

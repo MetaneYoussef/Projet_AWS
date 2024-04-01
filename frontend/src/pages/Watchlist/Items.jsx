@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function WatchlistItem({ title, episodeInfo, rating, poster }) {
   return (
-      <div className="bg-black text-white border-2 rounded-lg flex">
+      <div className="bg-black text-white border-2 rounded-lg flex lg:mb-2">
           <img src={poster} alt="Poster" className="w-32 h-44 md:w-40 md:h-56 rounded-md mr-4"/>
           <div className="flex flex-col justify-between w-full">
               <div>

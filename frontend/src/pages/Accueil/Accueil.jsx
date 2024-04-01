@@ -4,9 +4,7 @@ import "../../styles.css";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
-import SearchComponent from "../../components/NavigationBar/SearchComponent";
-import Section from "../../components/MovieList/Section";
-import films from "../../components/MovieList/films"
+import Bienvenue from './Bienvenue';
 
 // Template pour de l'affichage des films en bannière
 const MovieBanner = ({ movie }) => {
@@ -16,9 +14,9 @@ const MovieBanner = ({ movie }) => {
     .replace(/-+/g, '-')}`;      // Remplace les séquences de tirets par un seul tiret
 
   return (
-    <div className="inline-block cursor-pointer mr-4 mb-2 mt-3">
+    <div className="inline-block cursor-pointer mr-4 mb-2">
       <Link to={movieDetailUrl}>
-        <img src={movie.poster} alt={movie.title} className="rounded-lg shadow-lg w-[650px] h-[350px] object-cover" />
+        <img src={movie.poster} alt={movie.title} className="rounded-lg shadow-lg w-full lg:w-[800px] lg:h-[400px] object-cover" />
       </Link>
     </div>
   );
@@ -143,19 +141,17 @@ function Accueil() {
   
   // Index pour le défilement des catégories
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentGenreIndex, setCurrentGenreIndex] = useState(0);
   const [trendingIndex, setTrendingIndex] = useState(0);
   const [recentIndex, setRecentIndex] = useState(0);
   const [watchedIndex, setWatchedIndex] = useState(0);
   const [addedIndex, setAddedIndex] = useState(0);
 
   // Constantes pour la taille des affiches (nécessaires aux défilemens des catégories)
-  const moviesToShow = 2; // Nombre d'affiches à montrer à la fois
-  const bannerWidth = 650; // Largeur de l'affiche
+  const moviesToShow = 1; // Nombre d'affiches à montrer à la fois
+  const bannerWidth = 800; // Largeur de l'affiche
   const marginRight = 16; // Margin-right de chaque affiche
   const moveWidth = bannerWidth + marginRight; // Calcul de la distance de déplacement total par clic (BANNIERE)
   const moveWidth2 = 200 + 16; // Calcul de la distance de déplacement total par clic (CATEGORIE)
-  const moveWidth3 = 5*(220 + 16); // Calcul de la distance de déplacement total par clic (CATEGORIE)
 
   {/*LOGIQUE DU DEFILEMENT*/}
   // Scroll des films en bannière
@@ -170,18 +166,6 @@ function Accueil() {
     }
   };
   
-  // Scroll des genres
-  const scrollGenres = (direction) => {
-
-    const maxScroll = genres.length*(1/(genres.length/2));
-
-    if (direction === 'left') {
-      setCurrentGenreIndex(prevIndex => Math.max(prevIndex - 1, 0));
-    } else if (direction === 'right') {
-      setCurrentGenreIndex(prevIndex => Math.min(prevIndex + 1, maxScroll));
-    }
-  };
-
   // Fonction pour gérer le défilement des différentes catégories
   const scrollCategory = (category, direction) => {
     const maxScroll = trendingMovies.length - 6; // Assume toutes les catégories ont la même longueur
@@ -213,16 +197,17 @@ function Accueil() {
       <div className="flex flex-col min-h-screen">
       <div className="bg-gray-700">
         <Header />
+        <Bienvenue />
       </div>
       <div className="flex-grow bg-gray-700">
         <section className="bg-gray-700">
           <div className="container mx-auto py-6">
             <div>
-              <h1 className="text-white text-3xl font-semibold mx-12 mb-8 mt-8 ml-20">Nouveauté</h1>
+              <h1 className="text-white text-3xl font-semibold mx-12 mb-0 lg:mb-8 mt-8 ml-20">Nouveautés</h1>
               {/*LOGIQUE IMPLEMENTER POUR L'AFFICHAGE DE LA BANNIERE*/}
               <div className="flex items-center">
                   <FaArrowAltCircleLeft onClick={() => scrollMovies('left')} className="cursor-pointer text-white text-3xl ml-5 hover:brightness-75" />
-                  <div className="overflow-hidden w-full mx-5">
+                  <div className="overflow-hidden -mt-12 lg:-mt-0 w-full mx-5">
                     <div className="whitespace-nowrap transition-transform duration-300" style={{ transform: `translateX(-${currentIndex * moveWidth}px)` }}>
                       {moviesscroll.map((movie, index) => (
                         <MovieBanner key={index} movie={movie} />
@@ -235,7 +220,6 @@ function Accueil() {
           </div>
 
           
-
           {/* Section "Les Tendances" */}
           <div className="relative mb-14">
             <h2 className="text-white text-2xl font-bold mb-4 ml-20 mt-4">Séries Tendances</h2>
@@ -303,7 +287,7 @@ function Accueil() {
       </div>
 
       <div className="bg-gray-400">
-        <div className="text-white text-4xl mb-20 font-bold mt-10 mb-4 ml-20"> Parcourir par genre
+        <div className="text-white text-4xl font-bold mt-10 mb-4 ml-20"> Parcourir par genre
           <div className="flex flex-wrap justify-center mt-10 mb-8">
             {genres.map((genre, index) => (
             <GenreBanner key={index} genre={genre} />
