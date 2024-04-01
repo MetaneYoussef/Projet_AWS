@@ -9,6 +9,7 @@ const {
     retirerDeWatchlist,
     obtenirWatchlist
 } = require('../controllers/utilisateursController');
+const verifyToken = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -16,12 +17,12 @@ const router = express.Router();
 router.post('/', creerUtilisateur); // Créer un nouvel utilisateur
 router.get('/', obtenirUtilisateurs); // Obtenir tous les utilisateurs
 router.get('/:id', obtenirUtilisateur); // Obtenir un utilisateur spécifique par ID
-router.delete('/:id', supprimerUtilisateur); // Supprimer un utilisateur spécifique par ID
-router.patch('/:id', majUtilisateur); // Mettre à jour un utilisateur spécifique par ID
+router.delete('/:id', verifyToken, supprimerUtilisateur); // Supprimer un utilisateur spécifique par ID
+router.patch('/:id', verifyToken, majUtilisateur); // Mettre à jour un utilisateur spécifique par ID
 
-// Routes pour la gestion de la watchlist sans le middleware d'authentification
-router.patch('/:id/watchlist/ajouter', ajouterAWatchlist); // Ajouter un élément à la watchlist d'un utilisateur
-router.patch('/:id/watchlist/retirer', retirerDeWatchlist); // Retirer un élément de la watchlist d'un utilisateur
-router.get('/:id/watchlist', obtenirWatchlist); // Obtenir la watchlist d'un utilisateur
+// Routes pour la gestion de la watchlist avec le middleware d'authentification
+router.patch('/:id/watchlist/ajouter', verifyToken, ajouterAWatchlist); // Ajouter un élément à la watchlist d'un utilisateur
+router.patch('/:id/watchlist/retirer', verifyToken, retirerDeWatchlist); // Retirer un élément de la watchlist d'un utilisateur
+router.get('/:id/watchlist', verifyToken, obtenirWatchlist); // Obtenir la watchlist d'un utilisateur
 
 module.exports = router;
