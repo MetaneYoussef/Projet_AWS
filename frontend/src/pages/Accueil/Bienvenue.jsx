@@ -7,7 +7,7 @@ export default function Bienvenue() {
       <div class="py-8 px-4 lg:py-12 lg:px-4 mx-auto max-w-screen-xl text-center md:text-start">
       <div className="absolute inset-0 bg-black opacity-60"></div>
         <h1 className='relative text-5xl text-white font-bold'>Bienvenue,</h1>
-        <h2 className='relative text-2xl md:text-3xl text-white font-semibold'>Consulter des millions de films, séries et acteurs...</h2>
+        <h2 className='relative text-2xl md:text-3xl text-white font-semibold'>Découvrez des millions de films, séries et acteurs...</h2>
         <div class="py-6 w-full">
           <div class="overflow-hidden z-0 rounded-full relative p-2">
             <form role="form" class="relative flex z-50 bg-white rounded-full">
