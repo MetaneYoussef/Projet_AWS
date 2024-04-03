@@ -202,10 +202,38 @@ const majFilm = async (req, res) => {
 
     res.status(200).json(film)
 }
+
+const trailerFilm =  async(req, res) => {
+    const { movieId } = req.params;
+    try {
+        const url = 'https://api.themoviedb.org/3/movie/' + movieId + '/videos?language=fr-FR';
+        const response = await axios.get(url, options);
+        // return res.json(response.data);
+        const trailers = response.data.results.filter(video => video.site === 'YouTube');
+        let trailerKey = null;
+        if (trailers.length > 0) {
+            // Essayer de trouver un trailer officiel en premier
+            const officialTrailers = trailers.filter(video => video.type === 'Trailer' && video.official);
+            if (officialTrailers.length > 0) {
+                trailerKey = officialTrailers[0].key;
+            } else {
+                // S'il n'y a pas de trailer officiel, prendre le premier résultat qui pourrait être un clip ou tout autre type
+                trailerKey = trailers[0].key;
+            }
+            res.json({ success: true, trailerUrl: `https://www.youtube.com/watch?v=${trailerKey}` });
+        } else {
+            res.status(404).json({ success: false, message: 'Trailer not found' });
+        }
+    } catch (error) {
+        console.error('Error fetching trailer:', error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+}
 module.exports = {
     creerFilm,
     obtenirFilm,
     supprimerFilm,
     obtenirFilms,
-    majFilm
+    majFilm,
+    trailerFilm
 }
