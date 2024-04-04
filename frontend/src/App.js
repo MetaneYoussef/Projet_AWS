@@ -19,6 +19,7 @@ import UserProfile from "./pages/UserProfile/UserProfile";
 import Watchlist from "./pages/Watchlist/Watchlist";
 import Contact from "./pages/InsideFooter/Contact";
 import FAQ from "./pages/Inscription/FAQ";
+import ErrorPage from "./pages/Divers/Page404";
 
 function App() {
   return (
@@ -34,11 +35,12 @@ function App() {
         <Route path="/qcm" element={<QCM />} />
         <Route path="/Evenement" element={<Evenement />} />
         <Route path="/Inscription" element={<Signup />} />
-        <Route path="/FormulaireInscription" element={<FormulaireInscription />} />
+        <Route path="/signup" element={<FormulaireInscription />} />
         <Route path="/UserProfile" element={<UserProfile />} />
         <Route path="/Watchlist" element={<Watchlist />} />
         <Route path="/Contact" element={<Contact />} />
         <Route path="/FAQ" element={<FAQ />} />
+        <Route path="*" element={<ErrorPage />} />
         <Route path="/" element={<Accueil />} />
 
       </Routes>

@@ -50,7 +50,7 @@ function Signup() {
             className="appearance-none w-3/4 sm:w-1/2 py-4 px-6 text-white leading-tight border-4 rounded-lg border-gray-500 focus:outline-none bg-gray-700"
           />
           <Link 
-            to="/FormulaireInscription"
+            to="/signup"
             className="bg-slate-200 text-xl ml-4 hover:bg-gray-500 text-black font-bold rounded-lg py-4 px-6 focus:outline-none border-4 border-black focus:shadow-outline"
           >
             Commencez »
