@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import Header from '../../../components/Header/MovieHeader';
-/*import HeaderMobile from '../../../components/Header/MovieHeaderMobile';*/
 import Footer from '../../../components/Footer/Footer';
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 
