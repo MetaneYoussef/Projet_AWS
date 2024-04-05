@@ -6,10 +6,10 @@ import Connexion from "./pages/Connexion/Connexion";
 import FilmsPage from "./pages/Genres/Films/PageFilms";
 import Series from "./pages/Genres/Series/PageSeries";
 import Accueil from "./pages/Accueil/Accueil";
-import QCM from "./pages/Divers/QCM";
+import QCMHomePage from "./pages/QCM/Home";
+import QCM from "./pages/QCM/QCM";
 import Evenement from "./pages/Divers/Evenement";
 import Signup from "./pages/Inscription/Inscription";
-import Dune from "./pages/Genres/Films/Dune2";
 import MovieHomePage from "./pages/Genres/Films/AccueilFilm";
 import SeriesHomePage from "./pages/Genres/Series/AccueilSeries";
 import MovieDetailPage from "./pages/Genres/Films/MovieDetailPage";
@@ -32,7 +32,8 @@ function App() {
         <Route path="/series" element={<SeriesHomePage />} />
         <Route path="/series/:genre" element={<Series />} />
         <Route path="/series/detail/:seriesId" element={<SeriesDetailPage />} />
-        <Route path="/qcm" element={<QCM />} />
+        <Route path="/qcm" element={<QCMHomePage />} />
+        <Route path="/qcm-start" element={<QCM />} />
         <Route path="/Evenement" element={<Evenement />} />
         <Route path="/Inscription" element={<Signup />} />
         <Route path="/signup" element={<FormulaireInscription />} />

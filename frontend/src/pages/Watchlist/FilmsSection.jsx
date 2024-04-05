@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import WatchlistItem from './Items';
 
 function FilmsSection() {
-  const [showFilmsEnCours, setShowFilmsEnCours] = useState(false); // Ajout pour gérer l'affichage de la section films "En cours"
+  const [showFilmsEnCours, setShowFilmsEnCours] = useState(true); // Ajout pour gérer l'affichage de la section films "En cours"
   const [showFilmsTerminer, setShowFilmsTerminer] = useState(false); // Ajout pour gérer l'affichage de la section films "Terminé"
   const [showFilmsEnPause, setShowFilmsEnPause] = useState(false); // Ajout pour gérer l'affichage de la section films "En pause"
   const [showFilmsAbandon, setShowFilmsAbandon] = useState(false); // Ajout pour gérer l'affichage de la section films "Abandon"
