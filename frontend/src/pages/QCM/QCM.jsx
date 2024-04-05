@@ -9,37 +9,44 @@ const Qcm = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
   const [isQuizFinished, setIsQuizFinished] = useState(false);
+  const [isAnswerSelected, setIsAnswerSelected] = useState(false);
+  const [key, setKey] = useState(0); // Ajoutez un état pour gérer la clé
+
 
   const handleAnswerOptionClick = (genre) => {
+    setIsAnswerSelected(true); // Marquer qu'une réponse a été sélectionnée
     const updatedUserAnswers = [...userAnswers, genre];
     setUserAnswers(updatedUserAnswers);
   
-    const nextQuestion = currentQuestion + 1;
-    if (nextQuestion < questions.length) {
-      setCurrentQuestion(nextQuestion);
-    } else {
-      console.log('Réponses de l’utilisateur:', updatedUserAnswers);
-      setIsQuizFinished(true); // Indique que le QCM est terminé
-    }
+    setTimeout(() => {
+      const nextQuestion = currentQuestion + 1;
+      if (nextQuestion < questions.length) {
+        setCurrentQuestion(nextQuestion);
+        setIsAnswerSelected(false); // Réinitialiser pour la prochaine question
+      } else {
+        setIsQuizFinished(true);
+      }
+    }, 500); // Délai de 500 ms
   };
 
   const handleRestart = () => {
-    // Logique pour recommencer le QCM, si nécessaire
     setIsQuizFinished(false);
     setCurrentQuestion(0);
     setUserAnswers([]);
+    setIsAnswerSelected(false); // Assurez-vous de réinitialiser cet état
+    setKey(prevKey => prevKey + 1); // Incrémentez la clé pour forcer le re-rendu
   };
   
   return (
-    <div className='bg-gradient-to-b from-blue-700 to-blue-400'>
+    <div key={key} className='bg-gradient-to-b from-blue-700 to-blue-400'> {/* Utilisez la clé ici */}
       <Header/>
       {isQuizFinished ? (
         <QcmEndScreen userAnswers={userAnswers} onRestart={handleRestart} />
       ) : ( 
-        <div className="container p-8">
+        <div className={`container p-8 transition-all duration-500 transform ${!isAnswerSelected ? 'scale-100' : 'scale-95'}`}>
           {/* LANCEMENT DU QCM */}
           <div className="qcm container p-8 text-white">
-            <div className="question-section mb-4">
+            <div className={`question-section mb-4 transition-opacity duration-500 ${!isAnswerSelected ? 'opacity-100' : 'opacity-0'}`}>
               <div className="question-count text-lg mb-2">
                 Question {currentQuestion + 1}/{questions.length}
               </div>
