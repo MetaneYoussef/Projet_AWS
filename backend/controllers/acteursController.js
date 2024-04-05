@@ -71,7 +71,7 @@ const getActor = async (req, res) => {
 
 const searchActor = async (req, res) => {
     let query = req.query.q;
-    query = query.split('%20').join(' ');
+    query = query.split(' ').join('%20');
     const url = 'https://api.themoviedb.org/3/search/person?query=' + query + '&language=fr-FR&page=1&include_adult=false&page=1&page=2';
     fetch(url, options)
         .then(res => res.json())

@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const fetch = require('node-fetch');
-
+const axios = require('axios');
 
 const base_url = 'https://image.tmdb.org/t/p/original'
 const options = {
@@ -13,6 +13,31 @@ const options = {
 };
 
 
+const trailerFilm = async (movieId) => {
+
+    try {
+        const url = 'https://api.themoviedb.org/3/movie/' + movieId + '/videos?language=fr-FR';
+        const response = await axios.get(url, options);
+        const trailers = response.data.results.filter(video => video.site === 'YouTube');
+        let trailerKey = null;
+        if (trailers.length > 0) {
+            // Essayer de trouver un trailer officiel en premier
+            const officialTrailers = trailers.filter(video => video.type === 'Trailer' && video.official);
+            if (officialTrailers.length > 0) {
+                trailerKey = officialTrailers[0].key;
+            } else {
+                // S'il n'y a pas de trailer officiel, prendre le premier résultat qui pourrait être un clip ou tout autre type
+                trailerKey = trailers[0].key;
+            }
+            return `https://www.youtube.com/watch?v=${trailerKey}`
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération de la bande-annonce : ' + error);
+        return null;
+    }
+}
 
 getgenre = (genre_id) => {
     switch (genre_id) {
@@ -93,7 +118,7 @@ const discoverMovies = async (req, res) => {
 const searchMovies = async (req, res) => {
     const name = req.query.q;
     const url = 'https://api.themoviedb.org/3/search/movie?query=' +
-        name.split('%20').join('') + '&sort_by=rating.desc&include_adult=false&language=fr-FR&page=1&page=2';
+        name.split(' ').join('%20') + '&sort_by=rating.desc&include_adult=false&language=fr-FR&page=1&page=2';
     fetch(url, options)
         .then(res => res.json())
         .then(json => {
@@ -131,11 +156,11 @@ const searchMovies = async (req, res) => {
 }
 
 const getmovie = async (req, res) => {
-    const { movieId } = req.params;
+    const movieId = req.params.id;
     const url = 'https://api.themoviedb.org/3/movie/' + movieId + '?language=fr-FR';
     fetch(url, options)
         .then(res => res.json())
-        .then(json => {
+        .then(async (json) => {
             const titre = json.title
             const id = json.id
             const poster = base_url + json.poster_path
@@ -155,31 +180,46 @@ const getmovie = async (req, res) => {
             const revenue = json.revenue
             const status = json.status
             const tagline = json.tagline
-            const trailer = trailerFilm(id)
-            const acteurs = json.credits.cast.map(acteur => {
-                return {
-                    id: acteur.id, nom: acteur.name, role: acteur.character,
-                    photo: acteur.profile_path ? base_url + acteur.profile_path : 'https://via.placeholder.com/1000x1500.png?text=No+Image+Available+!'
-                }
-            });
-            const realisateurs = json.credits.crew.filter(personne => personne.job === 'Director').map(realisateur => {
-                return {
-                    id: realisateur.id, nom: realisateur.name,
-                    photo: acteur.profile_path ? base_url + acteur.profile_path : 'https://via.placeholder.com/1000x1500.png?text=No+Image+Available+!'
-                }
-            });
-            const producteurs = json.credits.crew.filter(personne => personne.job === 'Producer').map(producteur => {
-                return {
-                    id: producteur.id, nom: producteur.name,
-                    photo: acteur.profile_path ? base_url + acteur.profile_path : 'https://via.placeholder.com/1000x1500.png?text=No+Image+Available+!'
-                }
-            });
-            const scenaristes = json.credits.crew.filter(personne => personne.job === 'Screenplay').map(scenariste => {
-                return {
-                    id: scenariste.id, nom: scenariste.name,
-                    photo: acteur.profile_path ? base_url + acteur.profile_path : 'https://via.placeholder.com/1000x1500.png?text=No+Image+Available+!'
-                }
-            });
+            const trailer = await trailerFilm(movieId)
+
+
+            const credits_url = 'https://api.themoviedb.org/3/movie/' + movieId + '/credits?language=fr-FR';
+
+
+            let { acteurs, realisateurs, producteurs, scenaristes } = await fetch(credits_url, options)
+                .then(res => res.json())
+                .then(json => {
+                    let acteurs = json.cast.map(cast => {
+                        return {
+                            id: cast.id,
+                            nom: cast.name,
+                            role: cast.character,
+                            photo: base_url + cast.profile_path ? base_url + cast.profile_path : 'https://via.placeholder.com/100x150.png?text=No+Image+Available+!'
+                        }
+                    });
+                    let realisateurs = json.crew.filter(crew => crew.job === 'Director').map(crew => {
+                        return {
+                            id: crew.id,
+                            nom: crew.name,
+                            photo: base_url + crew.profile_path ? base_url + crew.profile_path : 'https://via.placeholder.com/100x150.png?text=No+Image+Available+!'
+                        }
+                    });
+                    let producteurs = json.crew.filter(crew => crew.job === 'Producer').map(crew => {
+                        return {
+                            id: crew.id,
+                            nom: crew.name,
+                            photo: base_url + crew.profile_path ? base_url + crew.profile_path : 'https://via.placeholder.com/100x150.png?text=No+Image+Available+!'
+                        }
+                    });
+                    let scenaristes = json.crew.filter(crew => crew.job === 'Screenplay').map(crew => {
+                        return {
+                            id: crew.id,
+                            nom: crew.name,
+                            photo: base_url + crew.profile_path ? base_url + crew.profile_path : 'https://via.placeholder.com/100x150.png?text=No+Image+Available+!'
+                        }
+                    });
+                    return { acteurs, realisateurs, producteurs, scenaristes };
+                }).catch(err => console.error('error:' + err));
             const details = {
                 id,
                 titre
@@ -203,39 +243,14 @@ const getmovie = async (req, res) => {
             return res.status(200).json(details);
         }).catch(err => {
             return res.status(500).json({ error: 'Erreur lors de la récupération des films : ' + err });
-        }
-        );
+        });
 }
 
 
-const trailerFilm = async (movieId) => {
-
-    try {
-        const url = 'https://api.themoviedb.org/3/movie/' + movieId + '/videos?language=fr-FR';
-        const response = await axios.get(url, options);
-        const trailers = response.data.results.filter(video => video.site === 'YouTube');
-        let trailerKey = null;
-        if (trailers.length > 0) {
-            // Essayer de trouver un trailer officiel en premier
-            const officialTrailers = trailers.filter(video => video.type === 'Trailer' && video.official);
-            if (officialTrailers.length > 0) {
-                trailerKey = officialTrailers[0].key;
-            } else {
-                // S'il n'y a pas de trailer officiel, prendre le premier résultat qui pourrait être un clip ou tout autre type
-                trailerKey = trailers[0].key;
-            }
-            return `https://www.youtube.com/watch?v=${trailerKey}`
-        } else {
-            return null;
-        }
-    } catch (error) {
-        return null;
-    }
-}
 
 module.exports = {
     discoverMovies,
     searchMovies,
-    getmovie,
+    getmovie
 }
 
