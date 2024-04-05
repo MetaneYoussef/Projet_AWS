@@ -28,6 +28,7 @@ import Signup from "./pages/Inscription/Inscription";
 import FormulaireInscription from "./pages/FormulaireInscription/FormulaireInscription";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import ErrorPage from "./pages/Divers/Page404";
+import AboutUs from "./pages/InsideFooter/AboutUs";
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
         <Route path="/Watchlist" element={<Watchlist />} />
         <Route path="/Contact" element={<Contact />} />
         <Route path="/FAQ" element={<FAQ />} />
+        <Route path="/A-Propos" element={<AboutUs />} />
         <Route path="*" element={<ErrorPage />} />
         <Route path="/" element={<Accueil />} />
 
