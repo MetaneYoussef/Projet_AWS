@@ -9,7 +9,7 @@ const {
     searchMovies
 } = require('../controllers/filmsComtroller');
 
-router.get('/discover', discoverMovies);
+router.get('/', discoverMovies);
 router.get('/search', searchMovies);
 router.get('/:id', getmovie);
 
