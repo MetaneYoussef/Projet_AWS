@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios'; // Assurez-vous d'ajouter axios à vos dépendances
+import { useAuth } from "../../context/AuthContext";
 
 function Connexion() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { login } = useAuth(); // Utilisez le hook useAuth pour accéder à la fonction login
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState(""); 
   const [motDePasse, setPassword] = useState("");
@@ -23,7 +25,6 @@ function Connexion() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-  
     try {
       const response = await axios.post("http://localhost:4000/api/authRoutes/login", {
         email: email,
@@ -33,18 +34,13 @@ function Connexion() {
           'Content-Type': 'application/json'
         }
       });
-      console.log(response.data);
-      navigate("/"); // Gestion de la connexion réussie
-    } catch (err) {
-      // Vérifie si le serveur a renvoyé un message d'erreur spécifique
-      const errorMessage = err.response?.data?.msg;
-      
-      if (errorMessage) {
-        setError(errorMessage);
-      } else {
-        // Si aucun message d'erreur spécifique n'est fourni, utilisez un message générique
-        setError("Une erreur est survenue lors de la connexion.");
+      if (response.data.token) {
+        login(response.data.token); // Utilisez la fonction login de votre contexte pour mettre à jour l'état global d'authentification
+        navigate("/"); // Redirigez l'utilisateur après la connexion réussie
       }
+    } catch (err) {
+      const errorMessage = err.response?.data?.msg;
+      setError(errorMessage || "Une erreur est survenue lors de la connexion.");
     }
   };
 

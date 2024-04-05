@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import SearchComponent from "../NavigationBar/SearchComponent"; // Vérifiez le chemin pour correspondre à votre structure de projet
 import SearchComponentMobile from "../NavigationBar/SearchMobile";
+import { useAuth } from "../../context/AuthContext";
 
 function Header() {
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Nouvel état pour le menu
+  const { isAuthenticated } = useAuth();
+  console.log(isAuthenticated);
 
 
   return (
@@ -29,8 +32,18 @@ function Header() {
       {!isSearchExpanded && (
         <div className="flex items-center space-x-4">
           <Link to="/UserProfile" className="hover:text-indigo-300">Profil</Link>
-          <Link to="/watchlist" className="hover:text-indigo-500">Ma Watchlist</Link>
-          <Link to="/connexion" className="bg-white hover:bg-gray-600 hover:text-white text-black font-bold py-2 px-4 rounded">Connexion</Link>
+                <Link to="/watchlist" className="hover:text-indigo-500">Ma Watchlist</Link>
+          {isAuthenticated ? (
+            // Affichez l'avatar si l'utilisateur est connecté
+            <Link to="/UserProfile" className="hover:text-indigo-300">
+              <img src="../../../public/images/Genres/RondSansFond.png" alt="Avatar" className="h-8 w-8 rounded-full" /> {/* Assurez-vous d'avoir un avatar ou utilisez un placeholder */}
+            </Link>
+          ) : (
+            // Affichez le bouton de connexion si l'utilisateur n'est pas connecté
+            
+            <Link to="/connexion" className="bg-white hover:bg-gray-600 hover:text-white text-black font-bold py-2 px-4 rounded">Connexion</Link>
+
+          )}
         </div>
       )}
     </header>
