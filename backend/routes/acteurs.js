@@ -3,18 +3,12 @@ const router = express.Router();
 const verifyToken = require('../middleware/authMiddleware'); // Assurez-vous que le chemin est correct
 
 const {
-    creerActeur,
-    obtenirActeurs,
-    obtenirActeur,
-    supprimerActeur,
-    majActeur
+    getActor,
+    searchActor
 } = require('../controllers/acteursController');
 
-// Appliquer le middleware d'authentification aux routes protégées
-router.post('/', creerActeur);
-router.get('/:id', obtenirActeur); // Cette route reste publique
-router.get('/', obtenirActeurs); // Cette route reste publique
-router.delete('/:id', verifyToken, supprimerActeur);
-router.patch('/:id', verifyToken, majActeur);
+router.get('/search', searchActor); // Cette route reste publique
+router.get('/:id', getActor); // Cette route reste publique
+
 
 module.exports = router;
