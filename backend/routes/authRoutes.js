@@ -63,7 +63,7 @@ router.post('/login', [
         const utilisateur = await Utilisateurs.findOne({ email: email });
 
         if (!utilisateur) {
-            return res.status(400).json({ msg: 'Identifiants invalides' });
+            return res.status(400).json({ msg: 'Identifiants ou Mot De Passe invalides' });
         }
 
         // Vérification du mot de passe avec la méthode définie dans le modèle utilisateur
@@ -95,7 +95,7 @@ router.post('/login', [
                 );
 
             } else {
-                return res.status(400).json({ msg: 'mote de passe invalides.' });
+                return res.status(400).json({ msg: 'Identifiants ou Mot De Passe invalides' });
             }
         })
 
