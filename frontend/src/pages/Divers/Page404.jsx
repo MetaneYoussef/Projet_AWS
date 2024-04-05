@@ -12,7 +12,7 @@ function Error404Page() {
         <h1 className="text-[34px] md:text-[53px] lg:text-[71px] font-extrabold -mt-24 text-gray-800 mb-8">ERROR ERROR ERROR ERROR</h1>
         <p className="text-2xl font-bold bg-gray-800 text-white mb-8 py-2">Page Introuvable</p>
         <a href="/"
-          className="px-10 py-3 font-bold border-2 text-white bg-indigo-500 rounded-md hover:bg-gray-900 transition-all duration-200 ease-in-out">
+          className="px-10 py-3 font-bold border-2 border-gray-800 text-gray-800 bg-gray-100 rounded-md hover:bg-gray-900 hover:border-white hover:text-white transition-all duration-200 ease-in-out">
           Retourner sur la page d'accueil
         </a>
       </div>

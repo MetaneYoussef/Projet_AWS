@@ -7,7 +7,7 @@ const QcmHome = () => {
     const navigate = useNavigate();
 
     const handleStartClick = () => {
-      navigate('/qcm-start'); // Modifier '/qcm' par le chemin vers votre QCM
+      navigate('/qcm-selection'); // Modifier '/qcm' par le chemin vers votre QCM
     };
 
     return (

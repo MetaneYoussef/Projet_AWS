@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import questions from './Questions'; // Assurez-vous que le chemin d'importation est correct
 import Header from '../../components/Header/QcmHeader';
 import Footer from '../../components/Footer/Footer';
@@ -6,6 +7,7 @@ import QcmEndScreen from './QcmEndScreen';
 
 
 const Qcm = () => {
+  const { type } = useParams(); // "films" ou "series"
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
   const [isQuizFinished, setIsQuizFinished] = useState(false);
@@ -41,7 +43,7 @@ const Qcm = () => {
     <div key={key} className='bg-gradient-to-b from-blue-700 to-blue-400'> {/* Utilisez la clé ici */}
       <Header/>
       {isQuizFinished ? (
-        <QcmEndScreen userAnswers={userAnswers} onRestart={handleRestart} />
+        <QcmEndScreen type={type} userAnswers={userAnswers} onRestart={handleRestart} />
       ) : ( 
         <div className={`container p-8 transition-all duration-500 transform ${!isAnswerSelected ? 'scale-100' : 'scale-95'}`}>
           {/* LANCEMENT DU QCM */}

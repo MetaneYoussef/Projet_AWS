@@ -1,13 +1,20 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Importez useNavigate
 
-const QcmEndScreen = ({ userAnswers, onRestart }) => {
-  
+const QcmEndScreen = ({ userAnswers, onRestart, type }) => {
+  const navigate = useNavigate();
+
+  const handleViewRecommendations = () => {
+    navigate(`/recommendations/${type}`, { state: { userAnswers } });
+  };
+
   return (
     <div className="flex flex-col items-center justify-center h-screen text-white">
       <img src='https://www.pngkey.com/png/full/21-215619_checkmark-in-circle-clip-white-check-mark-symbol.png' className='w-36 -mt-10 sm:w-44 mb-4 animate-bounce'/>
       <h2 className="text-2xl sm:text-3xl font-bold mb-4">Vous avez complété le QCM !</h2>
       <p className="flex text-center text-lg sm:text-xl mb-8 px-2">Voici ce que pouvez commencer à regarder sans tarder.</p>
       <button 
+        onClick={handleViewRecommendations} // Ajoutez l'event handler ici
         className="bg-white border-2 border-blue-900 text-blue-700 font-medium py-4 px-5 mb-3 rounded hover:bg-blue-400 hover:text-white hover:border-white transition duration-300 ease-in-out">
           Voir les recommandations
       </button>
