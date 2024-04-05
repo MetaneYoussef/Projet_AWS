@@ -26,17 +26,6 @@ function FormulaireInscription() {
       // Gérer la redirection ou l'affichage de message de succès ici
     } catch (error) {
       console.error("Erreur lors de la création de l'utilisateur");
-      // Vérifier si l'erreur contient une réponse du serveur
-      //if (error.response) {
-        // La requête a été faite et le serveur a répondu avec un statut hors de la plage 2xx
-        //console.error("Détails de l'erreur :", error.response.data);
-      //} else if (error.request) {
-        // La requête a été faite mais aucune réponse n'a été reçue
-        //console.error("Le serveur n'a pas répondu à la requête.");
-      //} else {
-        // Quelque chose s'est produit lors de la mise en place de la requête qui a déclenché une Erreur
-        //console.error("Erreur lors de la configuration de la requête :", error.message);
-      //}
     }
   };
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import WatchlistItem from './Items';
 
 function SeriesSection() {
-  const [showSeriesEnCours, setShowSeriesEnCours] = useState(false); // Ajout pour gérer l'affichage de la section séries "En cours"
+  const [showSeriesEnCours, setShowSeriesEnCours] = useState(true); // Ajout pour gérer l'affichage de la section séries "En cours"
   const [showSeriesTerminer, setShowSeriesTerminer] = useState(false); // Ajout pour gérer l'affichage de la section séries "Terminé"
   const [showSeriesEnPause, setShowSeriesEnPause] = useState(false); // Ajout pour gérer l'affichage de la section séries "En pause"
   const [showSeriesAbandon, setShowSeriesAbandon] = useState(false); // Ajout pour gérer l'affichage de la section séries "Abandon"
