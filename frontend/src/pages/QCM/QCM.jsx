@@ -1,41 +1,66 @@
-import React from 'react';
+import React, { useState } from 'react';
+import questions from './Questions'; // Assurez-vous que le chemin d'importation est correct
 import Header from '../../components/Header/QcmHeader';
 import Footer from '../../components/Footer/Footer';
-import CustomScrollBarS from '../../utiles/CustomScrollBar.css';
+import QcmEndScreen from './QcmEndScreen';
 
-const QCM = () => {
+
+const Qcm = () => {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [userAnswers, setUserAnswers] = useState([]);
+  const [isQuizFinished, setIsQuizFinished] = useState(false);
+
+  const handleAnswerOptionClick = (genre) => {
+    const updatedUserAnswers = [...userAnswers, genre];
+    setUserAnswers(updatedUserAnswers);
+  
+    const nextQuestion = currentQuestion + 1;
+    if (nextQuestion < questions.length) {
+      setCurrentQuestion(nextQuestion);
+    } else {
+      console.log('Réponses de l’utilisateur:', updatedUserAnswers);
+      setIsQuizFinished(true); // Indique que le QCM est terminé
+    }
+  };
+
+  const handleRestart = () => {
+    // Logique pour recommencer le QCM, si nécessaire
+    setIsQuizFinished(false);
+    setCurrentQuestion(0);
+    setUserAnswers([]);
+  };
+  
   return (
-    <div className="">
-      <Header />
-      <div className="bg-blue-800 py-56 flex flex-col">
-        <div className="flex-grow flex justify-center items-center">
-          <div aria-label="Loading..." role="status" className="flex items-center space-x-2">
-            <svg className="h-20 w-20 animate-spin stroke-white" viewBox="0 0 256 256">
-                <line x1="128" y1="32" x2="128" y2="64" strokeLinecap="round" strokeLinejoin="round" strokeWidth="24"></line>
-                <line x1="195.9" y1="60.1" x2="173.3" y2="82.7" strokeLinecap="round" strokeLinejoin="round"
-                    strokeWidth="24"></line>
-                <line x1="224" y1="128" x2="192" y2="128" strokeLinecap="round" strokeLinejoin="round" strokeWidth="24">
-                </line>
-                <line x1="195.9" y1="195.9" x2="173.3" y2="173.3" strokeLinecap="round" strokeLinejoin="round"
-                    strokeWidth="24"></line>
-                <line x1="128" y1="224" x2="128" y2="192" strokeLinecap="round" strokeLinejoin="round" strokeWidth="24">
-                </line>
-                <line x1="60.1" y1="195.9" x2="82.7" y2="173.3" strokeLinecap="round" strokeLinejoin="round"
-                    strokeWidth="24"></line>
-                <line x1="32" y1="128" x2="64" y2="128" strokeLinecap="round" strokeLinejoin="round" strokeWidth="24"></line>
-                <line x1="60.1" y1="60.1" x2="82.7" y2="82.7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="24">
-                </line>
-            </svg>
-            <span className="text-4xl font-medium text-white">Loading...</span>
+    <div className='bg-gradient-to-b from-blue-700 to-blue-400'>
+      <Header/>
+      {isQuizFinished ? (
+        <QcmEndScreen userAnswers={userAnswers} onRestart={handleRestart} />
+      ) : ( 
+        <div className="container p-8">
+          {/* LANCEMENT DU QCM */}
+          <div className="qcm container p-8 text-white">
+            <div className="question-section mb-4">
+              <div className="question-count text-lg mb-2">
+                Question {currentQuestion + 1}/{questions.length}
+              </div>
+              <div className="question-text text-xl font-semibold">{questions[currentQuestion].questionText}</div>
+            </div>
+            <div className="answer-section grid grid-cols-2 gap-4">
+              {questions[currentQuestion].answerOptions.map((answerOption, index) => (
+                <button key={index} onClick={() => handleAnswerOptionClick(answerOption.genre)} 
+                className="bg-blue-500 text-white border-2 p-4 rounded hover:bg-blue-700 transition duration-300 ease-in-out">
+                  {answerOption.answerText}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-        <div className="py-5 items-center flex flex-col">
-          <p className="text-blue-500 text-3xl font-bold">(Pas encore implémenté, j'avoue... #Smeh)</p>
-        </div>
+      )}
+      <div className='bg-white'> 
+        <Footer /> 
       </div>
-      <Footer />
-    </div>  
+    </div>
   );
 };
 
-export default QCM;
+export default Qcm;
