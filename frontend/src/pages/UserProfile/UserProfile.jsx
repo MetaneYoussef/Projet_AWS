@@ -69,6 +69,7 @@ function UserProfile() {
     }));
   };
 
+
   const handleChangePasswordSubmit = e => {
     e.preventDefault();
     // Logique pour changer le mot de passe
@@ -89,35 +90,45 @@ function UserProfile() {
             </div>
             <form className="mt-8 space-y-6">
                 {/* Nom d'utilisateur et Email en lecture seule avec options de modification */}
-                <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium text-gray-700">Nom d'utilisateur: {userPreferences.username}</span>
-                        <button type="button" className="text-indigo-600 hover:text-indigo-900 text-sm">Changer</button>
+                    <div className="">
+                    <label className="block text-lg font-medium text-gray-700 mb-1">Nom d'utilisateur</label>
+                        <span className="text-sm border-2 px-24 font-medium text-gray-700">{userPreferences.username}</span>
+                        {errors.username && <p className="text-red-500 text-xs italic">{errors.username}</p>}
+                        <button type="button" className="flex text-indigo-600 hover:text-indigo-900 text-sm text-end">Changer</button>
                     </div>
-                    <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium text-gray-700">Email: {userPreferences.email}</span>
-                        <button type="button" className="text-indigo-600 hover:text-indigo-900 text-sm">Changer</button>
+                    <div className="">
+                    <label className="block text-lg font-medium text-gray-700 mb-1">Email</label>
+                        <span className="text-sm border-2 px-16 font-medium text-gray-700">{userPreferences.email}</span>
+                        {errors.username && <p className="text-red-500 text-xs italic">{errors.email}</p>}
+                        <button type="button" className="flex text-indigo-600 hover:text-indigo-900 text-sm text-end">Changer</button>
                     </div>
-                </div>
+
+                    <div className="">
+                    <label htmlFor="username" className="block text-lg font-medium text-gray-700 mb-1">Mot de passe</label>
+                        <span className="text-sm border-2 px-36 font-medium text-gray-700">{userPreferences.password}</span>
+                        {errors.username && <p className="text-red-500 text-xs italic">{errors.password}</p>}
+                        <button type="button" className="flex text-indigo-600 hover:text-indigo-900 text-sm" onClick={() => setShowChangePasswordModal(true)}>Changer</button>
+                    </div>
 
                 {/* Modal pour changer le mot de passe */}
                 {showChangePasswordModal && (
-                  <div className="absolute top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white p-5 rounded-lg">
-                      <form onSubmit={handleChangePasswordSubmit}>
-                        <div className="text-lg font-semibold">Changer le mot de passe</div>
-                        <input type="password" placeholder="Ancien mot de passe" className="input" required />
-                        <input type="password" placeholder="Nouveau mot de passe" className="input" required />
-                        <input type="password" placeholder="Confirmez le nouveau mot de passe" className="input" required />
-                        <button type="submit" className="button">Changer</button>
-                        <button type="button" onClick={() => setShowChangePasswordModal(false)}>Annuler</button>
+                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="flex bg-white p-5 rounded-lg items-center justify-center w-2/3">
+                      <form onSubmit={handleChangePasswordSubmit} className="flex flex-col mb-3 items-center justify-center">
+                        <div className="text-lg font-semibold mb-5">Changer le mot de passe</div>
+                        <input type="password" placeholder="Ancien mot de passe" className="input text-center mb-3 border-2 border-gray-400 rounded-md p-1" required />
+                        <input type="password" placeholder="Nouveau mot de passe" className="input text-center mb-3 border-2 border-gray-400 rounded-md p-1" required />
+                        <input type="password" placeholder="Confirmez le nouveau mot de passe" className="input text-center mb-3 border-2 border-gray-400 rounded-md p-1" required />
+                        <button type="submit" className="button border-2 px-2 rounded-lg border-black mt-2 mb-2 hover:text-white hover:bg-gradient-to-r from-orange-400 to-pink-500 hover:border-rose-600">Changer</button>
+                        <button type="button" className='px-2 rounded-lg border-black' onClick={() => setShowChangePasswordModal(false)}>Annuler</button>
                       </form>
                     </div>
                   </div>
                 )}
 
+
                 {/* Sélecteur de genres avec tags */}
-                <div>
+                <div className='relative z-0'>
                   <label>Genres favoris</label>
                   <Select
                     isMulti
