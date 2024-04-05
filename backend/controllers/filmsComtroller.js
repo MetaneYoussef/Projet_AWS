@@ -1,12 +1,9 @@
 require('dotenv').config();
 
-const mongoose = require('mongoose');
-const Acteur = require('../models/acteurModel');
-const Film = require('../models/filmsModel');
 const fetch = require('node-fetch');
 
 
-const base_url = 'https://image.tmdb.org/t/p/original/'
+const base_url = 'https://image.tmdb.org/t/p/original'
 const options = {
     method: 'GET',
     headers: {
@@ -15,200 +12,207 @@ const options = {
     }
 };
 
-const fetchMoviedetails = async (name) => {
-    const url = 'https://api.themoviedb.org/3/search/movie?query=' +
-        name.split(' ').join('%20') + '&include_adult=false&language=fr-FR&page=1';
 
 
-    details = await fetch(url, options)
+getgenre = (genre_id) => {
+    switch (genre_id) {
+        case 28:
+            return 'Action';
+        case 12:
+            return 'Aventure';
+        case 16:
+            return 'Animation';
+        case 35:
+            return 'Comédie';
+        case 80:
+            return 'Crime';
+        case 99:
+            return 'Documentaire';
+        case 18:
+            return 'Drame';
+        case 10751:
+            return 'Famille';
+        case 14:
+            return 'Fantastique';
+        case 36:
+            return 'Histoire';
+        case 27:
+            return 'Horreur';
+        case 10402:
+            return 'Musique';
+        case 9648:
+            return 'Mystère';
+        case 10749:
+            return 'Romance';
+        case 878:
+            return 'Science-Fiction';
+        case 10770:
+            return 'Téléfilm';
+        case 53:
+            return 'Thriller';
+        case 10752:
+            return 'Guerre';
+        case 37:
+            return 'Western';
+        default:
+            return 'Inconnu';
+    }
+}
+
+const discoverMovies = async (req, res) => {
+    const url = 'https://api.themoviedb.org/3/discover/movie?language=fr-FR'
+        + '&sort_by=popularity.desc&page=1&page=2&include_adult=false';
+    fetch(url, options)
         .then(res => res.json())
         .then(json => {
-            const titre = json.results[0].title
-            const id = json.results[0].id
-            const poster = base_url + json.results[0].poster_path
-            const background = base_url + json.results[0].backdrop_path
-            const synopsis = json.results[0].overview
-            const date_sortie = json.results[0].release_date
-            const rating = json.results[0].vote_average
-            const genre = json.results[0].genre_ids
-            return { id, titre, date_sortie, poster, background, synopsis, rating, genre };
-        })
-        .catch(err => console.error('error:' + err));
-    if (!details) {
-        return { error: 'Aucun film trouvé' };
-    }
-    return details;
-}
-
-
-
-const creerFilm = async (req, res) => {
-    const film = req.body;
-
-    if (film.acteurs) {
-        let idActeurs = [];
-        for (let acteur of film.acteurs) {
-            const idActeur = await Acteur.findOne({ nom: acteur })
-            if (!idActeur) {
-                return res.status(400).json({ error: "l'acteur " + acteur + " n'existe pas" });
-            }
-            if (idActeur) {
-                idActeurs.push(idActeur._id);
-            }
-        }
-        film.acteurs = idActeurs;
-    }
-    let details = await fetchMoviedetails(film.titre);
-    if (details.error) {
-        return res.status(400).json({ error: details.error });
-    }
-    film.date_sortie = new Date(details.date_sortie);
-    film.tmdb_id = details.id;
-    film.titre = details.titre;
-    film.poster = details.poster;
-    film.background = details.background;
-    film.synopsis = details.synopsis;
-    film.rating = details.rating;
-    film.genre = details.genre.map((id) => {
-        parseInt(id);
-        switch (id) {
-            case 28:
-                return 'Action';
-            case 12:
-                return 'Aventure';
-            case 16:
-                return 'Animation';
-            case 35:
-                return 'Comédie';
-            case 80:
-                return 'Crime';
-            case 99:
-                return 'Documentaire';
-            case 18:
-                return 'Drame';
-            case 10751:
-                return 'Familial';
-            case 14:
-                return 'Fantastique';
-            case 36:
-                return 'Histoire';
-            case 27:
-                return 'Horreur';
-            case 10402:
-                return 'Musique';
-            case 9648:
-                return 'Mystère';
-            case 10749:
-                return 'Romance';
-            case 878:
-                return 'Science-Fiction';
-            case 10770:
-                return 'Téléfilm';
-            case 53:
-                return 'Thriller';
-            case 10752:
-                return 'Guerre';
-            case 37:
-                return 'Western';
-        }
-    });
-
-    console.log(film)
-    try {
-        const fiilm = await Film.create(film);
-        res.status(200).json(fiilm)
-
-    } catch (error) {
-        res.status(400).json({ error: error.message })
-    }
-}
-
-const convertirActeursIdEnActeur = async (film) => {
-    if (film.acteurs) {
-        let Acteurs = [];
-        for (let idActeur of film.acteurs) {
-            let acteur = await Acteur.findById(idActeur)
-            if (!acteur) {
-                film.acteurs = film.acteurs.filter((element => element !== idActeur))
-            } else if (acteur) {
-                Acteurs.push(acteur)
+            let data = json.results.map(movie => {
+                let id = movie.id
+                let titre = movie.title
+                let poster = base_url + movie.poster_path
+                if (movie.poster_path === null) {
+                    poster = 'https://via.placeholder.com/1000x1500.png?text=No+Poster+Available+!';
+                }
+                let vote_average = movie.vote_average
+                let genre = movie.genre_ids.map(getgenre)
+                return {
+                    id,
+                    titre,
+                    poster,
+                    vote_average,
+                    genre
+                }
             }
 
-        }
-
-        film.acteurs = Acteurs;
-    }
-    return film;
-}
-const obtenirFilm = async (req, res) => {
-    const { id } = req.params
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ error: 'Cet Film n\'existe pas' })
-    }
-
-    let film = await Film.findById(id)
-
-    if (!film) {
-        return res.status(400).json({ error: 'Cet Film n\'existe pas' })
-    }
-    film = await convertirActeursIdEnActeur(film);
-    res.status(200).json(film)
+            );
+            return res.status(200).json(data);
+        }).catch(err => {
+            return res.status(500).json({ error: 'Erreur lors de la récupération des films : ' + err });
+        });
 }
 
-const obtenirFilms = async (req, res) => {
-    let Films = await Film.find({}).sort({ createdAt: -1 })
-    let output = [];
-    for (let i = 0; i < Films.length; i++) {
+const searchMovies = async (req, res) => {
+    const name = req.query.q;
+    const url = 'https://api.themoviedb.org/3/search/movie?query=' +
+        name.split('%20').join('') + '&sort_by=rating.desc&include_adult=false&language=fr-FR&page=1&page=2';
+    fetch(url, options)
+        .then(res => res.json())
+        .then(json => {
+            let data = json.results.map(movie => {
 
-        Films[i] = await convertirActeursIdEnActeur(Films[i]);
-        output.push(Films[i])
-    }
-    res.status(200).json(output)
+                let titre = movie.title
+                let id = movie.id
+                let poster = base_url + movie.poster_path
+                if (movie.poster_path === null) {
+                    poster = 'https://via.placeholder.com/1000x1500.png?text=No+Poster+Available+!';
+                }
+                let background = base_url + movie.backdrop_path
+                if (movie.backdrop_path === null) {
+                    background = 'https://via.placeholder.com/1000x1770.png?text=No+Background+Available+!';
+                }
+                let synopsis = movie.overview
+                let date_sortie = movie.release_date
+                let rating = movie.vote_average
+                let genre = movie.genre_ids.map(getgenre)
+                return {
+                    id,
+                    titre,
+                    poster,
+                    background,
+                    synopsis,
+                    date_sortie,
+                    rating,
+                    genre
+                }
+            });
+            return res.status(200).json(data);
+        }).catch(err => {
+            return res.status(500).json({ error: 'Erreur lors de la récupération des films : ' + err });
+        });
 }
 
-
-//suppression d'un film
-const supprimerFilm = async (req, res) => {
-    const { id } = req.params
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ error: 'Cet film n\'existe pas' })
-    }
-
-    const film = await Film.findOneAndDelete({ _id: id })
-
-    if (!film) {
-        return res.status(400).json({ error: 'Cet film n\'existe pas' })
-    }
-
-    res.status(200).json(film)
-}
-
-// modification d'un film
-const majFilm = async (req, res) => {
-    const { id } = req.params
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ error: 'Cet film n\'existe pas' })
-    }
-
-    const film = await Film.findOneAndUpdate({ _id: id }, {
-        ...req.body
-    })
-
-    if (!film) {
-        return res.status(400).json({ error: 'Cet film n\'existe pas' })
-    }
-
-    res.status(200).json(film)
-}
-
-const trailerFilm =  async(req, res) => {
+const getmovie = async (req, res) => {
     const { movieId } = req.params;
+    const url = 'https://api.themoviedb.org/3/movie/' + movieId + '?language=fr-FR';
+    fetch(url, options)
+        .then(res => res.json())
+        .then(json => {
+            const titre = json.title
+            const id = json.id
+            const poster = base_url + json.poster_path
+            if (json.poster_path === null) {
+                poster = 'https://via.placeholder.com/1000x1500.png?text=No+Poster+Available+!';
+            }
+            const background = base_url + json.backdrop_path
+            if (json.backdrop_path === null) {
+                background = 'https://via.placeholder.com/1600x900.png?text=No+Background+Available+!';
+            }
+            const synopsis = json.overview
+            const date_sortie = json.release_date
+            const rating = json.vote_average
+            const genre = json.genres.map(genre => genre.name)
+            const duree = json.runtime
+            const budget = json.budget
+            const revenue = json.revenue
+            const status = json.status
+            const tagline = json.tagline
+            const trailer = trailerFilm(id)
+            const acteurs = json.credits.cast.map(acteur => {
+                return {
+                    id: acteur.id, nom: acteur.name, role: acteur.character,
+                    photo: acteur.profile_path ? base_url + acteur.profile_path : 'https://via.placeholder.com/1000x1500.png?text=No+Image+Available+!'
+                }
+            });
+            const realisateurs = json.credits.crew.filter(personne => personne.job === 'Director').map(realisateur => {
+                return {
+                    id: realisateur.id, nom: realisateur.name,
+                    photo: acteur.profile_path ? base_url + acteur.profile_path : 'https://via.placeholder.com/1000x1500.png?text=No+Image+Available+!'
+                }
+            });
+            const producteurs = json.credits.crew.filter(personne => personne.job === 'Producer').map(producteur => {
+                return {
+                    id: producteur.id, nom: producteur.name,
+                    photo: acteur.profile_path ? base_url + acteur.profile_path : 'https://via.placeholder.com/1000x1500.png?text=No+Image+Available+!'
+                }
+            });
+            const scenaristes = json.credits.crew.filter(personne => personne.job === 'Screenplay').map(scenariste => {
+                return {
+                    id: scenariste.id, nom: scenariste.name,
+                    photo: acteur.profile_path ? base_url + acteur.profile_path : 'https://via.placeholder.com/1000x1500.png?text=No+Image+Available+!'
+                }
+            });
+            const details = {
+                id,
+                titre
+                , poster
+                , background
+                , synopsis
+                , date_sortie
+                , rating
+                , genre
+                , duree
+                , budget
+                , revenue
+                , status
+                , tagline
+                , trailer
+                , acteurs
+                , realisateurs
+                , producteurs
+                , scenaristes
+            };
+            return res.status(200).json(details);
+        }).catch(err => {
+            return res.status(500).json({ error: 'Erreur lors de la récupération des films : ' + err });
+        }
+        );
+}
+
+
+const trailerFilm = async (movieId) => {
+
     try {
         const url = 'https://api.themoviedb.org/3/movie/' + movieId + '/videos?language=fr-FR';
         const response = await axios.get(url, options);
-        // return res.json(response.data);
         const trailers = response.data.results.filter(video => video.site === 'YouTube');
         let trailerKey = null;
         if (trailers.length > 0) {
@@ -220,20 +224,18 @@ const trailerFilm =  async(req, res) => {
                 // S'il n'y a pas de trailer officiel, prendre le premier résultat qui pourrait être un clip ou tout autre type
                 trailerKey = trailers[0].key;
             }
-            res.json({ success: true, trailerUrl: `https://www.youtube.com/watch?v=${trailerKey}` });
+            return `https://www.youtube.com/watch?v=${trailerKey}`
         } else {
-            res.status(404).json({ success: false, message: 'Trailer not found' });
+            return null;
         }
     } catch (error) {
-        console.error('Error fetching trailer:', error);
-        res.status(500).json({ success: false, message: 'Server error' });
+        return null;
     }
 }
+
 module.exports = {
-    creerFilm,
-    obtenirFilm,
-    supprimerFilm,
-    obtenirFilms,
-    majFilm,
-    trailerFilm
+    discoverMovies,
+    searchMovies,
+    getmovie,
 }
+
