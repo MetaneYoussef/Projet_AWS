@@ -1,16 +1,13 @@
 require('dotenv').config();
 
-const fs = require('fs');
 // const https = require('https'); // Commenté pour désactiver HTTPS
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const cors = require('cors');
-const morgan = require('morgan');
-const winston = require('./config/winston');
 const rateLimit = require('./utils/rateLimit');
-const errorHandler = require('./middleware/errorMiddleware');
-const verifyToken = require('./middleware/authMiddleware');
+// const errorHandler = require('./middleware/errorMiddleware');
+// const verifyToken = require('./middleware/authMiddleware');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
@@ -22,12 +19,12 @@ const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
-// Sécurité de base avec Helmet et CORS
 app.use(helmet());
-app.use(cors());
-
-// Logging des requêtes HTTP avec Morgan et Winston
-app.use(morgan('combined', { stream: { write: (message) => winston.info(message.trim()) } }));
+app.use(cors({
+    origin: ["https://hosting-test-delta.vercel.app"],
+    methods: ["POST", "GET", "PATCH"],
+    credentials: true
+}));
 
 // Limite le taux de requêtes pour prévenir les attaques DDoS ou de force brute
 app.use(rateLimit);
@@ -35,6 +32,9 @@ app.use(rateLimit);
 // Middleware pour parser le corps des requêtes en JSON
 app.use(express.json());
 
+app.get("/", (req, res) => {
+    res.json("Hello");
+});
 // Routes
 app.use('/api/authRoutes', authRoutes);
 app.use('/api/utilisateurs', utilisateursRoutes);
@@ -45,11 +45,8 @@ app.use('/api/series', seriesRoutes);
 // Integration de Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// Gestion globale des erreurs
-app.use(errorHandler);
-
 // Connexion à MongoDB et démarrage du serveur
-mongoose.connect(process.env.DBURI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.DBURI)
     .then(() => {
 
         // Utilisation de HTTP plutôt que HTTPS pour le moment
@@ -57,4 +54,4 @@ mongoose.connect(process.env.DBURI, { useNewUrlParser: true, useUnifiedTopology:
             console.log(`HTTP Server running on port ${process.env.PORT || 4000}`);
         });
     })
-    .catch((err) => winston.error(err.message));
+    .catch((err) => app.json({ message: err.message }));
