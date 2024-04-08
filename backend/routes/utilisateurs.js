@@ -2,12 +2,13 @@ const express = require('express');
 const {
     creerUtilisateur,
     obtenirUtilisateurs,
-    obtenirUtilisateur,
     supprimerUtilisateur,
+    obtenirUtilisateur,
     majUtilisateur,
     ajouterAWatchlist,
     retirerDeWatchlist,
-    obtenirWatchlist
+    obtenirWatchlist,
+    majpWatchlist,
 } = require('../controllers/utilisateursController');
 const verifyToken = require('../middleware/authMiddleware');
 
@@ -24,5 +25,10 @@ router.patch('/:id', verifyToken, majUtilisateur); // Mettre à jour un utilisat
 router.patch('/:id/watchlist/ajouter', verifyToken, ajouterAWatchlist); // Ajouter un élément à la watchlist d'un utilisateur
 router.patch('/:id/watchlist/retirer', verifyToken, retirerDeWatchlist); // Retirer un élément de la watchlist d'un utilisateur
 router.get('/:id/watchlist', verifyToken, obtenirWatchlist); // Obtenir la watchlist d'un utilisateur
+
+// Nouvelle route pour la mise à jour de la progression d'un élément dans la watchlist d'un utilisateur
+router.patch('/:id/watchlist/majp', verifyToken, majpWatchlist);
+
+
 
 module.exports = router;

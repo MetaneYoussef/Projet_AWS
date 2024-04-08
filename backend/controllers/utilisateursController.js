@@ -90,14 +90,16 @@ const majUtilisateur = async(req, res) => {
     }
 };
 
-// Ajouter un film à la watchlist d'un utilisateur
+// Ajouter un film ou une série à la watchlist d'un utilisateur
 const ajouterAWatchlist = async(req, res) => {
     const { id } = req.params; // ID de l'utilisateur
-    const { filmId } = req.body; // ID du film à ajouter
+    const { tmdbId, type } = req.body; // ID de TMDB et type (film ou série) à ajouter
 
     try {
-        // Utilisez 'addToSet' pour éviter les doublons
-        const utilisateur = await Utilisateur.findByIdAndUpdate(id, { $addToSet: { watchlist: filmId } }, { new: true }).populate('watchlist');
+        // Utilisez 'addToSet' pour éviter les doublons et ajouter seulement l'ID de TMDB
+        const utilisateur = await Utilisateur.findByIdAndUpdate(id, {
+            $addToSet: { watchlist: { tmdbId, type, progress: 0 } }
+        }, { new: true });
 
         if (!utilisateur) {
             return res.status(404).json({ message: "Utilisateur non trouvé" });
@@ -108,13 +110,16 @@ const ajouterAWatchlist = async(req, res) => {
     }
 };
 
-// Retirer un film de la watchlist d'un utilisateur
+
+// Retirer un film ou une série de la watchlist d'un utilisateur
 const retirerDeWatchlist = async(req, res) => {
     const { id } = req.params; // ID de l'utilisateur
-    const { filmId } = req.body; // ID du film à retirer
+    const { tmdbId } = req.body; // ID de TMDB du film ou de la série à retirer
 
     try {
-        const utilisateur = await Utilisateur.findByIdAndUpdate(id, { $pull: { watchlist: filmId } }, { new: true }).populate('watchlist');
+        const utilisateur = await Utilisateur.findByIdAndUpdate(id, {
+            $pull: { watchlist: { tmdbId } }
+        }, { new: true });
 
         if (!utilisateur) {
             return res.status(404).json({ message: "Utilisateur non trouvé" });
@@ -124,6 +129,7 @@ const retirerDeWatchlist = async(req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Obtenir la watchlist d'un utilisateur
 const obtenirWatchlist = async(req, res) => {
@@ -140,6 +146,25 @@ const obtenirWatchlist = async(req, res) => {
     }
 };
 
+// Mise à jour de la progression d'un élément dans la watchlist
+const majpWatchlist = async(req, res) => {
+    const { id } = req.params; // ID de l'utilisateur
+    const { tmdbId, progress } = req.body; // ID TMDB de l'élément et progression à mettre à jour
+
+    try {
+        const utilisateur = await Utilisateur.findOneAndUpdate({ _id: id, 'watchlist.tmdbId': tmdbId }, { $set: { 'watchlist.$.progress': progress } }, { new: true });
+
+        if (!utilisateur) {
+            return res.status(404).json({ message: "Utilisateur ou élément de watchlist non trouvé" });
+        }
+
+        res.status(200).json(utilisateur.watchlist);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
 module.exports = {
     creerUtilisateur,
     obtenirUtilisateurs,
@@ -148,5 +173,6 @@ module.exports = {
     majUtilisateur,
     ajouterAWatchlist,
     retirerDeWatchlist,
-    obtenirWatchlist
+    obtenirWatchlist,
+    majpWatchlist,
 };

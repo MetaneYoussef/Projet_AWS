@@ -51,14 +51,6 @@ app.use(errorHandler);
 // Connexion à MongoDB et démarrage du serveur
 mongoose.connect(process.env.DBURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
-        // const options = {
-        //     key: fs.readFileSync('path/to/your/private.key'),
-        //     cert: fs.readFileSync('path/to/your/certificate.crt')
-        // };
-
-        // https.createServer(options, app).listen(process.env.PORT || 4000, () => {
-        //     console.log(`HTTPS Server running on port ${process.env.PORT || 4000}`);
-        // });
 
         // Utilisation de HTTP plutôt que HTTPS pour le moment
         app.listen(process.env.PORT || 4000, () => {
