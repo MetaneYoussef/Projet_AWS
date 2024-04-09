@@ -21,9 +21,11 @@ const app = express();
 
 app.use(helmet());
 app.use(cors({
-    origin: ["https://what-you-watched.vercel.app/", "https://what-you-watched-backend.vercel.app/", "http://localhost:3000", "http://localhost:4000"],
+    origin: ["https://what-you-watched.vercel.app", "https://what-you-watched-backend.vercel.app", "https://localhost:3000", "https://localhost:4000"],
     methods: ["POST", "GET", "PATCH"],
-    credentials: true
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    preflightContinue: false,
 }));
 
 // Limite le taux de requêtes pour prévenir les attaques DDoS ou de force brute
