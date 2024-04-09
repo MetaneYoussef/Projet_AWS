@@ -11,7 +11,7 @@ router.post('/signup', [
     check('prenom', 'Le prénom est requis').not().isEmpty(),
     check('email', 'Veuillez fournir un email valide').isEmail(),
     check('mot_de_passe', 'Le mot de passe doit comporter 6 caractères ou plus').isLength({ min: 6 })
-], async(req, res) => {
+], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -49,7 +49,7 @@ router.post('/signup', [
 router.post('/login', [
     check('email', 'Veuillez fournir un email valide').isEmail(),
     check('mot_de_passe', 'Le mot de passe est requis').exists()
-], async(req, res) => {
+], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -71,7 +71,7 @@ router.post('/login', [
         console.log(mot_de_passe);
         console.log(utilisateur.mot_de_passe);
 
-        bcrypt.compare(mot_de_passe, utilisateur.mot_de_passe, function(err, result) {
+        bcrypt.compare(mot_de_passe, utilisateur.mot_de_passe, function (err, result) {
             if (err) {
                 res.json({
                     error: err

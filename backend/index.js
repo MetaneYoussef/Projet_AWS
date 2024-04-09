@@ -21,7 +21,7 @@ const app = express();
 
 app.use(helmet());
 app.use(cors({
-    origin: ["https://hosting-test-delta.vercel.app"],
+    origin: ["https://hosting-test-delta.vercel.app", "http://localhost:3000", "http://localhost:4000"],
     methods: ["POST", "GET", "PATCH"],
     credentials: true
 }));
