@@ -9,6 +9,8 @@ const {
     retirerDeWatchlist,
     obtenirWatchlist,
     majpWatchlist,
+    obtenirRecommandations
+
 } = require('../controllers/utilisateursController');
 const verifyToken = require('../middleware/authMiddleware');
 
@@ -28,6 +30,9 @@ router.get('/:id/watchlist', verifyToken, obtenirWatchlist); // Obtenir la watch
 
 // Nouvelle route pour la mise à jour de la progression d'un élément dans la watchlist d'un utilisateur
 router.patch('/:id/watchlist/majp', verifyToken, majpWatchlist);
+
+router.get('/:id/recommandations', verifyToken, obtenirRecommandations);
+
 
 
 

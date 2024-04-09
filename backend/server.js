@@ -1,7 +1,6 @@
 require('dotenv').config();
 
 const fs = require('fs');
-// const https = require('https'); // Commenté pour désactiver HTTPS
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
