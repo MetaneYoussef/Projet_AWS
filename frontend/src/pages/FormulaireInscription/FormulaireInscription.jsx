@@ -15,7 +15,7 @@ function FormulaireInscription() {
     e.preventDefault(); // Empêche le rechargement de la page
 
     try {
-      const response = await axios.post("http://localhost:4000/api/authRoutes/signup", {
+      const response = await axios.post("https://what-you-watched-backend.vercel.app/api/authRoutes/signup", {
         nom: nom,
         prenom: prenom,
         email: email,

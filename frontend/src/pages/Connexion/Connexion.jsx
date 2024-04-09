@@ -7,9 +7,9 @@ function Connexion() {
   const navigate = useNavigate();
   const { login } = useAuth(); // Utilisez le hook useAuth pour accéder à la fonction login
   const [rememberMe, setRememberMe] = useState(false);
-  const [email, setEmail] = useState(""); 
+  const [email, setEmail] = useState("");
   const [motDePasse, setPassword] = useState("");
-  const [error, setError] = useState(""); 
+  const [error, setError] = useState("");
 
   const handleRememberMeChange = () => {
     setRememberMe(!rememberMe);
@@ -26,7 +26,7 @@ function Connexion() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:4000/api/authRoutes/login", {
+      const response = await axios.post("https://what-you-watched-backend.vercel.app/api/authRoutes/login", {
         email: email,
         mot_de_passe: motDePasse
       }, {
@@ -53,7 +53,7 @@ function Connexion() {
             <Link to="/">
               <img src={require("./RondSansFond.png")} alt="Votre logo" className="w-36 h-auto relative z-20" />
             </Link>
-            <div className="w-32 h-32 bg-white rounded-full absolute top-1/2 left-1/2 transform -translate-x-[45%] -translate-y-1/2 shadow-xl z-5" style={{boxShadow: "0 0 10px 5px #fff"}}></div>
+            <div className="w-32 h-32 bg-white rounded-full absolute top-1/2 left-1/2 transform -translate-x-[45%] -translate-y-1/2 shadow-xl z-5" style={{ boxShadow: "0 0 10px 5px #fff" }}></div>
           </div>
           <div className="p-10 rounded-lg shadow-xl w-96 bg-neutral-800" style={{ boxShadow: "0 0 15px 5px #fff" }}>
             <p className="mb-1 text-2xl font-bold leading-5 text-white">Connexion</p>
@@ -63,24 +63,24 @@ function Connexion() {
             {error && <p className="mb-4 text-red-500">{error}</p>}
             <form onSubmit={handleLogin} className="w-full">
               <p className="text-white font-semibold mb-2">Adresse Email</p>
-              <input 
-                name="email" 
-                type="email" 
-                autoComplete="email" 
+              <input
+                name="email"
+                type="email"
+                autoComplete="email"
                 required
                 className="block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-black focus:ring-offset-1"
-                placeholder="Adresse Email" 
+                placeholder="Adresse Email"
                 value={email}
                 onChange={handleEmailChange}
               />
               <p className="text-white font-semibold mt-4 mb-2">Mot de passe</p>
-              <input 
-                name="password" 
-                type="password" 
-                autoComplete="current-password" 
+              <input
+                name="password"
+                type="password"
+                autoComplete="current-password"
                 required
                 className="mt-2 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-gray-800 focus:ring-offset-1"
-                placeholder="Mot de passe" 
+                placeholder="Mot de passe"
                 value={motDePasse}
                 onChange={handlePasswordChange}
               />
@@ -104,7 +104,7 @@ function Connexion() {
             </div>
           </div>
         </div>
-      </div> 
+      </div>
     </div>
   );
 }
