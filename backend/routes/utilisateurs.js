@@ -18,7 +18,7 @@ const router = express.Router();
 
 // Routes pour la gestion des utilisateurs
 router.post('/', creerUtilisateur); // Créer un nouvel utilisateur
-router.get('/', obtenirUtilisateurs); // Obtenir tous les utilisateurs
+router.get('/', verifyToken, obtenirUtilisateurs); // Obtenir tous les utilisateurs
 router.get('/:id', obtenirUtilisateur); // Obtenir un utilisateur spécifique par ID
 router.delete('/:id', verifyToken, supprimerUtilisateur); // Supprimer un utilisateur spécifique par ID
 router.patch('/:id', verifyToken, majUtilisateur); // Mettre à jour un utilisateur spécifique par ID

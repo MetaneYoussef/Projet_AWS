@@ -56,4 +56,7 @@ mongoose.connect(process.env.DBURI)
             console.log(`HTTP Server running on port ${process.env.PORT || 4000}`);
         });
     })
-    .catch((err) => app.json({ message: err.message }));
+    .catch((err) => { console.error(err); });
+
+
+
