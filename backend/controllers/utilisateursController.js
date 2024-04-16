@@ -2,23 +2,6 @@ const mongoose = require('mongoose');
 const Utilisateur = require('../models/utilisateursModel');
 
 
-// Création d'un utilisateur
-const creerUtilisateur = async(req, res) => {
-    const { nom, prenom, email, mot_de_passe } = req.body;
-
-    try {
-        const utilisateur = await Utilisateur.create({
-            nom,
-            prenom,
-            email,
-            mot_de_passe
-        });
-        res.status(200).json(utilisateur);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-};
-
 // Voir tous les utilisateurs
 const obtenirUtilisateurs = async(req, res) => {
     try {
@@ -93,7 +76,6 @@ const majUtilisateur = async(req, res) => {
 
 
 module.exports = {
-    creerUtilisateur,
     obtenirUtilisateurs,
     supprimerUtilisateur,
     obtenirUtilisateur,

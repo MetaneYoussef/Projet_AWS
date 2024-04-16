@@ -1,6 +1,5 @@
 const express = require('express');
 const {
-    creerUtilisateur,
     obtenirUtilisateurs,
     supprimerUtilisateur,
     obtenirUtilisateur,
@@ -28,7 +27,6 @@ const verifyToken = require('../middleware/authMiddleware');
 const router = express.Router();
 
 // Routes pour la gestion des utilisateurs
-router.post('/', creerUtilisateur); // Créer un nouvel utilisateur
 router.get('/', verifyToken, obtenirUtilisateurs); // Obtenir tous les utilisateurs
 router.get('/:id', obtenirUtilisateur); // Obtenir un utilisateur spécifique par ID
 router.delete('/:id', verifyToken, supprimerUtilisateur); // Supprimer un utilisateur spécifique par ID
