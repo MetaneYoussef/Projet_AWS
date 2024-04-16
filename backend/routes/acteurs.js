@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const verifyToken = require('../middleware/authMiddleware'); // Assurez-vous que le chemin est correct
+const verifyToken = require('../middleware/authMiddleware');
 
 const {
     getActor,
     searchActor
 } = require('../controllers/acteursController');
 
-router.get('/search', searchActor); // Cette route reste publique
-router.get('/:id', getActor); // Cette route reste publique
+router.get('/search', searchActor);
+router.get('/:id', getActor);
 
 
 module.exports = router;

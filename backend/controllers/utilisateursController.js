@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const Utilisateur = require('../models/utilisateursModel');
 
-
-// Voir tous les utilisateurs
 const obtenirUtilisateurs = async(req, res) => {
     try {
         const utilisateurs = await Utilisateur.find({}).sort({ createdAt: -1 });
@@ -12,7 +10,6 @@ const obtenirUtilisateurs = async(req, res) => {
     }
 };
 
-// Voir un seul utilisateur
 const obtenirUtilisateur = async(req, res) => {
     const { id } = req.params;
 
@@ -32,7 +29,6 @@ const obtenirUtilisateur = async(req, res) => {
     }
 };
 
-// Suppression d'un utilisateur
 const supprimerUtilisateur = async(req, res) => {
     const { id } = req.params;
 
@@ -53,7 +49,6 @@ const supprimerUtilisateur = async(req, res) => {
     }
 };
 
-// Mise à jour d'un utilisateur
 const majUtilisateur = async(req, res) => {
     const { id } = req.params;
 

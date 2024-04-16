@@ -13,7 +13,7 @@ const options = {
 };
 
 
-const trailerFilm = async (movieId) => {
+const trailerFilm = async(movieId) => {
 
     try {
         const url = 'https://api.themoviedb.org/3/movie/' + movieId + '/videos?language=fr-FR';
@@ -21,12 +21,10 @@ const trailerFilm = async (movieId) => {
         const trailers = response.data.results.filter(video => video.site === 'YouTube');
         let trailerKey = null;
         if (trailers.length > 0) {
-            // Essayer de trouver un trailer officiel en premier
             const officialTrailers = trailers.filter(video => video.type === 'Trailer' && video.official);
             if (officialTrailers.length > 0) {
                 trailerKey = officialTrailers[0].key;
             } else {
-                // S'il n'y a pas de trailer officiel, prendre le premier résultat qui pourrait être un clip ou tout autre type
                 trailerKey = trailers[0].key;
             }
             return `https://www.youtube.com/watch?v=${trailerKey}`
@@ -84,29 +82,29 @@ getgenre = (genre_id) => {
     }
 }
 
-const discoverMovies = async (req, res) => {
-    const url = 'https://api.themoviedb.org/3/discover/movie?language=fr-FR'
-        + '&sort_by=popularity.desc&page=1&page=2&include_adult=false';
+const discoverMovies = async(req, res) => {
+    const url = 'https://api.themoviedb.org/3/discover/movie?language=fr-FR' +
+        '&sort_by=popularity.desc&page=1&page=2&include_adult=false';
     fetch(url, options)
         .then(res => res.json())
         .then(json => {
             let data = json.results.map(movie => {
-                let id = movie.id
-                let titre = movie.title
-                let poster = base_url + movie.poster_path
-                if (movie.poster_path === null) {
-                    poster = 'https://via.placeholder.com/1000x1500.png?text=No+Poster+Available+!';
+                    let id = movie.id
+                    let titre = movie.title
+                    let poster = base_url + movie.poster_path
+                    if (movie.poster_path === null) {
+                        poster = 'https://via.placeholder.com/1000x1500.png?text=No+Poster+Available+!';
+                    }
+                    let vote_average = movie.vote_average
+                    let genre = movie.genre_ids.map(getgenre)
+                    return {
+                        id,
+                        titre,
+                        poster,
+                        vote_average,
+                        genre
+                    }
                 }
-                let vote_average = movie.vote_average
-                let genre = movie.genre_ids.map(getgenre)
-                return {
-                    id,
-                    titre,
-                    poster,
-                    vote_average,
-                    genre
-                }
-            }
 
             );
             return res.status(200).json(data);
@@ -115,7 +113,7 @@ const discoverMovies = async (req, res) => {
         });
 }
 
-const searchMovies = async (req, res) => {
+const searchMovies = async(req, res) => {
     const name = req.query.q;
     const url = 'https://api.themoviedb.org/3/search/movie?query=' +
         name.split(' ').join('%20') + '&sort_by=rating.desc&include_adult=false&language=fr-FR&page=1&page=2';
@@ -155,12 +153,12 @@ const searchMovies = async (req, res) => {
         });
 }
 
-const getmovie = async (req, res) => {
+const getmovie = async(req, res) => {
     const movieId = req.params.id;
     const url = 'https://api.themoviedb.org/3/movie/' + movieId + '?language=fr-FR';
     fetch(url, options)
         .then(res => res.json())
-        .then(async (json) => {
+        .then(async(json) => {
             const titre = json.title
             const id = json.id
             const poster = base_url + json.poster_path
@@ -222,23 +220,23 @@ const getmovie = async (req, res) => {
                 }).catch(err => console.error('error:' + err));
             const details = {
                 id,
-                titre
-                , poster
-                , background
-                , synopsis
-                , date_sortie
-                , rating
-                , genre
-                , duree
-                , budget
-                , revenue
-                , status
-                , tagline
-                , trailer
-                , acteurs
-                , realisateurs
-                , producteurs
-                , scenaristes
+                titre,
+                poster,
+                background,
+                synopsis,
+                date_sortie,
+                rating,
+                genre,
+                duree,
+                budget,
+                revenue,
+                status,
+                tagline,
+                trailer,
+                acteurs,
+                realisateurs,
+                producteurs,
+                scenaristes
             };
             return res.status(200).json(details);
         }).catch(err => {
@@ -253,4 +251,3 @@ module.exports = {
     searchMovies,
     getmovie
 }
-

@@ -1,7 +1,6 @@
 const Utilisateur = require('../models/utilisateursModel');
 const axios = require('axios');
 
-// Ajouter une série à la watchlist de séries d'un utilisateur
 const ajouterSerieWatchlist = async(req, res) => {
     const { id } = req.params;
     const { tmdbId, saison, episode } = req.body;
@@ -20,7 +19,6 @@ const ajouterSerieWatchlist = async(req, res) => {
     }
 };
 
-// Retirer une série de la watchlist de séries d'un utilisateur
 const retirerSerieWatchlist = async(req, res) => {
     const { id } = req.params;
     const { tmdbId } = req.body;
@@ -39,7 +37,6 @@ const retirerSerieWatchlist = async(req, res) => {
     }
 };
 
-// Obtenir la watchlist de séries d'un utilisateur
 const obtenirSerieWatchlist = async(req, res) => {
     const { id } = req.params;
 
@@ -54,7 +51,6 @@ const obtenirSerieWatchlist = async(req, res) => {
     }
 };
 
-// Mise à jour de la progression d'une série dans la watchlist de séries
 const majpSerieWatchlist = async(req, res) => {
     const { id } = req.params;
     const { tmdbId, saison, episode, progress } = req.body;
@@ -112,12 +108,11 @@ const fetchMostFrequentSerieGenre = async(seriesWatchlist) => {
     }
 
     let mostFrequentGenreId = Object.keys(genreCounts).reduce((a, b) => genreCounts[a] > genreCounts[b] ? a : b, null);
-    return mostFrequentGenreId; // Retourne l'ID du genre le plus fréquent
+    return mostFrequentGenreId;
 };
 
-// Fonction de contrôleur pour obtenir des recommandations de séries
 const obtenirRecommandationsSerie = async(req, res) => {
-    const { id } = req.params; // ID de l'utilisateur
+    const { id } = req.params;
     const options = {
         headers: {
             accept: 'application/json',

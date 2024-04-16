@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 
-// Vous avez déjà importé les contrôleurs, donc pas besoin de le faire à nouveau
 const {
     discoverMovies,
     getmovie,

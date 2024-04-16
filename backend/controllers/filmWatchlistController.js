@@ -1,10 +1,9 @@
 const Utilisateur = require('../models/utilisateursModel');
 const axios = require('axios');
 
-// Ajouter un film à la watchlist de films d'un utilisateur
 const ajouterAFilmWatchlist = async(req, res) => {
-    const { id } = req.params; // ID de l'utilisateur
-    const { tmdbId } = req.body; // ID de TMDB du film à ajouter
+    const { id } = req.params;
+    const { tmdbId } = req.body;
 
     try {
         const utilisateur = await Utilisateur.findByIdAndUpdate(id, {
@@ -20,10 +19,9 @@ const ajouterAFilmWatchlist = async(req, res) => {
     }
 };
 
-// Retirer un film de la watchlist de films d'un utilisateur
 const retirerDeFilmWatchlist = async(req, res) => {
-    const { id } = req.params; // ID de l'utilisateur
-    const { tmdbId } = req.body; // ID de TMDB du film à retirer
+    const { id } = req.params;
+    const { tmdbId } = req.body;
 
     try {
         const utilisateur = await Utilisateur.findByIdAndUpdate(id, {
@@ -39,9 +37,9 @@ const retirerDeFilmWatchlist = async(req, res) => {
     }
 };
 
-// Obtenir la watchlist de films d'un utilisateur
+
 const obtenirFilmWatchlist = async(req, res) => {
-    const { id } = req.params; // ID de l'utilisateur
+    const { id } = req.params;
 
     try {
         const utilisateur = await Utilisateur.findById(id).populate('filmsWatchlist');;
@@ -54,10 +52,9 @@ const obtenirFilmWatchlist = async(req, res) => {
     }
 };
 
-// Mise à jour de la progression d'un film dans la watchlist de films
 const majpFilmWatchlist = async(req, res) => {
-    const { id } = req.params; // ID de l'utilisateur
-    const { tmdbId, progress } = req.body; // ID TMDB du film et progression à mettre à jour
+    const { id } = req.params;
+    const { tmdbId, progress } = req.body;
 
     try {
         const utilisateur = await Utilisateur.findOneAndUpdate({ _id: id, 'filmsWatchlist.tmdbId': tmdbId }, { $set: { 'filmsWatchlist.$.progress': progress } }, { new: true });
@@ -73,7 +70,6 @@ const majpFilmWatchlist = async(req, res) => {
 
 };
 
-// Définir une liste de genres à partir de l'API TMDB
 const genres = {
     Action: 28,
     Adventure: 12,
@@ -99,7 +95,6 @@ const genres = {
 
 const fetchMostFrequentGenre = async(filmsWatchlist) => {
     const genreCounts = {};
-    // Assurez-vous que 'options' est défini correctement pour vos appels API.
     const options = {
         headers: {
             Authorization: `Bearer ${process.env.TMDBAPIKEY}`
@@ -112,20 +107,18 @@ const fetchMostFrequentGenre = async(filmsWatchlist) => {
             const response = await axios.get(`https://api.themoviedb.org/3/movie/${tmdbId}?language=fr-FR`, options);
             const movieGenres = response.data.genres;
             movieGenres.forEach((genre) => {
-                genreCounts[genre.id] = (genreCounts[genre.id] || 0) + 1; // Utiliser l'ID de genre ici
+                genreCounts[genre.id] = (genreCounts[genre.id] || 0) + 1;
             });
         } catch (error) {
             console.error(`Error fetching movie details for tmdbId ${tmdbId}: `, error);
         }
     }
 
-    // Trouver l'ID de genre le plus fréquent
     let mostFrequentGenreId = Object.keys(genreCounts).reduce((a, b) => genreCounts[a] > genreCounts[b] ? a : b, null);
-    return mostFrequentGenreId; // Retourne l'ID du genre
+    return mostFrequentGenreId;
 };
 
 
-// Controller function to obtain recommendations based on the user's watchlist
 const obtenirRecommandationsFilm = async(req, res) => {
     const { id } = req.params;
     const options = {

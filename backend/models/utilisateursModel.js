@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 
-// Définition du schéma pour un élément de la watchlist
 const filmWatchlistSchema = new Schema({
     tmdbId: {
         type: Number,
@@ -19,7 +18,6 @@ const filmWatchlistSchema = new Schema({
 
 }, { _id: false });
 
-// Schéma de la watchlist pour les séries avec détails d'épisodes
 const serieWatchlistSchema = new Schema({
     tmdbId: {
         type: Number,
@@ -43,7 +41,6 @@ const serieWatchlistSchema = new Schema({
     }
 }, { _id: false });
 
-// Définition du schéma pour un utilisateur
 const utilisateurSchema = new Schema({
     nom: {
         type: String,
@@ -67,15 +64,13 @@ const utilisateurSchema = new Schema({
     seriesWatchlist: [serieWatchlistSchema]
 }, { timestamps: true });
 
-// Fonction qui s'exécute avant l'enregistrement d'un utilisateur pour chiffrer le mot de passe
 utilisateurSchema.pre('save', async function(next) {
-    if (!this.isModified('mot_de_passe')) return next(); // Seulement si le mot de passe a été modifié
-    const salt = await bcrypt.genSalt(10); // Génération du sel
-    this.mot_de_passe = await bcrypt.hash(this.mot_de_passe, salt); // Chiffrement du mot de passe
+    if (!this.isModified('mot_de_passe')) return next();
+    const salt = await bcrypt.genSalt(10);
+    this.mot_de_passe = await bcrypt.hash(this.mot_de_passe, salt);
     next();
 });
 
-// Méthode pour comparer les mots de passe lors de la connexion
 utilisateurSchema.methods.matchMotDePasse = async function(enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.mot_de_passe);
 };
