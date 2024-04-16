@@ -3,22 +3,45 @@ const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 
 // Définition du schéma pour un élément de la watchlist
-const watchlistItemSchema = new Schema({
+const filmWatchlistSchema = new Schema({
     tmdbId: {
         type: Number,
         required: true
     },
     type: {
         type: String,
-        required: true,
-        enum: ['film', 'serie'] // Utilisation de 'film' et 'serie' comme discuté
+        default: 'film'
     },
     progress: {
         type: Number,
         default: 0
     }
 
-}, { _id: false }); // Pas besoin d'un champ _id distinct pour chaque élément de la watchlist
+}, { _id: false });
+
+// Schéma de la watchlist pour les séries avec détails d'épisodes
+const serieWatchlistSchema = new Schema({
+    tmdbId: {
+        type: Number,
+        required: true
+    },
+    type: {
+        type: String,
+        default: 'serie'
+    },
+    saison: {
+        type: Number,
+        required: true
+    },
+    episode: {
+        type: Number,
+        required: true
+    },
+    progress: {
+        type: Number,
+        default: 0
+    }
+}, { _id: false });
 
 // Définition du schéma pour un utilisateur
 const utilisateurSchema = new Schema({
@@ -40,8 +63,9 @@ const utilisateurSchema = new Schema({
         type: String,
         required: [true, 'Le mot de passe est obligatoire']
     },
-    watchlist: [watchlistItemSchema]
-}, { timestamps: true }); // Activez la gestion des timestamps
+    filmsWatchlist: [filmWatchlistSchema],
+    seriesWatchlist: [serieWatchlistSchema]
+}, { timestamps: true });
 
 // Fonction qui s'exécute avant l'enregistrement d'un utilisateur pour chiffrer le mot de passe
 utilisateurSchema.pre('save', async function(next) {
