@@ -15,6 +15,14 @@ const {
     obtenirRecommandationsFilm
 } = require('../controllers/filmWatchlistController');
 
+const {
+    ajouterSerieWatchlist,
+    retirerSerieWatchlist,
+    obtenirSerieWatchlist,
+    majpSerieWatchlist,
+    obtenirRecommandationsSerie
+} = require('../controllers/serieWatchlistController');
+
 const verifyToken = require('../middleware/authMiddleware');
 
 const router = express.Router();
@@ -32,5 +40,12 @@ router.delete('/:id/filmsWatchlist', verifyToken, retirerDeFilmWatchlist); // Re
 router.get('/:id/filmsWatchlist', verifyToken, obtenirFilmWatchlist); // Obtenir la watchlist de films d'un utilisateur
 router.patch('/:id/filmsWatchlist', verifyToken, majpFilmWatchlist); // Mettre à jour la progression d'un film dans la watchlist
 router.get('/:id/recommandationsFilm', verifyToken, obtenirRecommandationsFilm); // Obtenir des recommandations de films
+
+// Routes pour la gestion de la watchlist des séries
+router.post('/:id/seriesWatchlist', verifyToken, ajouterSerieWatchlist); // Ajouter une série à la watchlist d'un utilisateur
+router.delete('/:id/seriesWatchlist', verifyToken, retirerSerieWatchlist); // Retirer une série de la watchlist d'un utilisateur
+router.get('/:id/seriesWatchlist', verifyToken, obtenirSerieWatchlist); // Obtenir la watchlist des séries d'un utilisateur
+router.patch('/:id/seriesWatchlist', verifyToken, majpSerieWatchlist); // Mettre à jour la progression d'une série dans la watchlist
+router.get('/:id/seriesRecommendations', verifyToken, obtenirRecommandationsSerie); // Obtenir des recommandations de séries basées sur la watchlist
 
 module.exports = router;
