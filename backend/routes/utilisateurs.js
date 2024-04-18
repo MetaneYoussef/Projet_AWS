@@ -7,8 +7,8 @@ const {
 } = require('../controllers/utilisateursController');
 
 const {
-    ajouterAFilmWatchlist,
-    retirerDeFilmWatchlist,
+    ajouterFilmWatchlist,
+    retirerFilmWatchlist,
     obtenirFilmWatchlist,
     majpFilmWatchlist,
     obtenirRecommandationsFilm
@@ -22,25 +22,25 @@ const {
     obtenirRecommandationsSerie
 } = require('../controllers/serieWatchlistController');
 
-const verifyToken = require('../middleware/authMiddleware');
+const { verifyToken, adminOnly, userOnly } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-router.get('/', verifyToken, obtenirUtilisateurs);
-router.get('/:id', obtenirUtilisateur);
-router.delete('/:id', verifyToken, supprimerUtilisateur);
-router.patch('/:id', verifyToken, majUtilisateur);
+router.get('/', verifyToken, adminOnly, obtenirUtilisateurs);
+router.get('/:id', verifyToken, userOnly, obtenirUtilisateur);
+router.delete('/:id', verifyToken, adminOnly, supprimerUtilisateur);
+router.patch('/:id', verifyToken, userOnly, majUtilisateur);
 
-router.post('/:id/filmsWatchlist', verifyToken, ajouterAFilmWatchlist);
-router.delete('/:id/filmsWatchlist', verifyToken, retirerDeFilmWatchlist);
-router.get('/:id/filmsWatchlist', verifyToken, obtenirFilmWatchlist);
-router.patch('/:id/filmsWatchlist', verifyToken, majpFilmWatchlist);
-router.get('/:id/recommandationsFilm', verifyToken, obtenirRecommandationsFilm);
+router.post('/:id/filmsWatchlist', verifyToken, userOnly, ajouterFilmWatchlist);
+router.delete('/:id/filmsWatchlist', verifyToken, userOnly, retirerFilmWatchlist);
+router.get('/:id/filmsWatchlist', verifyToken, userOnly, obtenirFilmWatchlist);
+router.patch('/:id/filmsWatchlist', verifyToken, userOnly, majpFilmWatchlist);
+router.get('/:id/recommandationsFilm', verifyToken, userOnly, obtenirRecommandationsFilm);
 
-router.post('/:id/seriesWatchlist', verifyToken, ajouterSerieWatchlist);
-router.delete('/:id/seriesWatchlist', verifyToken, retirerSerieWatchlist);
-router.get('/:id/seriesWatchlist', verifyToken, obtenirSerieWatchlist);
-router.patch('/:id/seriesWatchlist', verifyToken, majpSerieWatchlist);
-router.get('/:id/seriesRecommendations', verifyToken, obtenirRecommandationsSerie);
+router.post('/:id/seriesWatchlist', verifyToken, userOnly, ajouterSerieWatchlist);
+router.delete('/:id/seriesWatchlist', verifyToken, userOnly, retirerSerieWatchlist);
+router.get('/:id/seriesWatchlist', verifyToken, userOnly, obtenirSerieWatchlist);
+router.patch('/:id/seriesWatchlist', verifyToken, userOnly, majpSerieWatchlist);
+router.get('/:id/seriesRecommendations', verifyToken, userOnly, obtenirRecommandationsSerie);
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const Utilisateur = require('../models/utilisateursModel');
 const axios = require('axios');
 
-const ajouterAFilmWatchlist = async(req, res) => {
+const ajouterFilmWatchlist = async(req, res) => {
     const { id } = req.params;
     const { tmdbId } = req.body;
 
@@ -19,7 +19,7 @@ const ajouterAFilmWatchlist = async(req, res) => {
     }
 };
 
-const retirerDeFilmWatchlist = async(req, res) => {
+const retirerFilmWatchlist = async(req, res) => {
     const { id } = req.params;
     const { tmdbId } = req.body;
 
@@ -153,8 +153,8 @@ const obtenirRecommandationsFilm = async(req, res) => {
 };
 
 module.exports = {
-    ajouterAFilmWatchlist,
-    retirerDeFilmWatchlist,
+    ajouterFilmWatchlist,
+    retirerFilmWatchlist,
     obtenirFilmWatchlist,
     majpFilmWatchlist,
     obtenirRecommandationsFilm
