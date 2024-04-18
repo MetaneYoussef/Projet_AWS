@@ -5,6 +5,8 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 import Bienvenue from './Bienvenue';
+import Slider from './Slider';
+import Categories from './Categories';
 
 // Template pour de l'affichage des films en bannière
 const MovieBanner = ({ movie }) => {
@@ -43,7 +45,7 @@ const CategoryMovieCard = ({ movie }) => (
 
 function Accueil() {
   const moviesscroll = [
-    { title: "Dune : Part Two", poster: "https://quefairedesmomes.fr/wp-content/uploads/2023/12/dune-2.jpg" },
+    { title: "Dune : Part Two", poster: "https://dunenewsnet.com/wp-content/uploads/2024/01/Dune-Part-Two-Movie-Posters-final-feature-816x459.jpg" },
     { title: "Spider-Man : Accross the Spider-Verse", poster: "https://www.murphysmultiverse.com/wp-content/uploads/2022/12/Across-the-Spider-Verse.jpg" },
     { title: "Super Mario Bros. : Le Film", poster: "https://proxymedia.woopic.com/api/v1/images/331%2FSUPERMARIOBW0198474_BAN1_2424_NEWTV_UHD.jpg" },
     { title: "Barbie", poster: "https://images8.alphacoders.com/133/1331131.jpeg" },
@@ -195,31 +197,16 @@ function Accueil() {
 
     return (
       <div className="flex flex-col min-h-screen">
-      <div className="bg-gray-700">
+      <div>
         <Header />
         <Bienvenue />
       </div>
-      <div className="flex-grow bg-gray-700">
-        <section className="bg-gray-700">
-          <div className="container mx-auto py-6">
-            <div>
-              <h1 className="text-white text-3xl font-semibold mx-12 mb-0 lg:mb-8 mt-8 ml-20">Nouveautés</h1>
-              {/*LOGIQUE IMPLEMENTER POUR L'AFFICHAGE DE LA BANNIERE*/}
-              <div className="flex items-center">
-                  <FaArrowAltCircleLeft onClick={() => scrollMovies('left')} className="cursor-pointer text-white text-3xl ml-5 hover:brightness-75" />
-                  <div className="overflow-hidden -mt-12 lg:-mt-0 w-full mx-5">
-                    <div className="whitespace-nowrap transition-transform duration-300" style={{ transform: `translateX(-${currentIndex * moveWidth}px)` }}>
-                      {moviesscroll.map((movie, index) => (
-                        <MovieBanner key={index} movie={movie} />
-                      ))}
-                    </div>
-                  </div>
-                  <FaArrowAltCircleRight onClick={() => scrollMovies('right')} className="cursor-pointer text-white text-3xl mr-5 hover:brightness-75" />
-                </div>
-            </div>
-          </div>
-
-          
+      <div className="bg-gradient-to-b from-black to-indigo-950 border-t-2 border-gray-600">         
+        <h1 className="text-white text-3xl font-bold mb-0 mt-4 ml-16">Nouveautés</h1>
+        <Slider />
+      </div>
+      <div className="flex-grow bg-gradient-to-b from-indigo-950 to-blue-800">
+        <section className="bg-gradient-to-b from-indigo-950 to-blue-800 mt-6">          
           {/* Section "Les Tendances" */}
           <div className="relative mb-14">
             <h2 className="text-white text-2xl font-bold mb-4 ml-20 mt-4">Séries Tendances</h2>
@@ -286,7 +273,7 @@ function Accueil() {
         </section>
       </div>
 
-      <div className="bg-gray-400">
+      <div className="bg-gray-500 border-t-2">
         <div className="text-white text-4xl font-bold mt-10 mb-4 ml-20"> Parcourir par genre
           <div className="flex flex-wrap justify-center mt-10 mb-8">
             {genres.map((genre, index) => (

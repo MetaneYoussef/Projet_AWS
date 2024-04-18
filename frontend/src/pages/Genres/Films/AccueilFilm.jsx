@@ -43,7 +43,7 @@ const MovieHomePage = () => {
     {/*BASE DE DONNEES FICTIVES POUR L'EXEMPLE*/}
   // Base de données des films
   const moviesscroll = [
-    { title: "Dune : Part Two", poster: "https://quefairedesmomes.fr/wp-content/uploads/2023/12/dune-2.jpg" },
+    { title: "Dune : Part Two", poster: "https://dunenewsnet.com/wp-content/uploads/2024/01/Dune-Part-Two-Movie-Posters-final-feature-816x459.jpg" },
     { title: "Spider-Man : Accross the Spider-Verse", poster: "https://www.murphysmultiverse.com/wp-content/uploads/2022/12/Across-the-Spider-Verse.jpg" },
     { title: "Super Mario Bros. : Le Film", poster: "https://proxymedia.woopic.com/api/v1/images/331%2FSUPERMARIOBW0198474_BAN1_2424_NEWTV_UHD.jpg" },
     { title: "Barbie", poster: "https://images8.alphacoders.com/133/1331131.jpeg" },

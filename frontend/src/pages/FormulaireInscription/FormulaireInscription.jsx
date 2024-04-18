@@ -37,11 +37,17 @@ function FormulaireInscription() {
   return (
     <div className="relative bg-black overflow-hidden">
 
-      <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 relative bg-cover bg-center" style={{ backgroundImage: 'url("/images/SignUp_Background.png")' }}>
+      <div className="min-h-screen flex flex-row justify-center items-center bg-gray-100 relative bg-cover bg-center" style={{ backgroundImage: 'url("/images/SignUp_Background.png")' }}>
 
-        <div className="absolute z-10 top-0 mt-4 mb-7 flex justify-center w-full">
+        <div className="absolute z-20 top-0 xl:top-56 mt-4 mb-7 flex justify-center md:justify-start w-3/4">
           <a href="/">
-            <img src="/images/RondSansFond.png" alt="Logo" className="mb-7 w-24 h-24 sm:w-24 sm:h-24  md:w-32 md:h-32  lg:w-40 lg:h-40 " />
+            <img src="/images/RondSansFond.png" alt="Logo" className="brightness-50 mb-7 w-24 h-24 sm:w-24 sm:h-24  md:w-32 md:h-32  lg:w-36 lg:h-36 lg:ml-24 xl:w-48 xl:h-48 xl:ml-0" />
+          </a>
+        </div>
+
+        <div className="absolute z-10 top-0 xl:top-56 mt-4 mb-7 flex justify-center md:justify-end w-3/4">
+          <a href="/">
+            <img src="/images/RondSansFond.png" alt="Logo" className="brightness-50 mb-7 w-24 h-24 sm:w-24 sm:h-24  md:w-32 md:h-32  lg:w-36 lg:h-36 lg:mr-24 xl:w-48 xl:h-48 xl:mr-0" />
           </a>
         </div>
 
