@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import Header from '../../../components/Header/SeriesHeader';
 import Footer from '../../../components/Footer/Footer';
+import Slider from './SliderSeries';
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 
 
@@ -217,22 +218,10 @@ const SeriesHomePage = () => {
       </div>
       <div className="flex-grow bg-yellow-600">
         <section className="bg-yellow-600">
-          <div className="container mx-auto py-6">
-            <div>
-              <h1 className="text-white text-3xl font-semibold mx-12 mb-8 mt-8 ml-20">Series</h1>
-              {/*LOGIQUE IMPLEMENTER POUR L'AFFICHAGE DE LA BANNIERE*/}
-              <div className="flex items-center">
-                  <FaArrowAltCircleLeft onClick={() => scrollSeriess('left')} className="cursor-pointer text-white text-3xl ml-5 hover:brightness-75" />
-                  <div className="overflow-hidden w-full mx-5">
-                    <div className="whitespace-nowrap transition-transform duration-300" style={{ transform: `translateX(-${currentIndex * moveWidth}px)` }}>
-                      {Seriesscroll.map((Series, index) => (
-                        <SeriesBanner key={index} Series={Series} />
-                      ))}
-                    </div>
-                  </div>
-                  <FaArrowAltCircleRight onClick={() => scrollSeriess('right')} className="cursor-pointer text-white text-3xl mr-5 hover:brightness-75" />
-                </div>
-            </div>
+          <div className='mb-6'>
+            <h1 className="text-white text-3xl font-semibold mx-12 mb-2 mt-8 ml-20">Series</h1>
+            {/*LOGIQUE IMPLEMENTER POUR L'AFFICHAGE DE LA BANNIERE*/}
+            <Slider />
           </div>
 
           {/*LOGIQUE IMPLEMENTER POUR L'AFFICHAGE DES GENRES*/}

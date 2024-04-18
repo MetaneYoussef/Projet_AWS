@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "../../../components/Header/MovieHeader";
 import Footer from "../../../components/Footer/Footer";
-import SearchComponent from "../../../components/NavigationBar/MovieSearch";
 import MovieCardSkeleton from "../../../components/MovieCard/MovieCardSkeleton";
+import MovieList from "./MovieList";
 
 
-// Simuler des données de catégories pour l'exemple
 const categories = ["Tous les films", "Classiques", "Les plus ajoutés", "Action", "Comédie", "Animation", "Émotion","Jeunesse", "Horreur", "Science-Fiction", "Suspense"];
 
 function FilmsPage2() {
@@ -17,7 +16,7 @@ function FilmsPage2() {
 
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => setLoading(false), 1500); // Simuler un chargement
+    setTimeout(() => setLoading(false), 1000); // Simuler un chargement
   }, [activeCategory]);
 
   // Met à jour l'URL sans recharger la page
@@ -34,7 +33,7 @@ function FilmsPage2() {
         <div className="flex-grow">
           <section className="bg-red-700">
             <div className="container mx-auto py-6">
-              <div className="ml-24">
+              <div className="ml-16">
               <h1 className="text-white text-3xl font-bold">Films</h1>
               <div className="flex overflow-x-auto py-4 space-x-4">
                 {categories.map((category) => (
@@ -55,9 +54,10 @@ function FilmsPage2() {
                   ))}
                 </div>
               ) : (
-                <div className="bg-red-900 py-2 pl-5">
+                <div className="">
                   {/* Afficher les Films ici après le chargement */}
-                  <p className="text-white text-3xl font-bold">Films de la catégorie : {activeCategory}</p>
+                  <p className="bg-red-900 py-2 pl-5 text-white text-3xl font-bold">Films de la catégorie : {activeCategory}</p>
+                  <MovieList/>
                 </div>
               )}
               </div>

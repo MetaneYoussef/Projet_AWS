@@ -27,8 +27,8 @@ const MovieBanner = ({ movie }) => {
 
 // Pour chaque genre, utilisez Link pour naviguer
 const GenreBanner = ({ genre }) => (
-  <Link to={`/${genre.name}`} className="inline-block cursor-pointer mr-4 mb-2 mt-3 rounded-xl bg-red-800 hover:bg-red-900 text-white relative">
-    <img src={genre.image} alt={genre.name} className=' brightness-50 rounded-lg shadow-xl w-[220px] h-[150px] object-cover border-2 border-white hover:brightness-75'/>
+  <Link to={`/${genre.name}`} className="inline-block cursor-pointer mr-4 mb-2 mt-3 rounded-xl bg-gray-800 hover:bg-white text-white relative">
+    <img src={genre.image} alt={genre.name} className=' brightness-50 rounded-lg shadow-lg w-[220px] h-[150px] object-cover border-2 border-white hover:brightness-75'/>
     <div className="absolute inset-0 flex items-center justify-center">
       <p className="text-white text-2xl">{genre.name}</p>
     </div>
@@ -202,14 +202,14 @@ function Accueil() {
         <Bienvenue />
       </div>
       <div className="bg-gradient-to-b from-black to-indigo-950 border-t-2 border-gray-600">         
-        <h1 className="text-white text-3xl font-bold mb-0 mt-4 ml-16">Nouveautés</h1>
+        <h1 className="text-white text-2xl sm:text-3xl font-bold mb-0 mt-4 ml-6 sm:ml-16">Nouveautés</h1>
         <Slider />
       </div>
       <div className="flex-grow bg-gradient-to-b from-indigo-950 to-blue-800">
         <section className="bg-gradient-to-b from-indigo-950 to-blue-800 mt-6">          
           {/* Section "Les Tendances" */}
           <div className="relative mb-14">
-            <h2 className="text-white text-2xl font-bold mb-4 ml-20 mt-4">Séries Tendances</h2>
+            <h2 className="text-white text-2xl font-bold mb-4 ml-6 sm:ml-20 mt-4">Séries Tendances</h2>
             <div className="flex items-center justify-between">
                 <FaArrowAltCircleLeft onClick={() => scrollCategory('trending','left')} className="absolute cursor-pointer text-black text-5xl left-0 z-10 ml-2 opacity-50 hover:opacity-70" style={{ top: '50%', transform: 'translateY(-50%)' }} />
                 <div className="overflow-hidden w-full px-5">
@@ -225,7 +225,7 @@ function Accueil() {
 
           {/* Section "Les Dernières Sorties" */}
           <div className="relative mb-14">
-            <h2 className="text-white text-2xl font-bold mb-4 ml-20">Films tendances</h2>
+            <h2 className="text-white text-2xl font-bold mb-4 ml-6 sm:ml-20">Films tendances</h2>
             <div className="flex items-center justify-between">
                 <FaArrowAltCircleLeft onClick={() => scrollCategory('recent','left')} className="absolute cursor-pointer text-black text-5xl left-0 z-10 ml-2 opacity-50 hover:opacity-70" style={{ top: '50%', transform: 'translateY(-50%)' }} />
                 <div className="overflow-hidden w-full px-5">
@@ -241,7 +241,7 @@ function Accueil() {
 
           {/* Section "Les Plus Regardés" */}
           <div className="relative mb-14">
-            <h2 className="text-white text-2xl font-bold mb-4 ml-20 mt-2">Séries Les Plus Regardés</h2>
+            <h2 className="text-white text-2xl font-bold mb-4 ml-6 sm:ml-20 mt-2">Séries Les Plus Regardés</h2>
             <div className="flex items-center justify-between">
                 <FaArrowAltCircleLeft onClick={() => scrollCategory('watched','left')} className="absolute cursor-pointer text-black text-5xl left-0 z-10 ml-2 opacity-50 hover:opacity-70" style={{ top: '50%', transform: 'translateY(-50%)' }} />
                 <div className="overflow-hidden w-full px-5">
@@ -257,7 +257,7 @@ function Accueil() {
 
           {/* Section "Les Plus Ajoutés" */}
           <div className="relative mb-14">
-            <h2 className="text-white text-2xl font-bold mb-4 ml-20">Séries les Plus Ajoutés</h2>
+            <h2 className="text-white text-2xl font-bold mb-4 ml-6 sm:ml-20">Séries les Plus Ajoutés</h2>
             <div className="flex items-center justify-between">
                 <FaArrowAltCircleLeft onClick={() => scrollCategory('added','left')} className="absolute cursor-pointer text-black text-5xl left-0 z-10 ml-2 opacity-50 hover:opacity-70" style={{ top: '50%', transform: 'translateY(-50%)' }} />
                 <div className="overflow-hidden w-full px-5">
@@ -274,8 +274,8 @@ function Accueil() {
       </div>
 
       <div className="bg-gray-500 border-t-2">
-        <div className="text-white text-4xl font-bold mt-10 mb-4 ml-20"> Parcourir par genre
-          <div className="flex flex-wrap justify-center mt-10 mb-8">
+        <div className="text-white text-4xl font-bold mt-10 mb-4 ml-6 sm:ml-20"> Parcourir par genre
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 mt-10 mb-8 text-center justify-center">
             {genres.map((genre, index) => (
             <GenreBanner key={index} genre={genre} />
             ))}

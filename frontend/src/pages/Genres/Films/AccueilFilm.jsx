@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import Header from '../../../components/Header/MovieHeader';
 import Footer from '../../../components/Footer/Footer';
+import Slider from './SliderMovie';
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 
 
@@ -216,22 +217,10 @@ const MovieHomePage = () => {
       </div>
       <div className="flex-grow bg-red-700">
         <section className="bg-red-700">
-          <div className="container mx-auto py-6">
-            <div>
-              <h1 className="text-white text-3xl font-semibold mx-12 mb-8 mt-8 ml-20">Films</h1>
-              {/*LOGIQUE IMPLEMENTER POUR L'AFFICHAGE DE LA BANNIERE*/}
-              <div className="flex items-center">
-                  <FaArrowAltCircleLeft onClick={() => scrollMovies('left')} className="cursor-pointer text-white text-3xl ml-5 hover:brightness-75" />
-                  <div className="overflow-hidden w-full mx-5">
-                    <div className="whitespace-nowrap transition-transform duration-300" style={{ transform: `translateX(-${currentIndex * moveWidth}px)` }}>
-                      {moviesscroll.map((movie, index) => (
-                        <MovieBanner key={index} movie={movie} />
-                      ))}
-                    </div>
-                  </div>
-                  <FaArrowAltCircleRight onClick={() => scrollMovies('right')} className="cursor-pointer text-white text-3xl mr-5 hover:brightness-75" />
-                </div>
-            </div>
+          <div className='mb-6'>
+            <h1 className="text-white text-3xl font-semibold mx-12 mb-2 mt-8 ml-20">Films</h1>
+            {/*LOGIQUE IMPLEMENTER POUR L'AFFICHAGE DE LA BANNIERE*/}
+            <Slider />
           </div>
 
           {/*LOGIQUE IMPLEMENTER POUR L'AFFICHAGE DES GENRES*/}
