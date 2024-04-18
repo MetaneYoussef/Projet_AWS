@@ -24,8 +24,9 @@ import RecommendationsPage from "./pages/QCM/ResultsPage";
 {/* Liens du Footer */}
 import Contact from "./pages/InsideFooter/Contact";
 import FAQ from "./pages/Inscription/FAQ";
-{/* Autres */}
 import AboutUs from "./pages/InsideFooter/AboutUs";
+import Creators from "./pages/InsideFooter/Creators";
+{/* Autres */}
 import Signup from "./pages/Inscription/Inscription";
 import FormulaireInscription from "./pages/FormulaireInscription/FormulaireInscription";
 import UserProfile from "./pages/UserProfile/UserProfile";
@@ -56,6 +57,7 @@ function App() {
           <Route path="/Contact" element={<Contact />} />
           <Route path="/FAQ" element={<FAQ />} />
           <Route path="/A-Propos" element={<AboutUs />} />
+          <Route path="/Creators" element={<Creators />} />
           <Route path="*" element={<ErrorPage />} />
           <Route path="/" element={<Accueil />} />
         </Routes>
