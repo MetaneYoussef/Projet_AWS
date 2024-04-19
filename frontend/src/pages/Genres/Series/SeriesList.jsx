@@ -1,26 +1,26 @@
-// MovieList.jsx
+// SeriesList.jsx
 import { useEffect, useState } from 'react';
 import callApi from '../../../Services/CallApi';
-import Card from './MovieCard';
+import Card from './SeriesCard';
 import LoadingSpinner from '../LoadingSpinner';
 
-function MovieList({ genreId }) {
-    const [movieList, setMovieList] = useState([]);
+function SeriesList({ genreId }) {
+    const [seriesList, setSeriesList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);  // État pour la page actuelle
     const [totalPages, setTotalPages] = useState(0);    // État pour le nombre total de pages
 
     useEffect(() => {
-      const fetchMovies = async () => {
+      const fetchSeries = async () => {
           try {
-              const resp = await callApi.getMovieById(genreId, currentPage);
-              setMovieList(resp.data.results);
+              const resp = await callApi.getSeriesById(genreId, currentPage);
+              setSeriesList(resp.data.results);
               setTotalPages(10);  // Utiliser la pagination de l'API
           } catch (err) {
-              console.error("Erreur lors de la récupération des films par genre", err);
+              console.error("Erreur lors de la récupération des séries par genre", err);
           }
       };
-      fetchMovies();
+      fetchSeries();
       setTimeout(() => {
         setIsLoading(false);  // Désactiver l'animation après un délai fictif
       }, 1500);
@@ -46,20 +46,20 @@ function MovieList({ genreId }) {
         <div>
           {isLoading ? <LoadingSpinner /> : 
             <><div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 p-4'>
-            {movieList.map((item, index) => (
-              <Card key={index} movie={item} />
+            {seriesList.map((item, index) => (
+              <Card key={index} series={item} />
             ))}
           </div><div className="pagination-controls flex justify-between p-4">
               <button
                 onClick={handlePreviousPage}
                 disabled={currentPage === 1} // Désactiver le bouton si on est sur la première page
-                className="px-4 py-2 text-white font-bold bg-red-500 hover:bg-red-800 disabled:bg-gray-500 rounded-l-lg">
+                className="px-4 py-2 text-white font-bold bg-yellow-500 hover:bg-yellow-800 disabled:bg-gray-500 rounded-l-lg">
                 Précédent
               </button>
               <button
                 onClick={handleNextPage}
                 disabled={currentPage === totalPages} // Désactiver le bouton si on est sur la dernière page
-                className="px-4 py-2 text-white font-bold bg-red-500 hover:bg-red-800 disabled:bg-gray-500 rounded-r-lg">
+                className="px-4 py-2 text-white font-bold bg-yellow-500 hover:bg-yellow-800 disabled:bg-gray-500 rounded-r-lg">
                 Suivant
               </button>
             </div></>
@@ -68,4 +68,4 @@ function MovieList({ genreId }) {
     );
 }
 
-export default MovieList;
+export default SeriesList;

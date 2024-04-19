@@ -2,27 +2,30 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "../../../components/Header/MovieHeader";
 import Footer from "../../../components/Footer/Footer";
-import MovieCardSkeleton from "../../../components/MovieCard/MovieCardSkeleton";
 import MovieList from "./MovieList";
+import GenresList from './GenresList';
+import LoadingSpinner from "../LoadingSpinner";
 
-
-const categories = ["Tous les films", "Classiques", "Les plus ajoutés", "Action", "Comédie", "Animation", "Émotion","Jeunesse", "Horreur", "Science-Fiction", "Suspense"];
+const categories = ["Tous les films", ...GenresList.genere.map(g => g.name)];
 
 function FilmsPage2() {
   const { genre } = useParams();
   const [activeCategory, setActiveCategory] = useState(genre || "Tous les films");
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    setLoading(true);
-    setTimeout(() => setLoading(false), 1000); // Simuler un chargement
-  }, [activeCategory]);
+    setActiveCategory(genre);
+    setIsLoading(true);  // Activer l'animation de chargement
+    setTimeout(() => {
+      setIsLoading(false);  // Désactiver l'animation après un délai fictif
+    }, 1500);
+  }, [genre]);
 
-  // Met à jour l'URL sans recharger la page
   const handleCategoryChange = (category) => {
     setActiveCategory(category);
-    navigate(`/films/${category}`); // Modifie l'URL pour refléter la catégorie sélectionnée
+    navigate(`/films/${category}`);
+    setIsLoading(true);  // Réactiver l'animation de chargement lors du changement de catégorie
   };
   
     return (
@@ -33,33 +36,25 @@ function FilmsPage2() {
         <div className="flex-grow">
           <section className="bg-red-700">
             <div className="container mx-auto py-6">
-              <div className="ml-16">
+              <div className="ml-4 md:ml-16">
               <h1 className="text-white text-3xl font-bold">Films</h1>
-              <div className="flex overflow-x-auto py-4 space-x-4">
-                {categories.map((category) => (
+              <div className="flex overflow-x-auto py-4 space-x-4" style={{scrollBehavior: 'smooth', scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
+                {categories.map((category, index) => (
                   <button
-                    key={category}
+                    key={index}
                     className={`text-white font-semibold px-4 py-2 rounded-lg hover:bg-red-500 ${activeCategory === category ? "bg-red-500" : "bg-red-700"}`}
                     onClick={() => handleCategoryChange(category)}
+                    style={{whiteSpace: 'nowrap'}}
                   >
                     {category}
                   </button>
                 ))}
               </div>
-              {loading ? (
-                // Dans le composant Films, à l'intérieur du rendu conditionnel {loading ? (...) : (...)}
-                <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-0 p-4">
-                  {[...Array(6)].map((_, index) => (
-                    <MovieCardSkeleton key={index} />
-                  ))}
-                </div>
-              ) : (
-                <div className="">
-                  {/* Afficher les Films ici après le chargement */}
-                  <p className="bg-red-900 py-2 pl-5 text-white text-3xl font-bold">Films de la catégorie : {activeCategory}</p>
-                  <MovieList/>
-                </div>
-              )}
+              <div className="">
+                {/* Afficher les Films ici après le chargement */}
+                <p className="bg-red-900 py-2 pl-5 text-white text-lg sm:text-3xl font-bold">Films de la catégorie : {activeCategory}</p>
+                {isLoading ? <LoadingSpinner /> : <MovieList genreId={GenresList.genere.find(g => g.name === activeCategory)?.id} />}
+              </div>
               </div>
             </div>
           </section>

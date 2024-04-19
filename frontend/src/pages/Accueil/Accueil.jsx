@@ -196,8 +196,8 @@ function Accueil() {
   };
 
     return (
-      <div className="flex flex-col min-h-screen">
-      <div>
+    <div className="flex flex-col min-h-screen">
+      <div className="relative z-100">
         <Header />
         <Bienvenue />
       </div>
