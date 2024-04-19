@@ -4,12 +4,14 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { check, validationResult } = require('express-validator');
 const Utilisateurs = require('../models/utilisateursModel');
+require('dotenv').config();
+
 
 router.post('/signup', [
     check('nom', 'Le nom est requis').not().isEmpty(),
     check('prenom', 'Le prénom est requis').not().isEmpty(),
     check('email', 'Veuillez fournir un email valide').isEmail(),
-    check('mot_de_passe', 'Le mot de passe doit comporter 6 caractères ou plus').isLength({ min: 6 })
+    check('mot_de_passe', 'Le mot de passe doit comporter au moins 6 caractères').isLength({ min: 6 })
 ], async(req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -24,20 +26,42 @@ router.post('/signup', [
             return res.status(400).json({ msg: 'Un utilisateur existe déjà avec cet email' });
         }
 
+        const salt = await bcrypt.genSalt(12);
+        const motDePasseHash = await bcrypt.hash(mot_de_passe, salt);
+
         utilisateur = new Utilisateurs({
             nom: req.body.nom,
             prenom: req.body.prenom,
             email: req.body.email,
-            mot_de_passe: mot_de_passe,
+            mot_de_passe: motDePasseHash,
+            role: 'user'
         });
 
         await utilisateur.save();
-        res.status(201).json({ message: "Utilisateur créé avec succès" });
+
+        const payload = {
+            utilisateur: {
+                id: utilisateur._id
+            }
+        };
+
+        jwt.sign(
+            payload,
+            process.env.JWT_SECRET, { expiresIn: '1h' },
+            (err, token) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).send('Erreur lors de la création du token');
+                }
+                res.status(201).json({ token });
+            }
+        );
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Erreur serveur');
     }
 });
+
 
 router.post('/login', [
     check('email', 'Veuillez fournir un email valide').isEmail(),
@@ -51,46 +75,38 @@ router.post('/login', [
     const { email, mot_de_passe } = req.body;
 
     try {
-
-        const utilisateur = await Utilisateurs.findOne({ email: email });
-
+        const utilisateur = await Utilisateurs.findOne({ email });
         if (!utilisateur) {
             return res.status(400).json({ msg: 'Identifiants ou Mot De Passe invalides' });
         }
 
-        bcrypt.compare(mot_de_passe, utilisateur.mot_de_passe, function(err, result) {
-            if (err) {
-                res.json({
-                    error: err
-                })
+        const isMatch = await bcrypt.compare(mot_de_passe, utilisateur.mot_de_passe);
+        if (!isMatch) {
+            return res.status(400).json({ msg: 'Identifiants ou Mot De Passe invalides' });
+        }
+
+        const payload = {
+            utilisateur: {
+                id: utilisateur._id,
+                role: utilisateur.role
             }
-            if (result) {
+        };
 
-                const payload = {
-                    utilisateur: {
-                        id: utilisateur._id
-                    }
-                };
-
-                jwt.sign(
-                    payload,
-                    process.env.JWT_SECRET, { expiresIn: '1h' },
-                    (err, token) => {
-                        if (err) throw err;
-                        res.json({ token });
-                    }
-                );
-
-            } else {
-                return res.status(400).json({ msg: 'Identifiants ou Mot De Passe invalides' });
+        jwt.sign(
+            payload,
+            process.env.JWT_SECRET, { expiresIn: '1h' },
+            (err, token) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).send('Erreur serveur lors de la création du token');
+                }
+                res.json({ token });
             }
-        })
-
+        );
     } catch (error) {
         console.error('Erreur serveur lors de la tentative de connexion:', error.message);
         res.status(500).send('Erreur serveur');
     }
 });
-
 
 module.exports = router;
