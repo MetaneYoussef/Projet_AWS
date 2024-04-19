@@ -14,8 +14,8 @@ import Watchlist from "./pages/Watchlist/Watchlist";
 {/* Liens des Pages de Films et Séries */}
 import MovieHomePage from "./pages/Genres/Films/AccueilFilm";
 import SeriesHomePage from "./pages/Genres/Series/AccueilSeries";
-import MovieDetailPage from "./pages/Genres/Films/MovieDetailPage";
-import SeriesDetailPage from "./pages/Genres/Series/SeriesDetailPage";
+import MovieDetailPage from "./pages/Genres/Films/FicheDetail/MovieDetailPage";
+import SeriesDetailPage from "./pages/Genres/Series/FicheDetail/SeriesDetailPage";
 {/* QCM */}
 import SelectionQCM from "./pages/QCM/SelectionQCM";
 import Qcm from "./pages/QCM/QCM";

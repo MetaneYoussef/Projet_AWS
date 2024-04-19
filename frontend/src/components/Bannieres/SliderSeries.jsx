@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
-import CallApi from '../../../Services/CallApi';
+import CallApi from '../../Services/CallApi';
 
 
 const IMAGE_BASE_URL = "http://image.tmdb.org/t/p/original"
@@ -43,7 +43,7 @@ export default function Slider() {
         {seriesList.map((item, index)=> (
           <div key={index} className='relative min-w-full h-[225px] md:h-[450px] mr-5 rounded-md hover:border-[4px] border-gray-200 cursor-pointer transition-all'>
             <img  className='w-full h-full object-cover object-top hover:brightness-90' src={`${IMAGE_BASE_URL}${item.backdrop_path}`} alt="Image film" />
-            <h2 className='font-semibold text-white text-2xl md:text-4xl drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] absolute bottom-[1rem] md:bottom-[2rem] left-[2rem]'>{item.name ? item.name : item.title}</h2>
+            <h2 className='font-semibold text-white text-2xl md:text-4xl drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] absolute bottom-[1rem] md:bottom-[2rem] left-[1rem] md:left-[2rem]'>{item.name ? item.name : item.title}</h2>
             </div>
         ))}
       </div>

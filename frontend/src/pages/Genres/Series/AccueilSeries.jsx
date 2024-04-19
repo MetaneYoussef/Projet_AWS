@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import Header from '../../../components/Header/SeriesHeader';
 import Footer from '../../../components/Footer/Footer';
-import Slider from './SliderSeries';
+import Slider from '../../../components/Bannieres/SliderSeries';
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 
 
