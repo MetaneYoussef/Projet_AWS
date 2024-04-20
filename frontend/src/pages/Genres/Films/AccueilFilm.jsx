@@ -4,7 +4,7 @@ import Header from '../../../components/Header/MovieHeader';
 import Footer from '../../../components/Footer/Footer';
 import Slider from '../../../components/Bannieres/SliderMovie';
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
-import Affichage from './Categories.jsx/Affichage';
+import Affichage from './Categories/Affichage';
 
 
 // Template pour de l'affichage des films en bannière

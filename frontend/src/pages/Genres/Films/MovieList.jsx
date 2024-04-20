@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import callApi from '../../../Services/CallApi';
 import Card from './MovieCard';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../../../utiles/LoadingSpinner';
 
 function MovieList({ genreId }) {
     const [movieList, setMovieList] = useState([]);

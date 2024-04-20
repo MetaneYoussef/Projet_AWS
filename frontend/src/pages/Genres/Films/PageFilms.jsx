@@ -4,7 +4,7 @@ import Header from "../../../components/Header/MovieHeader";
 import Footer from "../../../components/Footer/Footer";
 import MovieList from "./MovieList";
 import GenresList from './GenresList';
-import LoadingSpinner from "../LoadingSpinner";
+import LoadingSpinner from "../../../utiles/LoadingSpinner"
 
 const categories = ["Tous les films", ...GenresList.genere.map(g => g.name)];
 

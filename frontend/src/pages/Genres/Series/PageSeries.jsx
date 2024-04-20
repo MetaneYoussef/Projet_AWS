@@ -4,7 +4,7 @@ import Header from "../../../components/Header/SeriesHeader";
 import Footer from "../../../components/Footer/Footer";
 import SeriesList from "./SeriesList";
 import GenresList from './GenresList';
-import LoadingSpinner from "../LoadingSpinner";
+import LoadingSpinner from "../../../utiles/LoadingSpinner"
 
 const categories = ["Toutes les séries", ...GenresList.genere.map(g => g.name)];
 
