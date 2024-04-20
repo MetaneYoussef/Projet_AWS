@@ -38,10 +38,6 @@ const SeriesHomePage = () => {
   // Constantes pour la taille des affiches (nécessaires aux défilemens des catégories)
   const moveWidth3 = 5*(220 + 16); // Calcul de la distance de déplacement total par clic (CATEGORIE)
 
-  {/*BASE DE DONNEES FICTIVES POUR L'EXEMPLE*/}
-  // Base de données des Series
-
-
   // Base de données des genres
   const genres = [
     { name: "Toutes les séries", image: `${process.env.PUBLIC_URL}/images/Genres/Series/ToutesLesSeries.jpg` },
