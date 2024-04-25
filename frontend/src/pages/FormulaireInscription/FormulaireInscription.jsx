@@ -68,8 +68,8 @@ function FormulaireInscription() {
               <input
                 id="nom"
                 type="text"
-                value={nom}
                 placeholder="White"
+                value={nom}
                 onChange={(e) => setNom(e.target.value)}
                 className="w-full border-2 border-gray-200 p-3 rounded outline-none focus:border-purple-500"
               />

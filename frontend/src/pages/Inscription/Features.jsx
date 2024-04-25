@@ -22,16 +22,16 @@ function Features() {
                   </span>
                 </div>
                 <div className="mt-6">
-                  <h2 className="text-3xl font-bold tracking-tight text-white">
+                  <h2 className="text-xl md:text-3xl font-bold tracking-tight text-white">
                     Tenez à jour votre historique de visionnage !
                   </h2>
-                  <p className="mt-4 text-lg text-gray-300">
+                  <p className="mt-4 text-sm md:text-lg text-gray-300">
                     Explorez 'What You Watched' pour garder une trace facilement de vos séries, animes et films préférés.
                   </p>
                 </div>
               </div>
             </div>
-            <div class="mt-12 sm:mt-16 lg:mt-0">
+            <div class="-mt-10 sm:mt-16 lg:mt-0">
               <div class="-mr-48 pl-6 md:-mr-16 lg:relative lg:m-0 lg:h-full lg:px-8">
               <img
                 loading="lazy"
@@ -49,7 +49,8 @@ function Features() {
           <div class="mx-auto max-w-xl px-6 lg:mx-0 lg:max-w-none lg:py-16 lg:px-0 lg:col-start-2">
             <div>
               <div>
-                <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-pink-800">
+                <span class="flex items-center justify-center h-12 w-12 rounded-xl bg-pink-800">
+                  
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke-width="1.5" stroke="currentColor" aria-hidden="true"
                     class="h-8 w-8 text-white">
@@ -60,10 +61,10 @@ function Features() {
                 </span>
               </div>
               <div class="mt-6">
-                <h2 class="text-3xl font-bold tracking-tight text-white">
+                <h2 class="text-xl md:text-3xl font-bold tracking-tight text-white">
                   Découvrez ce qui est certain de vous plaire !                
                 </h2>
-                <p class="mt-4 text-lg text-gray-300">
+                <p class="mt-4 text-sm md:text-lg text-gray-300">
                   Répondez à notre questionnaire personnalisé pour recevoir des recommandations 
                   sur mesure basées sur vos goûts cinématographiques.
                 </p>
@@ -77,12 +78,12 @@ function Features() {
             </div>
         </div>
         <div class="mt-12 sm:mt-16 lg:mt-0 flex justify-center lg:block">
-        <div class="lg:relative lg:m-0 lg:h-full lg:px-0">
-          <img alt="Inbox user interface" loading="lazy"
-            class="max-w-xs sm:max-w-sm md:max-w-md lg:w-auto lg:h-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5"
-            src="https://s3.static-footeo.com/1200/uploads/fcc78/teams/debutant-1__mxjgkz.jpg"/>
+          <div class="lg:relative lg:m-0 lg:h-full lg:px-0">
+            <img alt="Inbox user interface" loading="lazy"
+              class="max-w-xs sm:max-w-sm md:max-w-md lg:w-auto lg:h-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5"
+              src="https://s3.static-footeo.com/1200/uploads/fcc78/teams/debutant-1__mxjgkz.jpg"/>
+          </div>
         </div>
-      </div>
       </div>
     </div>
 

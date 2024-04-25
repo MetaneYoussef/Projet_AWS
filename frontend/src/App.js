@@ -26,6 +26,7 @@ import Contact from "./pages/InsideFooter/Contact";
 import FAQ from "./pages/Inscription/FAQ";
 import AboutUs from "./pages/InsideFooter/AboutUs";
 import Creators from "./pages/InsideFooter/Creators";
+import Privacy from "./pages/InsideFooter/Privacy";
 {/* Autres */}
 import Signup from "./pages/Inscription/Inscription";
 import FormulaireInscription from "./pages/FormulaireInscription/FormulaireInscription";
@@ -55,9 +56,10 @@ function App() {
           <Route path="/UserProfile" element={<UserProfile />} />
           <Route path="/Watchlist" element={<Watchlist />} />
           <Route path="/Contact" element={<Contact />} />
-          <Route path="/FAQ" element={<FAQ />} />
           <Route path="/A-Propos" element={<AboutUs />} />
           <Route path="/Creators" element={<Creators />} />
+          <Route path="/privacy-policy" element={<Privacy />} />
+          <Route path="/FAQ" element={<FAQ />} />
           <Route path="*" element={<ErrorPage />} />
           <Route path="/" element={<Accueil />} />
         </Routes>
