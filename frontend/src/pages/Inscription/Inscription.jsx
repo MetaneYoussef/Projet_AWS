@@ -1,61 +1,62 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Footer from '../../components/Footer/Footer';
 import Newsletter from './Newsletter';
 import Features from './Features';
 import FAQ from './FAQ';
-import { Link } from "react-router-dom";
 
 function Signup() {
   return (
-    <div className="relative bg-black overflow-hidden">
-      <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 relative bg-cover bg-center " style={{ backgroundImage: 'url("/images/SignUp_Background.png")' }}>
-        {/* Couche d'assombrissement */}
+    <div className="relative bg-black text-white overflow-hidden">
+      <div className="min-h-screen flex flex-col items-center justify-start pt-20 bg-gray-100 bg-cover bg-center relative" style={{ backgroundImage: 'url("/images/SignUp_Background.png")' }}>
+        {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black opacity-55"></div>
 
-        {/* Bouton "Accéder au site" en haut à gauche */}
-        <a href="/" className="absolute top-5 left-5 z-20 bg-black border-2 border-black hover:bg-gray-700 hover:border-2 hover:border-white text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-          Accéder au site
-        </a>
-
-        {/* Bouton "Connexion" en haut à droite */}
-        <a href="/Connexion" className="absolute top-5 right-5 z-20 bg-black border-2 border-black hover:bg-gray-700 hover:border-2 hover:border-white text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-          Connexion
-        </a>
-  
-        {/* Contenu principal */}
-        <div className="relative z-10 -mt-10 md:mt-10 flex justify-center">
-          <a href="/">
-            <img src="/images/RondSansFond.png" alt="Logo" className="mb-2 md:mb-7 w-32 h-32 md:w-40 md:h-40 lg:w-40 lg:h-40" />
-          </a>
-
-          
+        {/* Navigation Buttons */}
+        <div className="absolute top-0 left-0 right-0 flex justify-between p-5">
+          <a href="/" className="bg-black border border-black text-white font-bold py-2 px-4 rounded hover:bg-gray-700 hover:border-white">Accéder au site</a>
+          <a href="/Connexion" className="bg-black border border-black text-white font-bold py-2 px-4 rounded hover:bg-gray-700 hover:border-white">Connexion</a>
         </div>
-          <p className="relative  text-white font-bold md:font-extrabold text-center text-2xl md:text-4xl mt-8 md:mt-10">
-            N'oubliez plus jamais ce que vous aimez regarder !
-          </p>
 
-          <p className="relative text-white  text-center mt-1 md:mt-2 mb-6 md:mb-10 text-lg md:text-2xl">
-            Accumulez vos séries et films préférés sans jamais en perdre le fil.
-          </p>
-          <hr className="w-full border-1 border-white my-2 mb-10" />
+        {/* Logo Positioned Above the Form */}
+        <div className="w-full flex justify-center absolute" style={{ top: '4rem' }}>
+          <a href="/">
+            <img src="/images/RondSansFond.png" alt="Logo" className="w-32 h-32 md:w-40 md:h-40 lg:w-40 lg:h-40" />
+          </a>
+        </div>
 
-          <p className="relative w-11/12 text-white text-center text-base md:text-3xl ">
-            Prêt à Watched ? Saisissez votre adresse e-mail pour créer un compte.
-          </p>
-
-          <div className="w-full relative bottom-0 flex justify-center p-4 md:mt-10 sm:mb-32  ">
-            {/*<input
+        {/* Form Container */}
+        <div className="mt-16 z-10 bg-gray-700 bg-opacity-80 py-8 px-4 shadow-md rounded-lg max-w-md">
+          <h2 className="text-3xl font-bold text-center mb-6">Inscription</h2>
+          <form className="space-y-6">
+            <input
+              type="text"
+              placeholder="Nom"
+              className="w-full p-3 rounded bg-gray-500 text-white"
+            />
+            <input
+              type="text"
+              placeholder="Prénom"
+              className="w-full p-3 rounded bg-gray-500 text-white"
+            />
+            <input
               type="email"
-              placeholder="Adresse e-mail"
-              className="appearance-none w-3/4 text-xs md:text-xl sm:w-1/2 py-4 px-6 text-white leading-tight border-4 rounded-lg border-gray-500 focus:outline-none bg-gray-700"
-            />*/}
-            <Link 
+              placeholder="Mail"
+              className="w-full p-3 rounded bg-gray-500 text-white"
+            />
+            <input
+              type="password"
+              placeholder="Mot de Passe"
+              className="w-full p-3 rounded bg-gray-500 text-white"
+            />
+            <Link
               to="/signup"
-              className="w-3/4 md:w-1/2 text-center text-sm bg-slate-200 md:text-xl ml-4 hover:bg-gray-500 text-black font-bold rounded-lg py-4 px-6 focus:outline-none border-4 border-black focus:shadow-outline"
+              className="block w-full bg-slate-200 text-black font-bold text-center rounded py-3 px-6 hover:bg-gray-500"
             >
-              Commencer»
+              Commencer »
             </Link>
-          </div>
+          </form>
+        </div>
 
 
           <div class="absolute w-full opacity-60" style={{ bottom: '0px', zIndex: '30' }}>
