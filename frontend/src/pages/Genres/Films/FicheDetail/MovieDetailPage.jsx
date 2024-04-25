@@ -1,9 +1,10 @@
-import React from 'react';
-import Header from '../../../components/Header/MovieHeader';
-import Footer from '../../../components/Footer/Footer';
-import CustomScrollBar from '../../../utiles/CustomScrollBar.css';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import filmsData from "../../../../components/MovieList/films"; // Ou votre source de données
+import Header from "../../../../components/Header/MovieHeader";
+import Footer from "../../../../components/Footer/Footer";
 
-const Dune = () => {
+function MovieDetails() {
   const movie = {
     title: "Dune 2",
     poster: "https://i.ebayimg.com/images/g/3PQAAOSwGtRlzmu5/s-l1200.jpg",
@@ -155,4 +156,4 @@ const Dune = () => {
   );
 }
 
-export default Dune;
+export default MovieDetails;

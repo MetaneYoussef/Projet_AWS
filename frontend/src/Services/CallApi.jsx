@@ -10,12 +10,18 @@ const getMoviesSlider = axios.get(`${movieBaseUrl}/trending/movie/week?api_key=$
 const getSeriesSlider = axios.get(`${movieBaseUrl}/trending/tv/week?api_key=${api_key}`)
 
 {/*APPEL D'API POUR LES FILMS CLASSÉS PAR GENRE*/}
-const movieByGenreBaseURL='https://api.themoviedb.org/3/discover/movie?api_key=';
-const getMovieById=(id)=> axios.get(`${movieByGenreBaseURL}&with_genres=${id}`)
+const movieByGenreBaseURL=`${movieBaseUrl}/discover/movie?api_key=${api_key}`;
+const getMovieById=(id, page)=> axios.get(`${movieByGenreBaseURL}&with_genres=${id}&page=${page}`)
 
 {/*APPEL D'API POUR LES SERIES CLASSÉES PAR GENRE*/}
-const seriesByGenreBaseURL='https://api.themoviedb.org/3/discover/movie?api_key=';
-const getSeriesById=(id)=> axios.get(`${seriesByGenreBaseURL}&with_genres=${id}`)
+const seriesByGenreBaseURL=`${movieBaseUrl}/discover/tv?api_key=${api_key}`;
+const getSeriesById=(id, page)=> axios.get(`${seriesByGenreBaseURL}&with_genres=${id}&page=${page}`)
 
-export default {getVideos, getMoviesSlider, getSeriesSlider,
-                getMovieById, getSeriesById};
+{/*APPEL D'API POUR LES CATEGORIES DE L'ACCUEIL*/}
+const getCategBaseURL =(apiPath)=> axios.get(`${movieBaseUrl}/${apiPath}?api_key=${api_key}`);
+
+{/*APPEL D'API POUR LES CATEGORIES DES FILMS ET SERIES*/}
+const getMovieTVBaseURL =(apiPath, sort)=> axios.get(`${movieBaseUrl}/${apiPath}?api_key=${api_key}&${sort}`);
+
+export default {getVideos, getMoviesSlider, getSeriesSlider, getCategBaseURL,
+                getMovieById, getSeriesById, getMovieTVBaseURL};

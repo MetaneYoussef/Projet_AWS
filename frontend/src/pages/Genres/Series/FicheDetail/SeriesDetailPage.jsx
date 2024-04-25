@@ -1,7 +1,6 @@
 import React from 'react';
-import Header from '../../../components/Header/SeriesHeader';
-import Footer from '../../../components/Footer/Footer';
-import CustomScrollBarS from '../../../utiles/CustomScrollBar.css';
+import Header from '../../../../components/Header/SeriesHeader';
+import Footer from '../../../../components/Footer/Footer';
 
 const SeriesDetailPage = () => {
   const serie = {
