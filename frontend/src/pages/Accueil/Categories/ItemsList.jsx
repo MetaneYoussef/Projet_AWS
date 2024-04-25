@@ -20,7 +20,7 @@ function ItemsList({ apiPath }) {
       fetchMovies();
     }, [apiPath]);
 
-    const slideRight = (element) => {
+    const slideRight = (element) => { 
         element.scrollLeft += 1400;
     };
     const slideLeft = (element) => {
