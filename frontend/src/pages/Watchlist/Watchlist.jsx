@@ -4,6 +4,7 @@ import Footer from "../../components/Footer/Footer";
 import FilmsSection from './FilmsSection';
 import SeriesSection from './SeriesSection';
 
+
 function Watchlist() {
     const [activeList, setActiveList] = useState('films');
 

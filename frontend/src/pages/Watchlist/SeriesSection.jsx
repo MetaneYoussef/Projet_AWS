@@ -13,6 +13,11 @@ function SeriesSection() {
     abandonne: [],
     prevu: []
   });
+	const [showSeriesEnCours, setShowSeriesEnCours] = useState(true);
+  const [showSeriesTerminee, setShowSeriesTerminee] = useState(false);
+  const [showSeriesEnPause, setShowSeriesEnPause] = useState(false);
+  const [showSeriesAbandonne, setShowSeriesAbandonne] = useState(false);
+  const [showSeriesPrevu, setShowSeriesPrevu] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -23,14 +28,12 @@ function SeriesSection() {
       return;
     }
 
-    // Assurez-vous que vous avez les bonnes URL et méthodes pour récupérer les données
     const fetchWatchlistSeries = async () => {
       setLoading(true);
       try {
         const response = await axios.get(`/api/user/${user.id}/seriesWatchlist`, {
           headers: { Authorization: `Bearer ${user.token}` }
         });
-        // Supposons que la réponse a une structure correcte et contient des listes pour chaque catégorie
         setSeries({
           enCours: response.data.enCours || [],
           terminee: response.data.terminee || [],
@@ -46,7 +49,7 @@ function SeriesSection() {
     };
 
     fetchWatchlistSeries();
-  }, [user]); // Depend only on user, as token and id are properties of user
+  }, [user]);
 
   if (loading) return <p>Chargement...</p>;
   if (error) return <p>{error}</p>;
