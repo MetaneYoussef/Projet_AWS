@@ -1,26 +1,38 @@
-import React, { createContext, useContext, useState } from 'react';
-import { saveToken, removeToken, getToken } from '../Services/authService';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { saveToken, removeToken, getToken, getUserDetails } from '../Services/authService';
 
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(!!getToken());
+    const [isAuthenticated, setIsAuthenticated] = useState(!!getToken());
+    const [user, setUser] = useState(null);
+    useEffect(() => {
+        const token = getToken();
+        if (token) {
+            const userDetails = getUserDetails(token);
+            if (userDetails) {
+                setUser(userDetails);
+                setIsAuthenticated(true);
+            }
+        }
+    }, []);
 
-  const login = (token) => {
-    saveToken(token);
-    setIsAuthenticated(true);
-  };
+    const login = (token) => {
+        saveToken(token);
+        setIsAuthenticated(true);
+    };
 
-  const logout = () => {
-    removeToken();
-    setIsAuthenticated(false);
-  };
+    const logout = () => {
+        removeToken();
+        setIsAuthenticated(false);
+    };
 
-  return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+    return ( <
+        AuthContext.Provider value = {
+            { isAuthenticated, login, logout, user }
+        } > { children } <
+        /AuthContext.Provider>
+    );
 };
