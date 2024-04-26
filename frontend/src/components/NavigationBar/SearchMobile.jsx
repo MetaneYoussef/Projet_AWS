@@ -1,27 +1,34 @@
-import React, { useState } from "react";
-import films from "../MovieList/films"; // Assurez-vous que le chemin est correct
+import React, { useState, useEffect } from "react";
+import api from '../../Services/CallApi';  // Vérifie que le chemin vers ton fichier API est correct
 
 const SearchComponentMobile = () => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSearch = (event) => {
-    const query = event.target.value.toLowerCase();
-    setQuery(query);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (query.length > 2) {
+        setIsLoading(true);
+        try {
+          const response = await api.searchMulti(query);
+          setResults(response.data.results);
+        } catch (error) {
+          console.error('Erreur lors de la recherche:', error);
+          setResults([]);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        setResults([]);
+      }
+    };
 
-    if (query.length > 0) {
-      const allFilms = Object.values(films).flat();
-      const filtered = allFilms.filter((film) =>
-        film.title.toLowerCase().includes(query)
-      );
-      setResults(filtered);
-    } else {
-      setResults([]);
-    }
-  };
+    fetchData();
+  }, [query]);
 
-  const handleFilmClick = (film) => {
-    alert(`Film sélectionné : ${film.title}`);
+  const handleSearch = (e) => {
+    setQuery(e.target.value);
   };
 
   return (
@@ -29,25 +36,25 @@ const SearchComponentMobile = () => {
       <input
         type="text"
         placeholder="Recherchez..."
+        aria-label="Recherchez des films ou des séries"
         value={query}
         onChange={handleSearch}
         className="p-1.5 bg-black text-white border-2 border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300 hover:bg-black-600 transition-all duration-500 ease-in-out w-full"
       />
-      <div className={`absolute top-full mt-2 w-full bg-black text-white rounded-lg shadow-lg overflow-hidden ${query.length > 0 ? 'block' : 'hidden'}`}>
-        {results.length > 0 ? (
-          results.map((film) => (
-            <div
-              key={film.id}
-              className="px-4 py-2 hover:bg-gray-300 hover:text-black  cursor-pointer transition-colors"
-              onClick={() => handleFilmClick(film)}
-            >
-              {film.title}
+      <div className={`absolute top-full mt-2 w-full bg-black text-white rounded-lg shadow-lg overflow-hidden ${results.length > 0 || isLoading ? 'block' : 'hidden'}`}>
+        {isLoading ? (
+          <div className="p-2 text-center">Chargement...</div>
+        ) : (
+          results.map(item => (
+            <div key={item.id} className="text-center flex flex-col items-center">
+              <img 
+                src={item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : "/images/default_poster.jpg"} 
+                alt={item.title || item.name} 
+                className="w-full h-auto object-cover"
+              />
+              <h3 className="text-white text-xs sm:text-sm md:text-base mt-2">{item.title || item.name}</h3>
             </div>
           ))
-        ) : (
-          <div className="px-4 py-2">
-            Aucun film trouvé.
-          </div>
         )}
       </div>
     </div>
