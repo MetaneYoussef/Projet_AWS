@@ -23,5 +23,9 @@ const getCategBaseURL =(apiPath)=> axios.get(`${movieBaseUrl}/${apiPath}?api_key
 {/*APPEL D'API POUR LES CATEGORIES DES FILMS ET SERIES*/}
 const getMovieTVBaseURL =(apiPath, sort)=> axios.get(`${movieBaseUrl}/${apiPath}?api_key=${api_key}&${sort}`);
 
+// APPEL D'API POUR LA RECHERCHE
+const searchMulti = (query) => axios.get(`${movieBaseUrl}/search/multi?api_key=${api_key}&query=${encodeURIComponent(query)}`);
+
+
 export default {getVideos, getMoviesSlider, getSeriesSlider, getCategBaseURL,
-                getMovieById, getSeriesById, getMovieTVBaseURL};
+                getMovieById, getSeriesById, getMovieTVBaseURL, searchMulti};

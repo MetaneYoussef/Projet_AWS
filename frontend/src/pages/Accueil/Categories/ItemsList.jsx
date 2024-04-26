@@ -21,7 +21,7 @@ function ItemsList({ apiPath }) {
   }, [apiPath]);
 
 
-    const slideRight = (element) => {
+    const slideRight = (element) => { 
         element.scrollLeft += 1400;
     };
     const slideLeft = (element) => {
