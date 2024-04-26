@@ -18,7 +18,7 @@ const obtenirUtilisateur = async(req, res) => {
             return res.status(400).json({ error: "Cet utilisateur n'existe pas" });
         }
 
-        const utilisateur = await Utilisateur.findById(id);
+        const utilisateur = await Utilisateur.findById(id).select("-mot_de_passe");
 
         if (!utilisateur) {
             return res.status(404).json({ error: "Utilisateur non trouvé" });
