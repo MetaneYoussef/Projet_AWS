@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import api from '../../Services/CallApi';  // Vérifie que le chemin vers ton fichier API est correct
+import { Link } from 'react-router-dom';
+import api from '../../Services/CallApi';
 
 const SearchComponent = ({ isExpanded, setExpanded }) => {
   const [query, setQuery] = useState('');
@@ -12,10 +13,6 @@ const SearchComponent = ({ isExpanded, setExpanded }) => {
       fetchData(query);
     }
   }, [query]);
-
-  const handleSearch = (e) => {
-    setQuery(e.target.value);
-  };
 
   const fetchData = async (query) => {
     try {
@@ -40,18 +37,21 @@ const SearchComponent = ({ isExpanded, setExpanded }) => {
       {isExpanded && (
         <button onClick={() => { setExpanded(false); setResults([]); }} className="absolute right-0 text-2xl text-white mr-4">×</button>
       )}
-      <div className={`absolute mt-2 w-80 md:w-full bg-black text-white rounded-lg shadow-lg overflow-hidden z-10 top-full ${!isExpanded || results.length === 0 ? 'hidden' : ''}`}>
-        <div className="relative z-2 w-full bg-black px-3 sm:px-5 py-5 grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 mt-4 sm:mt-8">
-          {results.map(item => (
-            <div key={item.id} className="text-center flex flex-col items-center">
-              <img 
-                src={item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : "/images/default_poster.jpg"} 
-                alt={item.title || item.name} 
-                className="w-full h-auto object-cover"
-              />
-              <h3 className="text-white text-xs sm:text-sm md:text-base mt-2">{item.title || item.name}</h3>
-            </div>
-          ))}
+      <div className={`absolute mt-2 w-80 md:w-full bg-black bg-opacity-90 text-white rounded-lg shadow-lg overflow-hidden z-10 top-full ${!isExpanded || results.length === 0 ? 'hidden' : ''}`}>
+        <div className="relative z-2 w-full bg-black bg-opacity-60 px-3 sm:px-5 py-5 grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-2 sm:gap-4 mt-4 sm:mt-8">
+          {results.map(item => {
+            const detailUrl = `/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}`;
+            return (
+              <Link key={item.id} to={detailUrl} className="text-center flex flex-col items-center bg-opacity-80 hover:scale-105 transition-transform duration-300 w-full">
+                <img 
+                  src={item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : "https://www.movienewz.com/img/films/poster-holder.jpg"} 
+                  alt={item.title || item.name} 
+                  className="w-full h-auto object-cover rounded-md"
+                />
+                <h3 className="text-white text-base mt-2">{item.title || item.name}</h3>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>

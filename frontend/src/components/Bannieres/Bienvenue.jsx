@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../../Services/CallApi';  // Vérifie que le chemin vers ton fichier API est correct
 import "./Bienvenue.css";
 
@@ -18,11 +19,11 @@ export default function Bienvenue() {
 
   return (
     <section className="relative" style={{ backgroundImage: 'url("/images/SignUp_Background.png")' }}>
-      <div className="py-8 px-4 lg:py-12 lg:px-4 mx-auto max-w-screen-xl text-center md:text-start">
+      <div className="py-8 px-4 lg:p-12 lg:px-4 mx-auto max-w-screen-xl text-center md:text-start">
         <div className="absolute inset-0 bg-black z-0 opacity-60"></div>
         <h1 className='relative text-4xl sm:text-5xl text-white font-bold mb-1'>Bienvenue,</h1>
         <h2 className='relative text-lg sm:text-2xl md:text-3xl text-white font-semibold'>Découvrez des millions de films, séries et acteurs...</h2>
-        <div className="py-6 w-full">
+        <div className="pt-6 pb-4 w-full">
           <div className="overflow-hidden z-0 rounded-full relative p-2">
             <form role="form" className="relative flex z-50 bg-white rounded-full" onSubmit={handleSubmit}>
               <input 
@@ -47,20 +48,22 @@ export default function Bienvenue() {
         </div>
         {/* Affichage des résultats ici */}
         {results.length > 0 && (
-          <div className="relative z-2 w-full bg-black px-3 sm:px-5 py-5 grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 mt-4 sm:mt-8">
-            {results.map(item => (
-              <div key={item.id} className="text-center flex flex-col items-center">
+          <div className="relative z-2 w-full bg-black px-3 sm:px-5 py-5 grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-4 rounded-xl">
+          {results.map(item => {
+            const detailUrl = `/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}`;
+            return (
+              <Link key={item.id} to={detailUrl} className="text-center flex flex-col items-center bg-opacity-80 hover:scale-105 transition-transform duration-300 w-full">
                 <img 
-                  src={item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : "/images/default_poster.jpg"} 
+                  src={item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : "https://www.movienewz.com/img/films/poster-holder.jpg"} 
                   alt={item.title || item.name} 
-                  className="w-full h-auto object-cover"
+                  className="w-full h-auto object-cover rounded-md"
                 />
-                <h3 className="text-white text-xs sm:text-sm md:text-base mt-2">{item.title || item.name}</h3>
-              </div>
-            ))}
+                <h3 className="text-white text-base mt-2">{item.title || item.name}</h3>
+              </Link>
+            );
+          })}
           </div>
         )}
-
         </div>
     </section>
   );

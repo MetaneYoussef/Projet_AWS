@@ -43,7 +43,7 @@ export default function Slider() {
           return (
             <Link key={index} to={detailUrl} className='inline-block min-w-full mr-5'>
               <div className='relative min-w-full h-[225px] md:h-[450px] mr-5 rounded-md hover:border-[4px] border-gray-200 cursor-pointer transition-all'>
-                <img className='w-full h-full object-cover object-left-top hover:brightness-90' src={`${IMAGE_BASE_URL}${item.backdrop_path}`} alt={item.name} />
+                <img className='w-full h-full object-cover object-top hover:brightness-90' src={`${IMAGE_BASE_URL}${item.backdrop_path}`} alt={item.name} />
                 <h2 className='font-semibold text-white text-xl sm:text-4xl drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] absolute bottom-[1rem] md:bottom-[2rem] left-[1rem] md:left-[2rem]'>
                   {item.name}
                 </h2>

@@ -1,27 +1,27 @@
-import React, { useState } from "react";
-import films from "../MovieList/films"; // Assurez-vous que le chemin est correct
+import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
+import api from '../../Services/CallApi';  // Vérifie que le chemin vers ton fichier API est correct
 
 const SearchComponent = ({ isExpanded, setExpanded }) => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
 
-  const handleSearch = (event) => {
-    const query = event.target.value.toLowerCase();
-    setQuery(query);
+  useEffect(() => {
+    if (query.length === 0) {
+      setResults([]);
+    } else if (query.length > 2) {
+      fetchData(query);
+    }
+  }, [query]);
 
-    if (query) {
-      const allFilms = Object.values(films).flat();
-      const filtered = allFilms.filter((film) =>
-        film.title.toLowerCase().includes(query)
-      );
-      setResults(filtered);
-    } else {
+  const fetchData = async (query) => {
+    try {
+      const response = await api.searchMulti(query);
+      setResults(response.data.results);
+    } catch (error) {
+      console.error('Erreur lors de la recherche:', error);
       setResults([]);
     }
-  };
-
-  const handleFilmClick = (film) => {
-    alert(`Film sélectionné : ${film.title}`);
   };
 
   return (
@@ -30,29 +30,29 @@ const SearchComponent = ({ isExpanded, setExpanded }) => {
         type="text"
         placeholder="Recherchez..."
         value={query}
-        onChange={handleSearch}
+        onChange={(e) => setQuery(e.target.value)}
         onFocus={() => setExpanded(true)}
         className="p-1.5 bg-red-700 text-white border-2 border-red-900 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 hover:bg-red-600 transition-all duration-500 ease-in-out w-full"
       />
       {isExpanded && (
-        <button onClick={() => setExpanded(false)} className="absolute right-0 text-2xl text-white mr-4">×</button>
+        <button onClick={() => { setExpanded(false); setResults([]); }} className="absolute right-0 text-2xl text-white mr-4">×</button>
       )}
-      <div className={`absolute mt-2 w-80 bg-red-900 text-white rounded-lg shadow-lg overflow-hidden z-10 top-full ${!isExpanded ? 'hidden' : ''}`}>
-        {query && results.length > 0 ? (
-          results.map((film) => (
-            <div
-              key={film.id}
-              className="px-4 py-2 hover:bg-red-400 hover:text-red-700 cursor-pointer transition-colors"
-              onClick={() => handleFilmClick(film)}
-            >
-              {film.title}
-            </div>
-          ))
-        ) : query && (
-          <div className="px-4 py-2">
-            Aucun film trouvé.
-          </div>
-        )}
+      <div className={`absolute mt-2 w-80 md:w-full bg-red-950 bg-opacity-90 text-white rounded-lg shadow-lg overflow-hidden z-10 top-full ${!isExpanded || results.length === 0 ? 'hidden' : ''}`}>
+        <div className="relative z-2 w-full bg-red-950 bg-opacity-60 px-3 sm:px-5 py-5 grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-2 sm:gap-4 mt-4 sm:mt-8">
+          {results.map(item => {
+            const detailUrl = `/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}`;
+            return (
+              <Link key={item.id} to={detailUrl} className="text-center flex flex-col items-center bg-opacity-80 hover:scale-105 transition-transform duration-300 w-full">
+                <img 
+                  src={item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : "https://www.movienewz.com/img/films/poster-holder.jpg"} 
+                  alt={item.title || item.name} 
+                  className="w-full h-auto object-cover rounded-md"
+                />
+                <h3 className="text-white text-base mt-2">{item.title || item.name}</h3>
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
