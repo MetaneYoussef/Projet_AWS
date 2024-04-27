@@ -40,7 +40,7 @@ const SearchComponent = ({ isExpanded, setExpanded }) => {
       <div className={`absolute mt-2 w-80 md:w-full bg-yellow-950 bg-opacity-90 text-white rounded-lg shadow-lg overflow-hidden z-10 top-full ${!isExpanded || results.length === 0 ? 'hidden' : ''}`}>
         <div className="relative z-2 w-full bg-yellow-950 bg-opacity-60 px-3 sm:px-5 py-5 grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-2 sm:gap-4 mt-4 sm:mt-8">
           {results.map(item => {
-            const detailUrl = `/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}`;
+            const detailUrl = `/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}/${item.id}`;
             return (
               <Link key={item.id} to={detailUrl} className="text-center flex flex-col items-center bg-opacity-80 hover:scale-105 transition-transform duration-300 w-full">
                 <img 

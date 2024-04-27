@@ -1,6 +1,7 @@
 // SeriesList.jsx
 import { useEffect, useState } from 'react';
 import callApi from '../../../Services/CallApi';
+import { Link } from 'react-router-dom';
 import Card from './SeriesCard';
 import LoadingSpinner from '../../../utiles/LoadingSpinner';
 
@@ -45,11 +46,19 @@ function SeriesList({ genreId }) {
     return (
         <div>
           {isLoading ? <LoadingSpinner /> : 
-            <><div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 p-4'>
-            {seriesList.map((item, index) => (
-              <Card key={index} series={item} />
-            ))}
-          </div><div className="pagination-controls flex justify-between p-4">
+          <><div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 p-4'>
+              {seriesList.map((item, index) => {
+                const detailUrl = `/details/${(item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}/${item.id}`;
+                return (
+                  <div key={index} className='inline-block item-container'>
+                    <Link to={detailUrl}>
+                      <Card series={item} />
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="pagination-controls flex justify-between p-4">
               <button
                 onClick={handlePreviousPage}
                 disabled={currentPage === 1} // Désactiver le bouton si on est sur la première page

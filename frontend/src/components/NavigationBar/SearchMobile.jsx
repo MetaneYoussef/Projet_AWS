@@ -36,7 +36,7 @@ const SearchComponentMobile = () => {
       <div className={`absolute z-10 top-full mt-1.5 w-[230px] bg-black text-white rounded-lg shadow-md shadow-gray-600 overflow-y-auto max-h-[350px] ${results.length === 0 ? 'hidden' : ''}`}>
         <div className="py-2 px-1">
           {results.map(item => {
-            const detailUrl = `/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}`;
+            const detailUrl = `/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}/${item.id}`;
             return (
               <Link key={item.id} to={detailUrl} className="flex items-center text-white mb-1 min-w-[225px] shadow-inner shadow-stone-700 rounded-lg hover:bg-black-800 transition-colors duration-300">
                 <img 

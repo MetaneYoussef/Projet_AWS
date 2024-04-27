@@ -1,74 +1,111 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import filmsData from "../../../../components/MovieList/films"; // Ou votre source de données
+import { useParams, Link } from "react-router-dom";
 import Header from "../../../../components/Header/MovieHeader";
 import Footer from "../../../../components/Footer/Footer";
 
 function MovieDetails() {
-  const movie = {
-    title: "Dune 2",
-    poster: "https://i.ebayimg.com/images/g/3PQAAOSwGtRlzmu5/s-l1200.jpg",
-    background: "https://fr.web.img4.acsta.net/pictures/24/01/26/10/18/5392835.jpg",
-    rating: "8.2 ★★★★☆",
-    genres: ["ACTION", "AVENTURE", "SCIENCE-FICTION"],
-    synopsis: "Dans DUNE : DEUXIÈME PARTIE, Paul Atreides s’unit à Chani et aux Fremen pour mener la révolte contre ceux qui ont anéanti sa famille. Hanté par de sombres prémonitions, il se trouve confronté au plus grand des dilemmes : choisir entre l’amour de sa vie et le destin de l'univers.",
-    watchlistCount: 14.602,
-    commentCount: 217,
+  const { movieId } = useParams();  // Assurez-vous que le nom du paramètre correspond à celui défini dans vos routes
+  const [movie, setMovie] = useState(null);
+  const [comments, setComments] = useState([]);  // Si les commentaires sont chargés dynamiquement
+  const api_key = "433cffe8b54a391f4a13ca5bc5baa0d0"
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    cast: [
-      {
-        name: "Timothée Chalamet",
-        character: "Paul Atreides",
-        photo: "https://fr.web.img6.acsta.net/c_310_420/pictures/23/12/12/10/42/2152936.jpg", // Exemple d'URL, veuillez utiliser une URL valide
-      },
-      {
-        name: "Zendaya",
-        character: "Chani",
-        photo: "https://assets.teenvogue.com/photos/659707ea9ac16dac4e4b4792/1:1/w_2556,h_2556,c_limit/GettyImages-1713365174.jpg", // Exemple d'URL, veuillez utiliser une URL valide
-      },
-      {
-        name: "Rebecca Ferguson",
-        character: "Lady Jessica",
-        photo: "https://image.tmdb.org/t/p/w500/lJloTOheuQSirSLXNA3JHsrMNfH.jpg", // Exemple d'URL, veuillez utiliser une URL valide
-      },
-      {
-        name: "Oscar Isaac",
-        character: "Duke Leto Atreides",
-        photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Oscar_Isaac_by_Gage_Skidmore.jpg/719px-Oscar_Isaac_by_Gage_Skidmore.jpg"      },
-      {
-        name: "Josh Brolin",
-        character: "Gurney Halleck",
-        photo: "https://m.media-amazon.com/images/M/MV5BMTY1ODkwMjQxM15BMl5BanBnXkFtZTcwNzQxMDgyMg@@._V1_.jpg",
-      },
-      {
-        name: "Jason Momoa",
-        character: "Duncan Idaho",
-        photo: "https://upload.wikimedia.org/wikipedia/commons/2/22/Jason_Momoa_%2843055621224%29_%28cropped%29.jpg",
-      },
-      {
-        name: "Stellan Skarsgård",
-        character: "Baron Vladimir Harkonnen",
-        photo: "https://m.media-amazon.com/images/M/MV5BMjEyMTk5OTk2OV5BMl5BanBnXkFtZTcwNjY3MjUxNw@@._V1_.jpg",
-      },
-      {
-        name: "Dave Bautista",
-        character: "Glossu Rabban",
-        photo: "https://www.indiewire.com/wp-content/uploads/2021/08/dave-bautista.png",
-      },
-    ]
-  };
 
-  const comments = [
-    {
-      user: "FanDeDune",
-      text: "Incroyable suite, les paysages sont à couper le souffle et le jeu d'acteur est top niveau !"
-    },
-    {
-      user: "Cinephile75",
-      text: "Un peu lent au démarrage mais une fois lancé, c'est un vrai chef-d'oeuvre."
-    },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${api_key}&language=fr-FR`;
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data) { // Assurez-vous que data contient les données nécessaires
+          setMovie({
+            title: data.title,
+            poster: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
+            background: `https://image.tmdb.org/t/p/original${data.backdrop_path}`,
+            rating: `${data.vote_average} ★★★★☆`,
+            genres: data.genres.map(genre => genre.name),
+            synopsis: data.overview,
+            watchlistCount: data.popularity,
+            commentCount: data.vote_count,
+            cast: [],
+            similarMovies: []
+          });
+          setLoading(false);
+        } else {
+          setError("Aucune donnée disponible pour ce film");
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération des détails du film", error);
+        setError("Erreur lors du chargement des données");
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [movieId, api_key]);
   
+  useEffect(() => {
+    async function fetchCast() {
+      const castUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${api_key}`;
+      const response = await fetch(castUrl);
+      const data = await response.json();
+      setMovie(prev => ({
+        ...prev,
+        cast: data.cast.map(actor => ({
+          name: actor.name,
+          character: actor.character,
+          photo: `https://image.tmdb.org/t/p/w500${actor.profile_path}`
+        }))
+      }));
+    }
+  
+    if (movieId) {
+      fetchCast();
+    }
+  }, [movieId]);
+
+  useEffect(() => {
+    async function fetchSimilarMovies() {
+      const similarUrl = `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${api_key}&language=en-US`;
+      const response = await fetch(similarUrl);
+      const data = await response.json();
+      setMovie(prev => ({
+        ...prev,
+        similarMovies: data.results.map(movie => ({
+          id: movie.id,
+          title: movie.title,
+          poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+        }))
+      }));
+    }
+  
+    if (movieId) {
+      fetchSimilarMovies();
+    }
+  }, [movieId]);
+  
+  useEffect(() => {
+    const fetchTrailer = async () => {
+      const trailerUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${api_key}&language=fr-FR`;
+      const response = await fetch(trailerUrl);
+      const data = await response.json();
+      const trailers = data.results.filter(video => video.type === 'Trailer');
+      if (trailers.length > 0) {
+        setMovie(prev => ({ ...prev, trailer: `https://www.youtube.com/watch?v=${trailers[0].key}` }));
+      }
+    };
+  
+    if (movieId) {
+      fetchTrailer();
+    }
+  }, [movieId]);
+  
+
+  if (loading) return <div className="flex bg-red-600 h-full py-1/2 text-2xl text-white font-bold justify-center" >.........</div>;
+  if (error) return <div className="bg-red-600">Erreur: {error}</div>;
+
 
   return (
     <div>
@@ -76,17 +113,20 @@ function MovieDetails() {
         <Header />
         <div className="flex flex-col md:flex-row p-8 bg-black bg-opacity-70 text-white rounded-xl m-5 items-center md:items-start">
           <div className="md:w-1/4 flex flex-col items-center md:items-start">
-            <img src={movie.poster} alt="Poster du film" className="w-64 h-96 rounded-lg shadow-lg mb-5"/>
-            <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4 md:mt-0">Lancer la Bande Annonce</button>
+            <img src={movie.poster} alt="Poster du film" className="w-64 md:w-52 lg:w-64 h-96 md:h-72 lg:h-96 rounded-lg shadow-lg mb-5"/>
+            <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded md:ml-4 mb-3"
+              onClick={() => window.open(movie.trailer, '_blank')}>
+              Lancer la Bande Annonce
+            </button>
           </div>
           <div className="md:ml-4 md:w-2/3">
             <div className="flex flex-col md:ml-4">
-              <h2 className="text-4xl font-bold mb-2">{movie.title}</h2>
-              <p className="mb-2">{movie.rating}</p>
-              <p className="mb-2 text-xs">{movie.genres.join(", ")}</p>
+              <h2 className="text-4xl font-bold mb-2 text-center md:text-start">{movie.title}</h2>
+              <p className="mb-2 text-center md:text-start">{movie.rating}</p>
+              <p className="mb-2 text-sm md:text-xs text-center md:text-start">{movie.genres.join(", ")}</p>
               <br />
-              <p className="mb-4 font-bold">SYNOPSIS :</p>
-              <p className='w-3/4'>{movie.synopsis}</p>
+              <p className="flex mb-4 text-xl font-bold justify-center md:justify-start">SYNOPSIS :</p>
+              <p className='mb-8 w-full text-justify'>{movie.synopsis}</p>
             </div>
           </div>
           <div className="md:w-1/4 flex flex-col items-center md:items-start md:ml-8 mx-10 px-4">
@@ -105,33 +145,35 @@ function MovieDetails() {
         <br />
       </div>
 
-      <div className='bg-red-700 p-16'>
+      {/*Affichage de la distribution*/}
+      <div className='bg-red-700 -mb-10 md:mb-0 p-16'>
         <h1 className='text-white text-3xl mb-8 font-semibold'>Distribution</h1>
-        {/* Exemple d'une liste horizontale pour la distribution (Utiliser Tailwind CSS pour le style) */}
         <div className="flex overflow-x-auto">
           {movie.cast?.map((actor, index) => (
-            <div key={index} className="flex flex-col items-center mr-4" style={{ minWidth: '200px' }}> {/* Ajustement ici */}
+            <div key={index} className="flex flex-col items-center mr-4" style={{ minWidth: '200px' }}>
               <img src={actor.photo} alt={actor.name} className="w-48 h-48 rounded-full object-cover"/>
-              <p className="text-white mt-2 font-extrabold text-lg text-center">{actor.name}</p> {/* Centrez le texte ici */}
-              <p className="text-white text-center font-semibold text-sm">{actor.character}</p> {/* Centrez le texte ici */}
+              <p className="text-white mt-2 font-extrabold text-lg text-center">{actor.name}</p>
+              <p className="text-white text-center font-semibold text-sm">{actor.character}</p>
             </div>
           ))}
         </div>
       </div>
 
-
-      <div className='bg-red-700 p-16'>
+      {/*Affichage des films similaires*/}
+      <div className='bg-red-700 -mb-10 md:mb-0 p-16'>
         <h1 className='text-white text-3xl mb-4 font-semibold'>Les utilisateurs ont également regardé</h1>
         <div className="flex overflow-x-auto">
-          {/* Supposons que vous avez un tableau 'similarMovies' dans 'movie' */}
-          {movie.similarMovies?.map((movie, index) => (
-            <div key={index} className="flex flex-col items-center mr-4">
-              <img src={movie.poster} alt={movie.title} className="w-40 h-60 rounded-lg shadow-lg"/>
-              <p className="text-white mt-2">{movie.title}</p>
-            </div>
+          {movie.similarMovies?.map((simMovie, index) => (
+            <Link key={index} to={`/details/${simMovie.title.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}}/${simMovie.id}`}>
+              <div className="inline-block min-w-40 mr-4">
+                <img src={simMovie.poster} alt={simMovie.title} className="w-40 h-60 rounded-lg shadow-lg"/>
+                <p className="text-white mt-2">{simMovie.title}</p>
+              </div>
+            </Link>
           ))}
         </div>
       </div>
+
 
       <div className="bg-red-700 p-16">
         <h1 className='text-white text-3xl mb-4 font-semibold'>Commentaires</h1>

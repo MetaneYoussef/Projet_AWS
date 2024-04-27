@@ -45,7 +45,7 @@ function App() {
           <Route path="/genre/:genreId" element={<GenrePage />} />
           <Route path="/films" element={<MovieHomePage />} />
           <Route path="/films/:genre" element={<FilmsPage />} />
-          <Route path="/details/:movieId" element={<MovieDetailPage />} />
+          <Route path="/details/:slug/:movieId" element={<MovieDetailPage />} />
           <Route path="/series" element={<SeriesHomePage />} />
           <Route path="/series/:genre" element={<Series />} />
           <Route path="/series/detail/:seriesId" element={<SeriesDetailPage />} />

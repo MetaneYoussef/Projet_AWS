@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IoChevronBackOutline, IoChevronForwardOutline } from 'react-icons/io5';
-import { Link } from 'react-router-dom'; // Importe Link ici
+import { Link } from 'react-router-dom';
 import callApi from '../../../Services/CallApi';
 import Card from '../../../components/MoviesTvCard/Card';
 import './ItemsList.css';

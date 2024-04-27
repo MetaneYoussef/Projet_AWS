@@ -31,7 +31,7 @@ export default function Slider() {
       
       <div className='flex overflow-x-auto w-full px-16 py-4 scroll-smooth' ref={imageSliderRef}>
         {moviesList.map((item, index) => {
-          const detailUrl = `/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}`;
+          const detailUrl = `/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}/${item.id}`;
           return (
             <Link key={index} to={detailUrl} className='inline-block min-w-full mr-5'>
               <div className='relative h-[175px] md:h-[450px] rounded-md hover:border-[4px] border-gray-200 cursor-pointer transition-all'>
