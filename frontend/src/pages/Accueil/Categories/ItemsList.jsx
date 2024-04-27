@@ -3,10 +3,13 @@ import { IoChevronBackOutline, IoChevronForwardOutline } from 'react-icons/io5';
 import { Link } from 'react-router-dom'; // Importe Link ici
 import callApi from '../../../Services/CallApi';
 import Card from '../../../components/MoviesTvCard/Card';
+import './ItemsList.css';
+
 
 function ItemsList({ apiPath }) {
   const [items, setItems] = useState([]);
   const elementRef = useRef(null);
+
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -37,7 +40,7 @@ function ItemsList({ apiPath }) {
               {items.map((item, index) => {
                 const detailUrl = `/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}`;
                 return (
-                  <div key={index} className='inline-block' style={{ minWidth: '270px' }}>
+                  <div key={index} className='inline-block item-container'>
                     <Link to={detailUrl}>
                       <Card movie={item} />
                     </Link>

@@ -12,6 +12,7 @@ import QCMHomePage from "./pages/QCM/Home";
 import Evenement from "./pages/Divers/Evenement";
 import Watchlist from "./pages/Watchlist/Watchlist";
 {/* Liens des Pages de Films et Séries */}
+import GenrePage from "./pages/Genres/GenresPage";
 import MovieHomePage from "./pages/Genres/Films/AccueilFilm";
 import SeriesHomePage from "./pages/Genres/Series/AccueilSeries";
 import MovieDetailPage from "./pages/Genres/Films/FicheDetail/MovieDetailPage";
@@ -32,15 +33,19 @@ import Signup from "./pages/Inscription/Inscription";
 import FormulaireInscription from "./pages/FormulaireInscription/FormulaireInscription";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import ErrorPage from "./pages/Divers/Page404";
+
+
+
 function App() {
   return (
     <AuthProvider>
       <Router>
         <Routes>
           <Route path="/connexion" element={<Connexion />} />
+          <Route path="/genre/:genreId" element={<GenrePage />} />
           <Route path="/films" element={<MovieHomePage />} />
           <Route path="/films/:genre" element={<FilmsPage />} />
-          <Route path="/films/detail/:movieId" element={<MovieDetailPage />} />
+          <Route path="/details/:movieId" element={<MovieDetailPage />} />
           <Route path="/series" element={<SeriesHomePage />} />
           <Route path="/series/:genre" element={<Series />} />
           <Route path="/series/detail/:seriesId" element={<SeriesDetailPage />} />
