@@ -7,23 +7,6 @@ import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 import Affichage from './Categories/Affichage';
 
 
-// Template pour de l'affichage des films en bannière
-const MovieBanner = ({ movie }) => {
-  // Création de l'URL de manière dynamique basée sur le titre du film
-  const movieDetailUrl = `/films/detail/${movie.title.toLowerCase()
-    .replace(/[^a-z0-9]/g, '-')  // Remplace tout ce qui n'est pas alphanumérique par un tiret
-    .replace(/-+/g, '-')}`;      // Remplace les séquences de tirets par un seul tiret
-
-  return (
-    <div className="inline-block cursor-pointer mr-4 mb-2 mt-3">
-      <Link to={movieDetailUrl}>
-        <img src={movie.poster} alt={movie.title} className="rounded-lg shadow-lg w-[650px] h-[350px] object-cover" />
-      </Link>
-    </div>
-  );
-};
-
-
 // Pour chaque genre, utilisez Link pour naviguer
 const GenreBanner = ({ genre }) => (
   <Link to={`/films/${genre.name}`} className="inline-block cursor-pointer mr-4 mb-2 mt-3 bg-red-800 hover:bg-red-900 text-white">

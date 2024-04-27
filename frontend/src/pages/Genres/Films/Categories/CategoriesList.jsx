@@ -28,7 +28,7 @@ const genere= [
   },
   {
     "api": "discover/movie",
-    "sort": "sort_by=primary_release_date.desc&year=2024",
+    "sort": "primary_release_date.gte=2024-04-21&sort_by=popularity.desc",
     "name": "Prochainement au cinéma"
   },
 ]

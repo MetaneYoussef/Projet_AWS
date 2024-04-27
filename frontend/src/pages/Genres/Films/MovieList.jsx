@@ -1,6 +1,7 @@
 // MovieList.jsx
 import { useEffect, useState } from 'react';
 import callApi from '../../../Services/CallApi';
+import { Link } from 'react-router-dom';
 import Card from './MovieCard';
 import LoadingSpinner from '../../../utiles/LoadingSpinner';
 
@@ -13,11 +14,11 @@ function MovieList({ genreId }) {
     useEffect(() => {
       const fetchMovies = async () => {
           try {
-              const resp = await callApi.getMovieById(genreId, currentPage);
-              setMovieList(resp.data.results);
-              setTotalPages(10);  // Utiliser la pagination de l'API
+            const resp = await callApi.getMovieById(genreId, currentPage);
+            setMovieList(resp.data.results);
+            setTotalPages(10);  // Utiliser la pagination de l'API
           } catch (err) {
-              console.error("Erreur lors de la récupération des films par genre", err);
+            console.error("Erreur lors de la récupération des films par genre", err);
           }
       };
       fetchMovies();
@@ -46,9 +47,16 @@ function MovieList({ genreId }) {
         <div>
           {isLoading ? <LoadingSpinner /> : 
             <><div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 p-4'>
-            {movieList.map((item, index) => (
-              <Card key={index} movie={item} />
-            ))}
+                {movieList.map((item, index) => {
+                const detailUrl = `/details/${(item.title).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}/${item.id}`;
+                return (
+                  <div key={index} className='inline-block item-container'>
+                    <Link to={detailUrl}>
+                      <Card movie={item} />
+                    </Link>
+                  </div>
+                );
+              })}
           </div><div className="pagination-controls flex justify-between p-4">
               <button
                 onClick={handlePreviousPage}
