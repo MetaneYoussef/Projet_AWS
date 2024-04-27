@@ -75,30 +75,6 @@ const utilisateurSchema = new Schema({
 
 utilisateurSchema.index({ email: 1 });
 
-utilisateurSchema.pre('save', async function(next) {
-    if (!this.isModified('mot_de_passe')) return next();
-    const salt = await bcrypt.genSalt(12);
-    this.mot_de_passe = await bcrypt.hash(this.mot_de_passe, salt);
-    next();
-});
-
-utilisateurSchema.methods.matchMotDePasse = async function(enteredPassword) {
-    return await bcrypt.compare(enteredPassword, this.mot_de_passe);
-};
-
-utilisateurSchema.methods.toJSON = function() {
-    var obj = this.toObject();
-    delete obj.mot_de_passe;
-    return obj;
-};
-
-utilisateurSchema.post('save', function(error, doc, next) {
-    if (error.name === 'MongoError' && error.code === 11000) {
-        next(new Error('L\'email est déjà utilisé'));
-    } else {
-        next(error);
-    }
-});
 
 const Utilisateur = mongoose.model('Utilisateur', utilisateurSchema);
 module.exports = Utilisateur;
