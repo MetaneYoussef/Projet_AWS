@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import Header from "../../../../components/Header/MovieHeader";
 import Footer from "../../../../components/Footer/Footer";
-import { useAuth } from "../../../../context/AuthContext";
-import axios from 'axios';
 
 function MovieDetails() {
   const { movieId } = useParams();  // Assurez-vous que le nom du paramètre correspond à celui défini dans vos routes
@@ -12,7 +11,6 @@ function MovieDetails() {
   const api_key = "433cffe8b54a391f4a13ca5bc5baa0d0"
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-	const { user } = useAuth();
 
 
   useEffect(() => {
@@ -112,31 +110,10 @@ function MovieDetails() {
     }
   }, [movieId]);
   
-	const ajouterFilmWatchlist = async () => {
-    if (!user) {
-      alert("Vous devez être connecté pour ajouter un film à la watchlist.");
-      return;
-    }
-
-    const data = {
-      tmdbId: movieId,
-      userId: user.id
-    };
-
-    try {
-			await axios.post(`/${user.id}/filmsWatchlist`, data, {
-				headers: { Authorization: `Bearer ${user.token}` }
-			});
-			alert('Ajouté à la Watchlist avec succès!');
-		} catch (error) {
-			console.error('Erreur lors de l\'ajout à la Watchlist', error);
-			alert("Erreur lors de l'ajout à la Watchlist.");
-		}
-	};
 
   if (loading) return <div className="flex bg-red-600 h-full py-1/2 text-2xl text-white font-bold justify-center" >.........</div>;
   if (error) return <div className="bg-red-600">Erreur: {error}</div>;
-	if (!movie) return null;
+
 
   return (
     <div>
