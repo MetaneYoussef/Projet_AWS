@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import Header from "../../../../components/Header/MovieHeader";
 import Footer from "../../../../components/Footer/Footer";
 import { useAuth } from "../../../../context/AuthContext";
 import axios from 'axios';
@@ -125,15 +124,15 @@ function MovieDetails() {
     };
 
     try {
-      await axios.post('/api/filmsWatchlist', data, {
-        headers: { Authorization: `Bearer ${user.token}` }
-      });
-      alert('Ajouté à la Watchlist avec succès!');
-    } catch (error) {
-      console.error('Erreur lors de l\'ajout à la Watchlist', error);
-      alert("Erreur lors de l'ajout à la Watchlist.");
-    }
-  };
+			await axios.post(`/${user.id}/filmsWatchlist`, data, {
+				headers: { Authorization: `Bearer ${user.token}` }
+			});
+			alert('Ajouté à la Watchlist avec succès!');
+		} catch (error) {
+			console.error('Erreur lors de l\'ajout à la Watchlist', error);
+			alert("Erreur lors de l'ajout à la Watchlist.");
+		}
+	};
 
   if (loading) return <div className="flex bg-red-600 h-full py-1/2 text-2xl text-white font-bold justify-center" >.........</div>;
   if (error) return <div className="bg-red-600">Erreur: {error}</div>;
