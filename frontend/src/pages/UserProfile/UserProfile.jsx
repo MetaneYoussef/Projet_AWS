@@ -3,6 +3,7 @@ import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import { useAuth } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function UserProfile() {
   const [userPreferences, setUserPreferences] = useState({
@@ -13,7 +14,7 @@ function UserProfile() {
   const [errors, setErrors] = useState({});
 
 
-  const navigate = useNavigate(); // Initialiser useNavigate
+  const navigate = useNavigate();
   const { logout } = useAuth();
 
   const handleLogout = async () => {
