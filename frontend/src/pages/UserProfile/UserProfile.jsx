@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import Select from 'react-select'; // Import de react-select
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
+import { useAuth } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 
 function UserProfile() {
@@ -9,7 +10,7 @@ function UserProfile() {
       username: "AWS Projet",
       favoriteGenres: "",
       favoriteDirectors: "",
-      email: "AWSProjet@email.com",
+      email: "AWSProjet@email.com", 
       password: ""
   });
   const [customGenre, setCustomGenre] = useState('');
@@ -17,6 +18,8 @@ function UserProfile() {
   const [errors, setErrors] = useState({});
 
   const directors = ["Quentin Tarantino", "Christopher Nolan", "Greta Gerwig", "Bong Joon-ho", "Autre"];
+
+  const { logout } = useAuth();
 
   const validateField = useCallback((name, value) => {
       let newErrors = { ...errors };
@@ -144,6 +147,7 @@ function UserProfile() {
                 <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">
                     Enregistrer les modifications
                 </button>
+                <button onClick={logout} className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"> Déconnexion </button>
             </form>
         </div>
     </div>
