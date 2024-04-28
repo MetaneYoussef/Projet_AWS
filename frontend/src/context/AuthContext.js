@@ -3,13 +3,13 @@ import { saveToken, removeToken, getToken, getUserDetails } from '../Services/au
 import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
-const navigate = useNavigate();
 
 export const useAuth = () => useContext(AuthContext);
  
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(!!getToken());
     const [user, setUser] = useState(null);
+    const navigate = useNavigate();
     useEffect(() => {
         const token = getToken();
         if (token) {
