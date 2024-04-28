@@ -13,7 +13,17 @@ function UserProfile() {
   const [errors, setErrors] = useState({});
 
 
+  const navigate = useNavigate(); // Initialiser useNavigate
   const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login'); 
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion', error);
+    }
+  };
 
   const validateField = useCallback((name, value) => {
       let newErrors = { ...errors };
@@ -114,7 +124,7 @@ function UserProfile() {
                 <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">
                     Enregistrer les modifications
                 </button>
-                <button onClick={logout} className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"> Déconnexion </button>
+                <button onClick={handleLogout} className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"> Déconnexion </button>
             </form>
         </div>
     </div>
