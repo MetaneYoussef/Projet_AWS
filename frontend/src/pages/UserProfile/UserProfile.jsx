@@ -46,7 +46,8 @@ function UserProfile() {
       validateField(name, value);
   }, [validateField]);
 
-  
+  const [error, setError] = useState("");
+
 
   const handleSubmit = async (e) => {
       e.preventDefault();
@@ -70,34 +71,39 @@ function UserProfile() {
   };
 
   return (
-  <>
+  <div>
     <Header />
-    <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-orange-400 to-pink-500 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-lg shadow-lg">
-            <div className="text-center">
-                <Link to="/">
-                    <img className="mx-auto h-20 w-auto" src="/images/RondSansFond.png" alt="Logo" />
-                </Link>
-                <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Éditez votre profil</h2>
+    <div className="flex h-screen">
+      <div className="w-full md:w-1/2 flex flex-col -mt-20 md:mt-0 items-center justify-center bg-neutral-900">
+      <div className="relative text-center md:-mt-20 -mb-8">
+              <Link to="/">
+                <img src={require("./RondSansFond.png")} alt="Votre logo" className="w-28 md:w-36 h-auto relative z-20" />
+              </Link>
+              <div className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full absolute top-1/2 left-1/2 transform -translate-x-[45%] -translate-y-1/2 shadow-xl z-5" style={{ boxShadow: "0 0 10px 5px #fff" }}></div>
             </div>
-            <form className="mt-8 space-y-6">
+            <div className="p-10 rounded-lg shadow-xl w-80 md:w-3/4 bg-neutral-800" style={{ boxShadow: "0 0 15px 5px #fff" }}>
+              <p className="mt-2 md:mt-10 md:mb-4 text-xl md:text-2xl font-bold leading-5 text-white">Profil</p>
+              <div className="flex w-full items-center gap-2 py-4 mb-0 md:mb-4 text-sm text-gray-400 font-semibold">
+                <div className="h-px w-full bg-gray-400"></div>
+              </div>
+              {error && <p className="mb-4 text-red-500">{error}</p>}
+
                 {/* Nom d'utilisateur et Email en lecture seule avec options de modification */}
+                    <form>
                     <div className="">
-                    <label className="block text-lg font-medium text-gray-700 mb-1">Nom d'utilisateur</label>
-                        <span className="text-sm border-2 px-24 font-medium text-gray-700">{userPreferences.username}</span>
+                    <label className="block text-base md:text-xl font-medium text-slate-200 mb-1">Nom d'utilisateur</label>
+                        <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.username}</span>
                         {errors.username && <p className="text-red-500 text-xs italic">{errors.username}</p>}
-                        <button type="button" className="flex text-indigo-600 hover:text-indigo-900 text-sm text-end">Changer</button>
                     </div>
                     <div className="">
-                    <label className="block text-lg font-medium text-gray-700 mb-1">Email</label>
-                        <span className="text-sm border-2 px-16 font-medium text-gray-700">{userPreferences.email}</span>
+                    <label className="block text-base md:text-xl font-medium text-slate-200 mb-1">Email</label>
+                        <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.email}</span>
                         {errors.username && <p className="text-red-500 text-xs italic">{errors.email}</p>}
-                        <button type="button" className="flex text-indigo-600 hover:text-indigo-900 text-sm text-end">Changer</button>
                     </div>
 
                     <div className="">
-                    <label htmlFor="username" className="block text-lg font-medium text-gray-700 mb-1">Mot de passe</label>
-                        <span className="text-sm border-2 px-36 font-medium text-gray-700">{userPreferences.password}</span>
+                    <label htmlFor="username" className="block text-base md:text-xl font-medium text-slate-200 mb-1">Mot de passe</label>
+                        <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.password}</span>
                         {errors.username && <p className="text-red-500 text-xs italic">{errors.password}</p>}
                         <button type="button" className="flex text-indigo-600 hover:text-indigo-900 text-sm" onClick={() => setShowChangePasswordModal(true)}>Changer</button>
                     </div>
@@ -122,16 +128,21 @@ function UserProfile() {
                
 
                 {/* Bouton de soumission des modifications */}
-                <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">
+                <button type="submit" className="w-full flex justify-center mb-4 md:mb-10 mt-4 md:mt-10 py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">
                     Enregistrer les modifications
                 </button>
-                <button onClick={handleLogout} className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"> Déconnexion </button>
+                <button onClick={handleLogout} className="w-full flex justify-center mb-0 md:mb-10 mt-6 md:mt-10 py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"> Déconnexion </button>
+                
             </form>
         </div>
     </div>
+    <div className="md:w-1/2 bg-cover brightness-50" style={{ backgroundImage: "url('/images/SignUp_Background.png')" }}></div>
+
+    </div>
     <Footer />
-  </>
+  </div>
   );
 }
 
 export default UserProfile;
+
