@@ -20,7 +20,7 @@ function UserProfile() {
   const handleLogout = async () => {
     try {
       await logout();
-      navigate('/login'); 
+      navigate('/connexion'); 
     } catch (error) {
       console.error('Erreur lors de la déconnexion', error);
     }
