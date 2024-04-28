@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import Header from "../../../../components/Header/MovieHeader";
 import Footer from "../../../../components/Footer/Footer";
 import { useAuth } from "../../../../context/AuthContext";
+import axios from 'axios';
 
 function MovieDetails() {
   const { movieId } = useParams();  // Assurez-vous que le nom du paramètre correspond à celui défini dans vos routes
