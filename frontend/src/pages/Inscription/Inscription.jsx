@@ -4,6 +4,7 @@ import Newsletter from './Newsletter';
 import Features from './Features';
 import FAQ from './FAQ';
 import { Link } from "react-router-dom";
+
 function Signup() {
   return (
     <div className="relative bg-black overflow-hidden">

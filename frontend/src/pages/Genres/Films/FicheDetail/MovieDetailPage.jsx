@@ -7,6 +7,7 @@ function MovieDetails() {
   const { movieId } = useParams();  // Assurez-vous que le nom du paramètre correspond à celui défini dans vos routes
   const [movie, setMovie] = useState(null);
   const [comments, setComments] = useState([]);  // Si les commentaires sont chargés dynamiquement
+  const [newComment, setNewComment] = useState("");  // Gérer la saisie d'un nouveau commentaire
   const api_key = "433cffe8b54a391f4a13ca5bc5baa0d0"
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -85,6 +86,13 @@ function MovieDetails() {
       fetchSimilarMovies();
     }
   }, [movieId]);
+
+  const handlePostComment = () => {
+    if (newComment.trim()) {
+      setComments(prevComments => [...prevComments, { user: "Utilisateur", text: newComment }]);
+      setNewComment("");  // Réinitialiser l'entrée de texte après l'envoi
+    }
+  };
   
   useEffect(() => {
     const fetchTrailer = async () => {
@@ -138,7 +146,12 @@ function MovieDetails() {
               <p className='font-bold text-2xl antialiased'>{movie.commentCount}</p>
               <p>commentaires</p>
             </div>
-            <button className="bg-black hover:bg-red-900 hover:text-white text-red-600 border-2 border-red-400 font-bold py-2 px-4 rounded mb-4 w-full">+ Ajouter à la Watchlist</button>
+            <button
+              className="bg-black hover:bg-red-900 hover:text-white text-red-600 border-2 border-red-400 font-bold py-2 px-4 rounded mb-4 w-full"
+              onClick={() => ajouterFilmWatchlist(movie.id)}
+            >
+              + Ajouter à la Watchlist
+            </button>
             <button className="bg-black hover:bg-red-900 hover:text-white text-red-600 border-2 border-red-400 font-bold py-2 px-4 rounded w-full">Noter le film</button>
           </div>
         </div>
@@ -174,28 +187,38 @@ function MovieDetails() {
         </div>
       </div>
 
-
+      {/* Zone de commentaires */}
       <div className="bg-red-700 p-16">
-        <h1 className='text-white text-3xl mb-4 font-semibold'>Commentaires</h1>
-        <div className="mb-8">
-          <textarea
-            className="w-full bg-red-900 text-white p-4 rounded-lg border-2 border-red-400"
-            placeholder="Ajoutez votre commentaire..."
-            rows="3"
-          ></textarea>
-          <button className="bg-black text-white hover:bg-white hover:text-red-700  font-bold py-2 px-4 rounded mt-4">Publier</button>
-        </div>
-        {comments.map((comment, index) => (
-          <div key={index} className="bg-red-900 p-4 rounded-lg mb-4 border-2 border-black">
-            <p className="text-red-200 font-bold mb-1">{comment.user}</p>
-            <p className="text-white">{comment.text}</p>
-          </div>
-        ))}
-        <button className="w-full bg-black text-white hover:bg-white hover:text-red-700 font-bold py-2 px-4 rounded">Voir tous les commentaires</button>
+      <h1 className='text-white text-3xl mb-4 font-semibold'>Commentaires</h1>
+      <div className="mb-8">
+        <textarea
+          className="w-full bg-red-900 text-white p-4 rounded-lg border-2 border-red-400"
+          placeholder="Ajoutez votre commentaire..."
+          rows="3"
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+        ></textarea>
+        <button
+          className="bg-black text-white hover:bg-white hover:text-red-700 font-bold py-2 px-4 rounded mt-4"
+          onClick={handlePostComment}
+        >
+          Publier
+        </button>
       </div>
+      {comments.map((comment, index) => (
+        <div key={index} className="bg-red-900 p-4 rounded-lg mb-4 border-2 border-black">
+          <p className="text-red-200 font-bold mb-1">{comment.user}</p>
+          <p className="text-white">{comment.text}</p>
+        </div>
+      ))}
+      <button className="w-full bg-black text-white hover:bg-white hover:text-red-700 font-bold py-2 px-4 rounded">
+        Voir tous les commentaires
+      </button>
+    </div>
       <Footer/>
     </div>
   );
 }
 
 export default MovieDetails;
+
