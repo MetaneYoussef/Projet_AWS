@@ -19,7 +19,19 @@ const commentaireSchema = new Schema({
     idmedia: {
         type: Number,
         required: true
+    },
+    likes: {
+        Number: {
+            type: Number,
+            default: 0
+        },
+        idutilisateurs: {
+            type: [Schema.Types.ObjectId],
+            ref: 'Utilisateur',
+            default: []
+        }
     }
+
 });
 
 module.exports = mongoose.model('Commentaire', commentaireSchema);
