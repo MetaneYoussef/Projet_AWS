@@ -16,7 +16,7 @@ const filmsRoutes = require('./routes/films');
 const acteursRoutes = require('./routes/acteurs');
 const seriesRoutes = require('./routes/series');
 const authRoutes = require('./routes/authRoutes');
-
+const commentairesRoutes = require('./routes/commentairesRoutes');
 const app = express();
 
 app.use(helmet());
@@ -43,6 +43,7 @@ app.use('/api/utilisateurs', utilisateursRoutes);
 app.use('/api/films', filmsRoutes);
 app.use('/api/acteurs', acteursRoutes);
 app.use('/api/series', seriesRoutes);
+app.use('/api/commentaires', commentairesRoutes);
 
 // Integration de Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
