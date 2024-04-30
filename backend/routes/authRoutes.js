@@ -41,7 +41,11 @@ router.post('/signup', [
 
         const payload = {
             utilisateur: {
-                id: utilisateur._id
+                id: utilisateur._id,
+                nom: utilisateur.nom,
+                prenom: utilisateur.prenom,
+                email: utilisateur.email,
+                role: utilisateur.role
             }
         };
 
@@ -88,6 +92,9 @@ router.post('/login', [
         const payload = {
             utilisateur: {
                 id: utilisateur._id,
+                nom: utilisateur.nom,
+                prenom: utilisateur.prenom,
+                email: utilisateur.email,
                 role: utilisateur.role
             }
         };
