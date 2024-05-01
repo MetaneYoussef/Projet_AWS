@@ -127,23 +127,28 @@ function UserProfile() {
                     <div className="">
                     <label className="block text-base md:text-xl font-medium text-slate-200 mb-1">Nom</label>
                         <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.nom}</span>
-                        {errors.username && <p className="text-red-500 text-xs italic">{errors.nom}</p>}
+                        {errors.nom && <p className="text-red-500 text-xs italic">{errors.nom}</p>}
                     </div>
                     <div className="">
                     <label className="block text-base md:text-xl font-medium text-slate-200 mb-1">Prenom</label>
                         <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.prenom}</span>
-                        {errors.username && <p className="text-red-500 text-xs italic">{errors.prenom}</p>}
+                        {errors.prenom && <p className="text-red-500 text-xs italic">{errors.prenom}</p>}
+                    </div>
+                    <div className="">
+                    <label className="block text-base md:text-xl font-medium text-slate-200 mb-1">Nom d'utilisateur</label>
+                        <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.username}</span>
+                        {errors.username && <p className="text-red-500 text-xs italic">{errors.username}</p>}
                     </div>
                     <div className="">
                     <label className="block text-base md:text-xl font-medium text-slate-200 mb-1">Email</label>
                         <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.email}</span>
-                        {errors.username && <p className="text-red-500 text-xs italic">{errors.email}</p>}
+                        {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
                     </div>
 
                     <div className="">
                     <label htmlFor="username" className="block text-base md:text-xl font-medium text-slate-200 mb-1">Mot de passe</label>
                         <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.password}</span>
-                        {errors.username && <p className="text-red-500 text-xs italic">{errors.password}</p>}
+                        {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
                         <button type="button" className="flex text-indigo-600 hover:text-indigo-900 text-sm" onClick={() => setShowChangePasswordModal(true)}>Changer</button>
                     </div>
 
