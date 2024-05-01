@@ -34,7 +34,7 @@ function UserProfile() {
       // Vérifie d'abord si le token est disponible pour éviter des appels API non autorisés
       if (!token) {
         console.error('Token non disponible, veuillez vous connecter.');
-        navigate('/connexion'); // Assure-toi que cette navigation fonctionne comme prévu
+        navigate('/connexion'); 
         return;
       }
   
@@ -116,9 +116,9 @@ function UserProfile() {
               <div className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full absolute top-1/2 left-1/2 transform -translate-x-[45%] -translate-y-1/2 shadow-xl z-5" style={{ boxShadow: "0 0 10px 5px #fff" }}></div>
             </div>
             <div className="p-10 rounded-lg shadow-xl w-80 md:w-3/4 bg-neutral-800" style={{ boxShadow: "0 0 15px 5px #fff" }}>
-              <p className="mt-2 md:mt-10 md:mb-4 text-xl md:text-2xl font-bold leading-5 text-white">Profil</p>
-              <div className="flex w-full items-center gap-2 py-4 mb-0 md:mb-4 text-sm text-gray-400 font-semibold">
-                <div className="h-px w-full bg-gray-400"></div>
+              <p className="mt-2 md:mt-6 md:mb-2 text-xl md:text-3xl font-bold leading-5 text-white">Profil</p>
+              <div className="flex w-full items-center gap-2 py-4 mb-0 md:mb-2 text-sm text-gray-400 font-semibold">
+                <div className="h-0.5 w-full bg-gray-400"></div>
               </div>
               {error && <p className="mb-4 text-red-500">{error}</p>}
 
@@ -129,23 +129,23 @@ function UserProfile() {
                         <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.nom}</span>
                         {errors.nom && <p className="text-red-500 text-xs italic">{errors.nom}</p>}
                     </div>
-                    <div className="">
+                    <div className="md:mt-2">
                     <label className="block text-base md:text-xl font-medium text-slate-200 mb-1">Prenom</label>
                         <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.prenom}</span>
                         {errors.prenom && <p className="text-red-500 text-xs italic">{errors.prenom}</p>}
                     </div>
-                    <div className="">
+                    <div className="md:mt-2">
                     <label className="block text-base md:text-xl font-medium text-slate-200 mb-1">Nom d'utilisateur</label>
                         <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.username}</span>
                         {errors.username && <p className="text-red-500 text-xs italic">{errors.username}</p>}
                     </div>
-                    <div className="">
+                    <div className="md:mt-2">
                     <label className="block text-base md:text-xl font-medium text-slate-200 mb-1">Email</label>
                         <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.email}</span>
                         {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
                     </div>
 
-                    <div className="">
+                    <div className="md:mt-2">
                     <label htmlFor="username" className="block text-base md:text-xl font-medium text-slate-200 mb-1">Mot de passe</label>
                         <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.password}</span>
                         {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
@@ -172,7 +172,7 @@ function UserProfile() {
                
 
                 {/* Bouton de soumission des modifications */}
-                <button type="submit" className="w-full flex justify-center mb-4 md:mb-10 mt-4 md:mt-10 py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">
+                <button type="submit" className="w-full flex justify-center mb-4 md:mb-10 mt-4 md:mt-8 py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">
                     Enregistrer les modifications
                 </button>
                 <button onClick={handleLogout} className="w-full flex justify-center mb-0 md:mb-10 mt-6 md:mt-10 py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"> Déconnexion </button>
