@@ -8,7 +8,8 @@ import axios from 'axios';
 
 function UserProfile() {
   const [userPreferences, setUserPreferences] = useState({
-      username: "",
+      nom: "",
+      prenom: "",
       email: "", 
       password: ""
   });
@@ -41,9 +42,10 @@ function UserProfile() {
           headers: { Authorization: `Bearer ${token}` }
         });
         setUserPreferences({
-          username: data.utilisateur.nom,
+          nom: data.utilisateur.nom,
+          prenom : data.utilisateur.prenom,
           email: data.utilisateur.email,
-          password: ""  // Supposer que le mot de passe ne doit pas être chargé pour des raisons de sécurité
+          password: ""  // le mot de passe ne doit pas être chargé pour des raisons de sécurité
         });
       } catch (error) {
         console.error('Erreur lors de la récupération des données de l\'utilisateur', error);
@@ -52,7 +54,7 @@ function UserProfile() {
     };
   
     fetchData();
-  }, [token, navigate]);  // S'assurer que `navigate` est bien ajouté aux dépendances si utilisé
+  }, [token, navigate]); 
   
 
 
@@ -121,9 +123,14 @@ function UserProfile() {
                 {/* Nom d'utilisateur et Email en lecture seule avec options de modification */}
                     <form>
                     <div className="">
-                    <label className="block text-base md:text-xl font-medium text-slate-200 mb-1">Nom d'utilisateur</label>
-                        <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.username}</span>
-                        {errors.username && <p className="text-red-500 text-xs italic">{errors.username}</p>}
+                    <label className="block text-base md:text-xl font-medium text-slate-200 mb-1">Nom</label>
+                        <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.nom}</span>
+                        {errors.username && <p className="text-red-500 text-xs italic">{errors.nom}</p>}
+                    </div>
+                    <div className="">
+                    <label className="block text-base md:text-xl font-medium text-slate-200 mb-1">Prenom</label>
+                        <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.prenom}</span>
+                        {errors.username && <p className="text-red-500 text-xs italic">{errors.prenom}</p>}
                     </div>
                     <div className="">
                     <label className="block text-base md:text-xl font-medium text-slate-200 mb-1">Email</label>
