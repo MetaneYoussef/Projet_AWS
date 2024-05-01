@@ -7,6 +7,7 @@ function FormulaireInscription() {
   const navigate = useNavigate();
   const [nom, setNom] = useState('');
   const [prenom, setPrenom] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [motDePasse, setMotDePasse] = useState('');
 
@@ -18,6 +19,7 @@ function FormulaireInscription() {
       const response = await axios.post('https://what-you-watched-backend.vercel.app/api/authRoutes/signup', {
         nom: nom,
         prenom: prenom,
+        username: username,
         email: email,
         mot_de_passe: motDePasse,
       });
@@ -62,6 +64,18 @@ function FormulaireInscription() {
                 placeholder="Walter"
                 value={prenom}
                 onChange={(e) => setPrenom(e.target.value)}
+                className="w-full p-3 rounded border border-gray-200 outline-none focus:border-purple-500"
+              />
+            </div>
+            {/* Prénom */}
+            <div>
+              <label htmlFor="username" className="block mb-1 text-white">Nom d'Utilisateur</label>
+              <input
+                id="username"
+                type="text"
+                placeholder="Walter_White000"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="w-full p-3 rounded border border-gray-200 outline-none focus:border-purple-500"
               />
             </div>

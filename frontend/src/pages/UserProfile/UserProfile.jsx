@@ -10,6 +10,7 @@ function UserProfile() {
   const [userPreferences, setUserPreferences] = useState({
       nom: "",
       prenom: "",
+      username: "",
       email: "", 
       password: ""
   });
@@ -44,6 +45,7 @@ function UserProfile() {
         setUserPreferences({
           nom: data.utilisateur.nom,
           prenom : data.utilisateur.prenom,
+          username : data.utilisateur.username,
           email: data.utilisateur.email,
           password: ""  // le mot de passe ne doit pas être chargé pour des raisons de sécurité
         });

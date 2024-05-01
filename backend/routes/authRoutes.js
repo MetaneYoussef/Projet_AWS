@@ -10,6 +10,7 @@ require('dotenv').config();
 router.post('/signup', [
     check('nom', 'Le nom est requis').not().isEmpty(),
     check('prenom', 'Le prénom est requis').not().isEmpty(),
+    check('username', 'le username est requis').not().isEmpty(),
     check('email', 'Veuillez fournir un email valide').isEmail(),
     check('mot_de_passe', 'Le mot de passe doit comporter au moins 6 caractères').isLength({ min: 6 })
 ], async(req, res) => {
