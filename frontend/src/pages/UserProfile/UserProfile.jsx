@@ -4,11 +4,13 @@ import Footer from '../../components/Footer/Footer';
 import { useAuth } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 
 function UserProfile() {
   const [userPreferences, setUserPreferences] = useState({
-      username: "AWS Projet",
-      email: "AWSProjet@email.com", 
+      username: "",
+      email: "", 
       password: ""
   });
   const [errors, setErrors] = useState({});
@@ -25,6 +27,23 @@ function UserProfile() {
       console.error('Erreur lors de la déconnexion', error);
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await axios.get('/profile', { headers: { Authorization: `Bearer ${token}` } });
+        setUserPreferences({
+          username: data.utilisateur.nom, 
+          email: data.utilisateur.email,
+          password: ""
+        });
+      } catch (error) {
+        console.error('Erreur lors de la récupération des données de l\'utilisateur', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const validateField = useCallback((name, value) => {
       let newErrors = { ...errors };

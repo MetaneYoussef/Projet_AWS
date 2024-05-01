@@ -116,4 +116,22 @@ router.post('/login', [
     }
 });
 
+router.get('/profile', async (req, res) => {
+  try {
+      const token = req.header('Authorization').replace('Bearer ', '');
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const utilisateur = await Utilisateurs.findById(decoded.utilisateur.id);
+
+      if (!utilisateur) {
+          return res.status(404).send('Utilisateur non trouvé');
+      }
+
+      res.json({ utilisateur });
+  } catch (error) {
+      console.error('Erreur serveur lors de la récupération du profil:', error.message);
+      res.status(500).send('Erreur serveur');
+  }
+});
+
+
 module.exports = router;
