@@ -16,7 +16,7 @@ function UserProfile() {
 
 
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { token, logout } = useAuth();
 
   const handleLogout = async () => {
     try {
@@ -29,26 +29,32 @@ function UserProfile() {
 
   useEffect(() => {
     const fetchData = async () => {
+      // Vérifie d'abord si le token est disponible pour éviter des appels API non autorisés
       if (!token) {
         console.error('Token non disponible, veuillez vous connecter.');
-        navigate('/connexion');
+        navigate('/connexion'); // Assure-toi que cette navigation fonctionne comme prévu
         return;
       }
+  
       try {
-        const { data } = await axios.get('https://what-you-watched-backend.vercel.app/api/authRoutes/profile', { headers: { Authorization: `Bearer ${token}` } });
+        const { data } = await axios.get('https://what-you-watched-backend.vercel.app/api/authRoutes/profile', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
         setUserPreferences({
-          username: data.utilisateur.nom, 
+          username: data.utilisateur.nom,
           email: data.utilisateur.email,
-          password: ""
+          password: ""  // Supposer que le mot de passe ne doit pas être chargé pour des raisons de sécurité
         });
       } catch (error) {
         console.error('Erreur lors de la récupération des données de l\'utilisateur', error);
         setError('Impossible de charger les données utilisateur.');
       }
     };
-
+  
     fetchData();
-  }, [token, navigate]);
+  }, [token, navigate]);  // S'assurer que `navigate` est bien ajouté aux dépendances si utilisé
+  
+
 
   const validateField = useCallback((name, value) => {
       let newErrors = { ...errors };
