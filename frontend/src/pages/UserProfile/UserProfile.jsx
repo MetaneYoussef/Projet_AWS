@@ -2,8 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import { useAuth } from '../../context/AuthContext';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -30,6 +29,11 @@ function UserProfile() {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!token) {
+        console.error('Token non disponible, veuillez vous connecter.');
+        navigate('/connexion');
+        return;
+      }
       try {
         const { data } = await axios.get('https://what-you-watched-backend.vercel.app/api/authRoutes/profile', { headers: { Authorization: `Bearer ${token}` } });
         setUserPreferences({
@@ -39,11 +43,12 @@ function UserProfile() {
         });
       } catch (error) {
         console.error('Erreur lors de la récupération des données de l\'utilisateur', error);
+        setError('Impossible de charger les données utilisateur.');
       }
     };
 
     fetchData();
-  }, []);
+  }, [token, navigate]);
 
   const validateField = useCallback((name, value) => {
       let newErrors = { ...errors };
