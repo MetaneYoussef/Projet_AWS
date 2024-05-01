@@ -31,7 +31,7 @@ function UserProfile() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get('/profile', { headers: { Authorization: `Bearer ${token}` } });
+        const { data } = await axios.get('https://what-you-watched-backend.vercel.app/api/authRoutes/profile', { headers: { Authorization: `Bearer ${token}` } });
         setUserPreferences({
           username: data.utilisateur.nom, 
           email: data.utilisateur.email,
