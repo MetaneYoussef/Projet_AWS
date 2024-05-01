@@ -67,7 +67,7 @@ function FormulaireInscription() {
                 className="w-full p-3 rounded border border-gray-200 outline-none focus:border-purple-500"
               />
             </div>
-            {/* Prénom */}
+            {/* Username */}
             <div>
               <label htmlFor="username" className="block mb-1 text-white">Nom d'Utilisateur</label>
               <input

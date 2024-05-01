@@ -33,6 +33,7 @@ router.post('/signup', [
         utilisateur = new Utilisateurs({
             nom: req.body.nom,
             prenom: req.body.prenom,
+            username: req.body.username,
             email: req.body.email,
             mot_de_passe: motDePasseHash,
             role: 'user'
@@ -44,6 +45,7 @@ router.post('/signup', [
             utilisateur: {
                 id: utilisateur._id,
                 nom: utilisateur.nom,
+                username: utilisateur.username,
                 prenom: utilisateur.prenom,
                 email: utilisateur.email,
                 role: utilisateur.role
@@ -95,6 +97,7 @@ router.post('/login', [
                 id: utilisateur._id,
                 nom: utilisateur.nom,
                 prenom: utilisateur.prenom,
+                username: utilisateur.username,
                 email: utilisateur.email,
                 role: utilisateur.role
             }
