@@ -29,6 +29,7 @@ const SearchComponentMobile = () => {
       <input
         type="text"
         placeholder="Recherchez..."
+        aria-label="Recherchez des films ou des séries"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         className="p-1.5 bg-black text-white border-2 border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300 hover:bg-black-600 transition-all duration-500 ease-in-out w-40"
