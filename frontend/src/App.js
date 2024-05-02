@@ -46,11 +46,11 @@ function App() {
           <Route path="/connexion" element={<Connexion />} />
           <Route path="/genre/:genreId" element={<GenrePage />} />
           <Route path="/films" element={<MovieHomePage />} />
-          <Route path="/films/:genre" element={<FilmsPage />} />
-          <Route path="/details/:slug/:movieId" element={<MovieDetailPage />} />
           <Route path="/series" element={<SeriesHomePage />} />
+          <Route path="/films/:genre" element={<FilmsPage />} />
           <Route path="/series/:genre" element={<Series />} />
-          <Route path="/series/detail/:seriesId" element={<SeriesDetailPage />} />
+          <Route path="/films/details/:slug/:movieId" element={<MovieDetailPage />} />
+          <Route path="/series/details/:slug/:seriesId" element={<SeriesDetailPage />} />
           <Route path="/qcm" element={<QCMHomePage />} />
           <Route path="/qcm-selection" element={<SelectionQCM />} />
           <Route path="/qcm/:type" element={<Qcm />} />

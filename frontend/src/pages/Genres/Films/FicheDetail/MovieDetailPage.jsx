@@ -178,7 +178,7 @@ function MovieDetails() {
         <h1 className='text-white text-3xl mb-4 font-semibold'>Les utilisateurs ont également regardé</h1>
         <div className="flex overflow-x-auto">
           {movie.similarMovies?.map((simMovie, index) => (
-            <Link key={index} to={`/details/${simMovie.title.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}}/${simMovie.id}`}>
+            <Link key={index} to={`films/details/${simMovie.title.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}}/${simMovie.id}`}>
               <div className="inline-block min-w-40 mr-4">
                 <img src={simMovie.poster} alt={simMovie.title} className="w-40 h-60 rounded-lg shadow-lg"/>
                 <p className="text-white mt-2">{simMovie.title}</p>
