@@ -35,7 +35,7 @@ function SeriesList({ apiPath, sort }) {
           />
             <div ref={elementRef} className='flex overflow-x-auto gap-2 md:gap-2.5 scrollbar-hide scroll-smooth pt-4 px-3 pb-4'>
               {seriesList.map((item, index) => {
-                const detailUrl = `/details/${(item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}/${item.id}`;
+                const detailUrl = `details/${(item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}/${item.id}`;
                 return (
                   <div key={index} className='inline-block item-container'>
                     <Link to={detailUrl}>
