@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "../../../../components/Header/MovieHeader";
 import Footer from "../../../../components/Footer/Footer";
+import { useWatchlist } from "../../../Watchlist/WatchlistContext";
 
 function MovieDetails() {
   const { movieId } = useParams();  // Assurez-vous que le nom du paramètre correspond à celui défini dans vos routes
@@ -146,12 +147,7 @@ function MovieDetails() {
               <p className='font-bold text-2xl antialiased'>{movie.commentCount}</p>
               <p>commentaires</p>
             </div>
-            <button
-              className="bg-black hover:bg-red-900 hover:text-white text-red-600 border-2 border-red-400 font-bold py-2 px-4 rounded mb-4 w-full"
-              onClick={() => ajouterFilmWatchlist(movie.id)}
-            >
-              + Ajouter à la Watchlist
-            </button>
+            <button className="bg-black hover:bg-red-900 hover:text-white text-red-600 border-2 border-red-400 font-bold py-2 px-4 rounded mb-4 w-full">+ Ajouter à la Watchlist</button>
             <button className="bg-black hover:bg-red-900 hover:text-white text-red-600 border-2 border-red-400 font-bold py-2 px-4 rounded w-full">Noter le film</button>
           </div>
         </div>
@@ -177,7 +173,7 @@ function MovieDetails() {
         <h1 className='text-white text-3xl mb-4 font-semibold'>Les utilisateurs ont également regardé</h1>
         <div className="flex overflow-x-auto">
           {movie.similarMovies?.map((simMovie, index) => (
-            <Link key={index} to={`/details/${simMovie.title.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}}/${simMovie.id}`}>
+            <Link key={index} to={`films/details/${simMovie.title.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}}/${simMovie.id}`}>
               <div className="inline-block min-w-40 mr-4">
                 <img src={simMovie.poster} alt={simMovie.title} className="w-40 h-60 rounded-lg shadow-lg"/>
                 <p className="text-white mt-2">{simMovie.title}</p>

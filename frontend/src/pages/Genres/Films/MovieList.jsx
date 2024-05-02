@@ -48,7 +48,7 @@ function MovieList({ genreId }) {
           {isLoading ? <LoadingSpinner /> : 
             <><div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 p-4'>
                 {movieList.map((item, index) => {
-                const detailUrl = `/details/${(item.title).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}/${item.id}`;
+                const detailUrl = `details/${(item.title).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}/${item.id}`;
                 return (
                   <div key={index} className='inline-block item-container'>
                     <Link to={detailUrl}>
