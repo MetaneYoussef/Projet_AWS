@@ -18,6 +18,8 @@ const seriesRoutes = require('./routes/series');
 const authRoutes = require('./routes/authRoutes');
 const commentairesRoutes = require('./routes/commentairesRoutes');
 const app = express();
+const questionsRoutes = require('./routes/questions');
+
 
 app.use(helmet());
 app.use(cors({
@@ -44,6 +46,8 @@ app.use('/api/films', filmsRoutes);
 app.use('/api/acteurs', acteursRoutes);
 app.use('/api/series', seriesRoutes);
 app.use('/api/commentaires', commentairesRoutes);
+app.use('/api/questions', questionsRoutes);
+
 
 // Integration de Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -58,6 +62,3 @@ mongoose.connect(process.env.DBURI)
         });
     })
     .catch((err) => { console.error(err); });
-
-
-
