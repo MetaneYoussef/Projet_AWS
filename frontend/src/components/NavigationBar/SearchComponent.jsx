@@ -17,7 +17,11 @@ const SearchComponent = ({ isExpanded, setExpanded }) => {
   const fetchData = async (query) => {
     try {
       const response = await api.searchMulti(query);
-      setResults(response.data.results);
+      const enhancedResults = response.data.results.map(item => ({
+        ...item,
+        type: item.media_type === 'movie' ? 'films' : 'series'  // Détermine le type basé sur media_type
+      }));
+      setResults(enhancedResults);
     } catch (error) {
       console.error('Erreur lors de la recherche:', error);
       setResults([]);
@@ -35,12 +39,12 @@ const SearchComponent = ({ isExpanded, setExpanded }) => {
         className="p-1.5 bg-black text-white border-2 border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300 hover:bg-black-600 transition-all duration-500 ease-in-out w-full"
       />
       {isExpanded && (
-        <button onClick={() => { setExpanded(false); setResults([]); }} className="absolute right-0 text-2xl text-white mr-4">×</button>
+        <button onClick={() => { setExpanded(false); setQuery(''); setResults([]); }} className="absolute right-0 text-2xl text-white mr-4">×</button>
       )}
       <div className={`absolute mt-2 w-80 md:w-full bg-black bg-opacity-90 text-white rounded-lg shadow-lg overflow-hidden z-10 top-full ${!isExpanded || results.length === 0 ? 'hidden' : ''}`}>
         <div className="relative z-2 w-full bg-black bg-opacity-60 px-3 sm:px-5 py-5 grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-2 sm:gap-4 mt-4 sm:mt-8">
           {results.map(item => {
-            const detailUrl = `/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}/${item.id}`;
+            const detailUrl = `/${item.type}/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}/${item.id}`;
             return (
               <Link key={item.id} to={detailUrl} className="text-center flex flex-col items-center bg-opacity-80 hover:scale-105 transition-transform duration-300 w-full">
                 <img 

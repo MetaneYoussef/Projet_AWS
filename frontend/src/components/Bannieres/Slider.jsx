@@ -7,12 +7,16 @@ const IMAGE_BASE_URL = "http://image.tmdb.org/t/p/original"
 const widthSlider = window.innerWidth
 
 export default function Slider() {
-  const [moviesList, setMoviesList] = useState([]);
+  const [itemsList, setItemsList] = useState([]);
   const imageSliderRef = useRef();
 
   useEffect(() => {
     CallApi.getVideos.then(resp => {
-      setMoviesList(resp.data.results);
+      const enhancedItems = resp.data.results.map(item => ({
+        ...item,
+        type: item.release_date ? 'film' : 'series'  // Utilisation des champs pour déterminer le type
+      }));
+      setItemsList(enhancedItems);
     });
   }, []);
 
@@ -30,8 +34,8 @@ export default function Slider() {
       <MdArrowForwardIos onClick={() => sliderRight(imageSliderRef.current)} className='hidden md:block text-white text-[25px] absolute mx-8 mt-[225px] font-bold cursor-pointer right-0 z-50'/>
       
       <div className='flex overflow-x-auto w-full px-16 py-4 scroll-smooth' ref={imageSliderRef}>
-        {moviesList.map((item, index) => {
-          const detailUrl = `/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}/${item.id}`;
+        {itemsList.map((item, index) => {
+          const detailUrl = `/${item.type === 'film' ? 'films' : 'series'}/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}/${item.id}`;
           return (
             <Link key={index} to={detailUrl} className='inline-block min-w-full mr-5'>
               <div className='relative h-[175px] md:h-[450px] rounded-md hover:border-[4px] border-gray-200 cursor-pointer transition-all'>

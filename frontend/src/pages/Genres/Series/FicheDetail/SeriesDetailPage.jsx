@@ -13,7 +13,6 @@ function SeriesDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetching data for series details including seasons and episodes
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -72,7 +71,7 @@ function SeriesDetails() {
 
   useEffect(() => {
     async function fetchSimilarSeries() {
-      const similarUrl = `https://api.themoviedb.org/3/tv/${seriesId}/similar?api_key=${api_key}&language=en-US`;
+      const similarUrl = `https://api.themoviedb.org/3/tv/${seriesId}/recommendations?api_key=${api_key}&language=en-US`;
       const response = await fetch(similarUrl);
       const data = await response.json();
       setSeries(prev => ({
@@ -114,12 +113,13 @@ function SeriesDetails() {
     }
   }, [seriesId]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!series) return <div>No data available.</div>;
+  if (loading) return <div className="flex bg-yellow-500 h-full py-1/2 text-2xl text-white font-bold justify-center" >.........</div>;
+  if (error) return <div className="bg-yellow-500">Erreur: {error}</div>;
+  if (!series) return <div className="bg-yellow-500">No data available.</div>;
 
   return (
     <div>
+      {/* Presentation de la Série */}
       <div style={{ backgroundImage: `url(${series.background})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <Header />
         <div className="flex flex-col md:flex-row p-8 bg-black bg-opacity-70 text-white rounded-xl m-5 items-center md:items-start">
@@ -166,10 +166,10 @@ function SeriesDetails() {
         ))}
       </div>
 
-      {/* Episodes List */}
+      {/* Liste des Épisodes */}
       <div className='bg-yellow-600 p-16'>
         <h1 className='text-white text-3xl mb-4'>Episodes</h1>
-        <div className="overflow-y-auto scroll-smooth grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="overflow-y-auto max-h-[368px] grid grid-cols-1 md:grid-cols-2 gap-4">
           {series.episodes.map((episode, index) => (
             <div key={index} className="bg-yellow-950 p-4 rounded-lg">
               <h2 className="text-white font-bold">{`Episode ${episode.episode_number}: ${episode.name}`}</h2>
@@ -180,12 +180,12 @@ function SeriesDetails() {
       </div>
 
       {/* Affichage de la distribution */}
-      <div className='bg-yellow-600 p-16'>
+      <div className='bg-yellow-600 px-16 md:pt-8 md:pb-10'>
         <h1 className='text-white text-3xl mb-8 font-semibold'>Distribution</h1>
         <div className="flex overflow-x-auto">
           {series.cast?.map((actor, index) => (
             <div key={index} className="flex flex-col items-center mr-4" style={{ minWidth: '200px' }}>
-              <img src={actor.photo} alt={actor.name} className="w-48 h-48 rounded-full object-cover"/>
+              <img src={actor.photo} alt={actor.name} className="w-38 h-38 md:w-48 md:h-48 rounded-full object-cover"/>
               <p className="text-white mt-2 font-extrabold text-lg text-center">{actor.name}</p>
               <p className="text-white text-center font-semibold text-sm">{actor.character}</p>
             </div>
@@ -194,13 +194,15 @@ function SeriesDetails() {
       </div>
 
       {/* Affichage des séries similaires */}
-      <div className='bg-yellow-600 p-16'>
+      <div className='bg-yellow-600 px-16 md:pt-8 md:pb-10'>
         <h1 className='text-white text-3xl mb-4 font-semibold'>Les utilisateurs ont également regardé</h1>
         <div className="flex overflow-x-auto">
           {series.similarSeries?.map((similarSeries, index) => (
             <Link key={index} to={`/series/details/${similarSeries.name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}/${similarSeries.id}`}>
               <div className="inline-block min-w-40 mr-4">
-                <img src={similarSeries.poster} alt={similarSeries.name} className="w-40 h-60 rounded-lg shadow-lg"/>
+                <img src={similarSeries.poster} alt={similarSeries.name}
+                className="w-40 h-60 rounded-lg shadow-lg"
+                />
                 <p className="text-white mt-2">{similarSeries.name}</p>
               </div>
             </Link>
