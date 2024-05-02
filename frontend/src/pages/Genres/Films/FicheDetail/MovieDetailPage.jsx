@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "../../../../components/Header/MovieHeader";
 import Footer from "../../../../components/Footer/Footer";
+import { useWatchlist } from "../../../Watchlist/WatchlistContext";
 
 function MovieDetails() {
   const { movieId } = useParams();  // Assurez-vous que le nom du paramètre correspond à celui défini dans vos routes
+  const { addToWatchlist, watchlist } = useWatchlist(); // Utilisez addToWatchlist du contexte
   const [movie, setMovie] = useState(null);
   const [comments, setComments] = useState([]);  // Si les commentaires sont chargés dynamiquement
   const api_key = "433cffe8b54a391f4a13ca5bc5baa0d0"
@@ -101,6 +103,18 @@ function MovieDetails() {
       fetchTrailer();
     }
   }, [movieId]);
+
+  const handleAddToWatchlistClick = () => {
+    if (movie) {
+      addToWatchlist({
+        id: movie.id,
+        title: movie.title,
+        poster: movie.poster,
+        type: 'films' // Assurez-vous que le type est correct selon votre contexte
+      });
+    }
+  };
+  
   
 
   if (loading) return <div className="flex bg-red-600 h-full py-1/2 text-2xl text-white font-bold justify-center" >.........</div>;
@@ -138,7 +152,7 @@ function MovieDetails() {
               <p className='font-bold text-2xl antialiased'>{movie.commentCount}</p>
               <p>commentaires</p>
             </div>
-            <button className="bg-black hover:bg-red-900 hover:text-white text-red-600 border-2 border-red-400 font-bold py-2 px-4 rounded mb-4 w-full">+ Ajouter à la Watchlist</button>
+            <button onClick={handleAddToWatchlistClick} className="bg-black hover:bg-red-900 hover:text-white text-red-600 border-2 border-red-400 font-bold py-2 px-4 rounded mb-4 w-full">+ Ajouter à la Watchlist</button>
             <button className="bg-black hover:bg-red-900 hover:text-white text-red-600 border-2 border-red-400 font-bold py-2 px-4 rounded w-full">Noter le film</button>
           </div>
         </div>

@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Switch } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import "./styles.css";
 import "./tailwind.css";
@@ -29,6 +29,7 @@ import AboutUs from "./pages/InsideFooter/AboutUs";
 import Creators from "./pages/InsideFooter/Creators";
 import Privacy from "./pages/InsideFooter/Privacy";
 {/* Autres */}
+import { WatchlistProvider } from './pages/Watchlist/WatchlistContext';
 import Signup from "./pages/Inscription/Inscription";
 import FormulaireInscription from "./pages/FormulaireInscription/FormulaireInscription";
 import UserProfile from "./pages/UserProfile/UserProfile";
@@ -40,6 +41,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+        <WatchlistProvider>
         <Routes>
           <Route path="/connexion" element={<Connexion />} />
           <Route path="/genre/:genreId" element={<GenrePage />} />
@@ -66,9 +68,9 @@ function App() {
           <Route path="*" element={<ErrorPage />} />
           <Route path="/" element={<Accueil />} />
         </Routes>
-        {/* Vous pouvez ajouter plus de sections ou de contenu ici */}
-      </Router>
-    </AuthProvider>
+      </WatchlistProvider>
+    </Router>
+  </AuthProvider> 
   );
 }
 export default App;
