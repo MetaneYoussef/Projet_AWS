@@ -15,17 +15,15 @@ function SeriesDetails() {
   const seasonRef = useRef(null);  // Référence pour la section des saisons
 
 
-  // useEffect pour charger les détails de base de la série, le cast, et les séries similaires
   useEffect(() => {
     const fetchBaseData = async () => {
       setLoading(true);
       try {
-        const baseUrl = `https://api.themoviedb.org/3/tv/${seriesId}?api_key=${api_key}&language=fr-FR&append_to_response=credits,similar`;
+        const baseUrl = `https://api.themoviedb.org/3/tv/${seriesId}?api_key=${api_key}&language=fr-FR&append_to_response=credits,recommendations`;
         const response = await fetch(baseUrl);
         const data = await response.json();
         if (data) {
-          setSeries(prev => ({
-            ...prev,
+          setSeries({
             name: data.name,
             poster: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
             background: `https://image.tmdb.org/t/p/original${data.backdrop_path}`,
@@ -35,22 +33,22 @@ function SeriesDetails() {
             watchlistCount: data.popularity,
             commentCount: data.vote_count,
             seasons: data.seasons,
+            episodes: [], // Initially empty, will be filled by the episodes fetch
             cast: data.credits.cast.map(actor => ({
               name: actor.name,
               character: actor.character,
               photo: `https://image.tmdb.org/t/p/w500${actor.profile_path}`
             })),
-            similarSeries: data.similar.results.map(series => ({
+            similarSeries: data.recommendations.results.map(series => ({
               id: series.id,
               name: series.name,
               poster: `https://image.tmdb.org/t/p/w500${series.poster_path}`
             })),
-          }));
-          setLoading(false);
+          });
         } else {
           setError("Aucune donnée disponible pour cette série");
-          setLoading(false);
         }
+        setLoading(false);
       } catch (error) {
         console.error("Erreur lors de la récupération des détails de la série", error);
         setError("Erreur lors du chargement des données");
@@ -59,6 +57,7 @@ function SeriesDetails() {
     };
     fetchBaseData();
   }, [seriesId, api_key]);
+
 
   // useEffect pour charger les épisodes spécifiques à la saison sélectionnée
   useEffect(() => {

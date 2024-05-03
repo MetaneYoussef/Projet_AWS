@@ -7,10 +7,10 @@ import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 import Affichage from './Categories/Affichage';
 
 
-// Pour chaque genre, utilisez Link pour naviguer
+// Genre Banner Component
 const GenreBanner = ({ genre }) => (
-  <Link to={`/films/${genre.name}`} className="inline-block cursor-pointer mr-4 mb-2 mt-3 bg-red-800 hover:bg-red-900 text-white">
-    <img src={genre.image} alt={genre.name} className='rounded-lg shadow-xl w-[220px] h-[150px] object-cover border-2 border-white hover:brightness-75'/>
+  <Link to={`/films/${genre.name}`} className="inline-block item-container cursor-pointer rounded-lg mr-3 md:mr-6 mb-2 mt-3 bg-red-800 hover:bg-red-900 text-white">
+    <img src={genre.image} alt={genre.name} className='rounded-lg shadow-xl w-[170px] h-[110px] md:w-[260px] md:h-[150px] object-cover border-2 border-white hover:brightness-75 hover:scale-105 transition-all duration-300'/>
   </Link>
 );
 
@@ -31,22 +31,13 @@ const MovieHomePage = () => {
     { name: "Jeunesse", image: `${process.env.PUBLIC_URL}/images/Genres/Films/Jeunesse.png` },
   ];
 
-  // Index pour le défilement des Genres
-  const [currentGenreIndex, setCurrentGenreIndex] = useState(0);
+  const scrollContainerRef = React.useRef(null);
 
-
-  // Constantes pour la taille des affiches (nécessaires aux défilemens des catégories)
-  const moveWidth3 = 5*(220 + 16); // Calcul de la distance de déplacement total par clic (CATEGORIE)
-
-  // Scroll des genres
   const scrollGenres = (direction) => {
-
-    const maxScroll = genres.length*(1/(genres.length/2));
-
-    if (direction === 'left') {
-      setCurrentGenreIndex(prevIndex => Math.max(prevIndex - 1, 0));
-    } else if (direction === 'right') {
-      setCurrentGenreIndex(prevIndex => Math.min(prevIndex + 1, maxScroll));
+    if (scrollContainerRef.current) {
+      const { scrollLeft, clientWidth } = scrollContainerRef.current;
+      const scrollBy = direction === 'left' ? -clientWidth : clientWidth;
+      scrollContainerRef.current.scrollTo({ left: scrollLeft + scrollBy, behavior: 'smooth' });
     }
   };
 
@@ -60,25 +51,21 @@ const MovieHomePage = () => {
       <div className="flex-grow bg-red-700">
         <section className="bg-red-700">
           <div className='mb-6'>
-            <h1 className="text-white text-3xl font-semibold mx-12 mb-2 mt-8 ml-20">Films</h1>
+            <h1 className="text-white text-3xl font-semibold mx-12 mb-2 mt-8 ml-8 md:ml-20">Films</h1>
             {/*LOGIQUE IMPLEMENTER POUR L'AFFICHAGE DE LA BANNIERE*/}
             <Slider />
           </div>
 
           {/*LOGIQUE IMPLEMENTER POUR L'AFFICHAGE DES GENRES*/}
-          <div className="container mx-auto">
-            <div>
-              <div className="flex items-center mb-8">
-                <FaArrowAltCircleLeft onClick={() => scrollGenres('left')} className="cursor-pointer text-white text-xl ml-8 hover:brightness-75" />
-                <div className="overflow-hidden w-full mx-5">
-                  <div className="whitespace-nowrap transition-transform duration-300" style={{ transform: `translateX(-${currentGenreIndex * moveWidth3}px)` }}>
-                    {genres.map((genre, index) => (
-                      <GenreBanner key={index} genre={genre} />
-                    ))}
-                  </div>
-                </div>
-                <FaArrowAltCircleRight onClick={() => scrollGenres('right')} className="cursor-pointer text-white text-xl mr-5 hover:brightness-75" />
+          <div className="container mx-auto px-4">
+            <div className="flex items-center mb-8">
+              <FaArrowAltCircleLeft onClick={() => scrollGenres('left')} className="hidden md:block text-3xl text-white cursor-pointer hover:opacity-75" />
+              <div ref={scrollContainerRef} className="flex overflow-x-auto scrollbar-hide scroll-smooth px-3">
+                {genres.map((genre, index) => (
+                  <GenreBanner key={index} genre={genre} />
+                ))}
               </div>
+              <FaArrowAltCircleRight onClick={() => scrollGenres('right')} className="hidden md:block text-3xl text-white cursor-pointer hover:opacity-75" />
             </div>
           </div>
           <Affichage />
