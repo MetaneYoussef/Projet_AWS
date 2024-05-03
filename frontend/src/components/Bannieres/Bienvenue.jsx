@@ -11,9 +11,14 @@ export default function Bienvenue() {
     event.preventDefault();
     try {
       const response = await api.searchMulti(query);
-      setResults(response.data.results);
+      const enhancedResults = response.data.results.map(item => ({
+        ...item,
+        type: item.media_type === 'movie' ? 'films' : 'series'  // Détermine le type basé sur media_type
+      }));
+      setResults(enhancedResults);
     } catch (error) {
       console.error('Erreur lors de la recherche:', error);
+      setResults([]);
     }
   };
 
@@ -50,7 +55,7 @@ export default function Bienvenue() {
         {results.length > 0 && (
           <div className="relative z-2 w-full bg-black px-3 sm:px-5 py-5 grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-4 rounded-xl">
           {results.map(item => {
-            const detailUrl = `/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}`;
+            const detailUrl = `/${item.type}/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}/${item.id}`;
             return (
               <Link key={item.id} to={detailUrl} className="text-center flex flex-col items-center bg-opacity-80 hover:scale-105 transition-transform duration-300 w-full">
                 <img 

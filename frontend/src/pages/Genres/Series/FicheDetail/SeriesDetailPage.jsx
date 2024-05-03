@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "../../../../components/Header/SeriesHeader";
 import Footer from "../../../../components/Footer/Footer";
@@ -12,14 +12,15 @@ function SeriesDetails() {
   const api_key = "433cffe8b54a391f4a13ca5bc5baa0d0"
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const seasonRef = useRef(null);  // Référence pour la section des saisons
 
-  // Fetching data for series details including seasons and episodes
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchBaseData = async () => {
       setLoading(true);
       try {
-        const detailsUrl = `https://api.themoviedb.org/3/tv/${seriesId}?api_key=${api_key}&language=fr-FR&append_to_response=credits,videos,similar,season/${selectedSeason}`;
-        const response = await fetch(detailsUrl);
+        const baseUrl = `https://api.themoviedb.org/3/tv/${seriesId}?api_key=${api_key}&language=fr-FR&append_to_response=credits,recommendations`;
+        const response = await fetch(baseUrl);
         const data = await response.json();
         if (data) {
           setSeries({
@@ -32,63 +33,52 @@ function SeriesDetails() {
             watchlistCount: data.popularity,
             commentCount: data.vote_count,
             seasons: data.seasons,
-            episodes: data[`season/${selectedSeason}`].episodes,
-            cast: data.credits.cast,
-            similarSeries: data.similar.results,
+            episodes: [], // Initially empty, will be filled by the episodes fetch
+            cast: data.credits.cast.map(actor => ({
+              name: actor.name,
+              character: actor.character,
+              photo: `https://image.tmdb.org/t/p/w500${actor.profile_path}`
+            })),
+            similarSeries: data.recommendations.results.map(series => ({
+              id: series.id,
+              name: series.name,
+              poster: `https://image.tmdb.org/t/p/w500${series.poster_path}`
+            })),
           });
-          setLoading(false);
         } else {
           setError("Aucune donnée disponible pour cette série");
-          setLoading(false);
         }
+        setLoading(false);
       } catch (error) {
         console.error("Erreur lors de la récupération des détails de la série", error);
         setError("Erreur lors du chargement des données");
         setLoading(false);
       }
     };
-    fetchData();
-  }, [seriesId, api_key, selectedSeason]); 
+    fetchBaseData();
+  }, [seriesId, api_key]);
 
-  useEffect(() => {
-    async function fetchCast() {
-      const castUrl = `https://api.themoviedb.org/3/tv/${seriesId}/credits?api_key=${api_key}`;
-      const response = await fetch(castUrl);
-      const data = await response.json();
-      setSeries(prev => ({
-        ...prev,
-        cast: data.cast.map(actor => ({
-          name: actor.name,
-          character: actor.character,
-          photo: `https://image.tmdb.org/t/p/w500${actor.profile_path}`
-        }))
-      }));
-    }
-  
-    if (seriesId) {
-      fetchCast();
-    }
-  }, [seriesId]);
 
+  // useEffect pour charger les épisodes spécifiques à la saison sélectionnée
   useEffect(() => {
-    async function fetchSimilarSeries() {
-      const similarUrl = `https://api.themoviedb.org/3/tv/${seriesId}/similar?api_key=${api_key}&language=en-US`;
-      const response = await fetch(similarUrl);
-      const data = await response.json();
-      setSeries(prev => ({
-        ...prev,
-        similarSeries: data.results.map(series => ({
-          id: series.id,
-          name: series.name,
-          poster: `https://image.tmdb.org/t/p/w500${series.poster_path}`
-        }))
-      }));
+    const fetchEpisodes = async () => {
+      try {
+        const seasonUrl = `https://api.themoviedb.org/3/tv/${seriesId}/season/${selectedSeason}?api_key=${api_key}&language=fr-FR`;
+        const response = await fetch(seasonUrl);
+        const data = await response.json();
+        setSeries(prev => ({
+          ...prev,
+          episodes: data.episodes
+        }));
+      } catch (error) {
+        console.error("Erreur lors de la récupération des épisodes", error);
+      }
+    };
+    if (seriesId && selectedSeason) {
+      fetchEpisodes();
     }
-  
-    if (seriesId) {
-      fetchSimilarSeries();
-    }
-  }, [seriesId]);
+  }, [seriesId, selectedSeason, api_key]);
+
 
 
   const handlePostComment = () => {
@@ -114,12 +104,13 @@ function SeriesDetails() {
     }
   }, [seriesId]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!series) return <div>No data available.</div>;
+  if (loading) return <div className="flex bg-yellow-500 h-full py-1/2 text-2xl text-white font-bold justify-center" >.........</div>;
+  if (error) return <div className="bg-yellow-500">Erreur: {error}</div>;
+  if (!series) return <div className="bg-yellow-500">No data available.</div>;
 
   return (
     <div>
+      {/* Presentation de la Série */}
       <div style={{ backgroundImage: `url(${series.background})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <Header />
         <div className="flex flex-col md:flex-row p-8 bg-black bg-opacity-70 text-white rounded-xl m-5 items-center md:items-start">
@@ -157,19 +148,19 @@ function SeriesDetails() {
       </div>
 
       {/* Episode Switcher */}
-      <div className='flex overflow-x-auto scroll-smooth bg-yellow-500 p-4 text-white'>
+      <div ref={seasonRef} className='flex overflow-x-auto scroll-smooth bg-yellow-500 p-4 text-white'>
         {series.seasons.map((season, index) => (
-          <button key={index} onClick={() => setSelectedSeason(season.season_number)} 
-                className={`mx-2 px-6 py-1 rounded-xl ${selectedSeason === season.season_number ? 'bg-yellow-700' : 'bg-yellow-500 hover:bg-yellow-600'}`}>
+          <button key={index} onClick={() => setSelectedSeason(season.season_number)}
+                  className={`mx-2 px-6 py-1 rounded-xl ${selectedSeason === season.season_number ? 'bg-yellow-700' : 'bg-yellow-500 hover:bg-yellow-600'}`}>
             Saison {season.season_number}
           </button>
         ))}
       </div>
 
-      {/* Episodes List */}
+      {/* Liste des Épisodes */}
       <div className='bg-yellow-600 p-16'>
-        <h1 className='text-white text-3xl mb-4'>Episodes</h1>
-        <div className="overflow-y-auto scroll-smooth grid grid-cols-1 md:grid-cols-2 gap-4">
+        <h1 className='text-white text-3xl mb-4 font-semibold'>Episodes</h1>
+        <div className="overflow-y-auto max-h-[368px] grid grid-cols-1 md:grid-cols-2 gap-4">
           {series.episodes.map((episode, index) => (
             <div key={index} className="bg-yellow-950 p-4 rounded-lg">
               <h2 className="text-white font-bold">{`Episode ${episode.episode_number}: ${episode.name}`}</h2>
@@ -180,12 +171,12 @@ function SeriesDetails() {
       </div>
 
       {/* Affichage de la distribution */}
-      <div className='bg-yellow-600 p-16'>
+      <div className='bg-yellow-600 py-10 px-16 md:pt-8 md:pb-10'>
         <h1 className='text-white text-3xl mb-8 font-semibold'>Distribution</h1>
         <div className="flex overflow-x-auto">
           {series.cast?.map((actor, index) => (
             <div key={index} className="flex flex-col items-center mr-4" style={{ minWidth: '200px' }}>
-              <img src={actor.photo} alt={actor.name} className="w-48 h-48 rounded-full object-cover"/>
+              <img src={actor.photo} alt={actor.name} className="w-44 h-44 md:w-48 md:h-48 rounded-full object-cover"/>
               <p className="text-white mt-2 font-extrabold text-lg text-center">{actor.name}</p>
               <p className="text-white text-center font-semibold text-sm">{actor.character}</p>
             </div>
@@ -194,13 +185,15 @@ function SeriesDetails() {
       </div>
 
       {/* Affichage des séries similaires */}
-      <div className='bg-yellow-600 p-16'>
+      <div className='bg-yellow-600 py-10 px-16 md:pt-8 md:pb-10'>
         <h1 className='text-white text-3xl mb-4 font-semibold'>Les utilisateurs ont également regardé</h1>
         <div className="flex overflow-x-auto">
           {series.similarSeries?.map((similarSeries, index) => (
             <Link key={index} to={`/series/details/${similarSeries.name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}/${similarSeries.id}`}>
               <div className="inline-block min-w-40 mr-4">
-                <img src={similarSeries.poster} alt={similarSeries.name} className="w-40 h-60 rounded-lg shadow-lg"/>
+                <img src={similarSeries.poster} alt={similarSeries.name}
+                className="w-40 h-60 rounded-lg shadow-lg"
+                />
                 <p className="text-white mt-2">{similarSeries.name}</p>
               </div>
             </Link>

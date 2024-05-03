@@ -1,99 +1,99 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import WatchlistItem from './Items';
-import { useAuth } from "../../context/AuthContext";
 
 function FilmsSection() {
-  const { user } = useAuth();
+  const [showFilmsEnCours, setShowFilmsEnCours] = useState(false); // Ajout pour gérer l'affichage de la section films "En cours"
+  const [showFilmsTerminer, setShowFilmsTerminer] = useState(false); // Ajout pour gérer l'affichage de la section films "Terminé"
+  const [showFilmsEnPause, setShowFilmsEnPause] = useState(false); // Ajout pour gérer l'affichage de la section films "En pause"
+  const [showFilmsAbandon, setShowFilmsAbandon] = useState(false); // Ajout pour gérer l'affichage de la section films "Abandon"
+  const [showFilmsPrevu, setShowFilmsPrevu] = useState(false); // Ajout pour gérer l'affichage de la section films "Prévu"
+
   const [films, setFilms] = useState({
-    enCours: [],
+    enCours: [
+      { id: 1, title: "Inception", episodeInfo: "1/1 épisodes", rating: 5, poster: "https://media.senscritique.com/media/000012872126/0/inception.jpg" },
+    ],
     terminee: [],
     enPause: [],
     abandonne: [],
     prevu: []
   });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [showFilmsEnCours, setShowFilmsEnCours] = useState(true);
-  const [showFilmsTerminee, setShowFilmsTerminee] = useState(false);
-  const [showFilmsEnPause, setShowFilmsEnPause] = useState(false);
-  const [showFilmsAbandonne, setShowFilmsAbandonne] = useState(false);
-  const [showFilmsPrevu, setShowFilmsPrevu] = useState(false);
-
-  useEffect(() => {
-    if (!user) {
-      setError('Vous devez être connecté pour voir votre watchlist.');
-      setLoading(false);
-      return;
-    }
-
-    const fetchWatchlistFilms = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(`/api/user/${user.id}/filmsWatchlist`, {
-          headers: { Authorization: `Bearer ${user.token}` }
-        });
-        setFilms({
-          enCours: response.data.enCours || [],
-          terminee: response.data.terminee || [],
-          enPause: response.data.enPause || [],
-          abandonne: response.data.abandonne || [],
-          prevu: response.data.prevu || []
-        });
-      } catch (err) {
-        setError('Erreur lors du chargement des films de la Watchlist.');
-        console.error(err);
-      }
-      setLoading(false);
-    };
-
-    fetchWatchlistFilms();
-  }, [user]);
-
-  if (loading) return <p>Chargement...</p>;
-  if (error) return <p>{error}</p>;
 
   return (
     <section id="films" className="p-4">
-      {/* En cours */}
-      <h2 className="toggle" onClick={() => setShowFilmsEnCours(!showFilmsEnCours)}>
+      {/* Toggle pour la section "En cours" des films */}
+      <h2 className="bg-black text-white text-xl font-semibold mb-4 border-4 border-red-700 p-1 rounded-md pl-4" onClick={() => setShowFilmsEnCours(!showFilmsEnCours)}>
+        <span className="mr-4 text-xl text-white font-bold">
+          {showFilmsEnCours ? '▼' : '☰'}
+        </span>
         En cours
       </h2>
-      {showFilmsEnCours && films.enCours.map(film => (
-        <WatchlistItem key={film.id} {...film} type="film" />
-      ))}
+      {showFilmsEnCours && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+          {films.enCours.map(film => (
+            <WatchlistItem key={film.id} {...film} />
+          ))}
+        </div>
+      )}
 
-      {/* Terminées */}
-      <h2 className="toggle" onClick={() => setShowFilmsTerminee(!showFilmsTerminee)}>
-        Terminées
+      {/* Toggle pour la section "Terminé" des films */}
+      <h2 className="bg-black text-white text-xl font-semibold mb-4 border-4 border-red-700 p-1 rounded-md pl-4" onClick={() => setShowFilmsTerminer(!showFilmsTerminer)}>
+        <span className="mr-4 text-xl text-white font-bold">
+          {showFilmsTerminer ? '▼' : '☰'}
+        </span>
+        Terminés
       </h2>
-      {showFilmsTerminee && films.terminee.map(film => (
-        <WatchlistItem key={film.id} {...film} type="film" />
-      ))}
+      {showFilmsTerminer && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+          {films.terminee.map(film => (
+            <WatchlistItem key={film.id} {...film} />
+          ))}
+        </div>
+      )}
 
-      {/* En Pause */}
-      <h2 className="toggle" onClick={() => setShowFilmsEnPause(!showFilmsEnPause)}>
+      {/* Toggle pour la section "En Pause" des films */}
+      <h2 className="bg-black text-white text-xl font-semibold mb-4 border-4 border-red-700 p-1 rounded-md pl-4" onClick={() => setShowFilmsEnPause(!showFilmsEnPause)}>
+        <span className="mr-4 text-xl text-white font-bold">
+          {showFilmsEnPause ? '▼' : '☰'}
+        </span>
         En Pause
       </h2>
-      {showFilmsEnPause && films.enPause.map(film => (
-        <WatchlistItem key={film.id} {...film} type="film" />
-      ))}
+      {showFilmsEnPause && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+          {films.enPause.map(film => (
+            <WatchlistItem key={film.id} {...film} />
+          ))}
+        </div>
+      )}
 
-      {/* Abandonnées */}
-      <h2 className="toggle" onClick={() => setShowFilmsAbandonne(!showFilmsAbandonne)}>
-        Abandonnées
+      {/* Toggle pour la section "Abandon" des films */}
+      <h2 className="bg-black text-white text-xl font-semibold mb-4 border-4 border-red-700 p-1 rounded-md pl-4" onClick={() => setShowFilmsAbandon(!showFilmsAbandon)}>
+        <span className="mr-4 text-xl text-white font-bold">
+          {showFilmsAbandon ? '▼' : '☰'}
+        </span>
+        Abandonnés
       </h2>
-      {showFilmsAbandonne && films.abandonne.map(film => (
-        <WatchlistItem key={film.id} {...film} type="film" />
-      ))}
+      {showFilmsAbandon && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+          {films.abandonne.map(film => (
+            <WatchlistItem key={film.id} {...film} />
+          ))}
+        </div>
+      )}
 
-      {/* Prévues */}
-      <h2 className="toggle" onClick={() => setShowFilmsPrevu(!showFilmsPrevu)}>
-        Prévues
+      {/* Toggle pour la section "Prévu" des films */}
+      <h2 className="bg-black text-white text-xl font-semibold mb-4 border-4 border-red-700 p-1 rounded-md pl-4" onClick={() => setShowFilmsPrevu(!showFilmsPrevu)}>
+        <span className="mr-4 text-xl text-white font-bold">
+          {showFilmsPrevu ? '▼' : '☰'}
+        </span>
+        Prévus
       </h2>
-      {showFilmsPrevu && films.prevu.map(film => (
-        <WatchlistItem key={film.id} {...film} type="film" />
-      ))}
+      {showFilmsPrevu && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+          {films.prevu.map(film => (
+            <WatchlistItem key={film.id} {...film} />
+          ))}
+        </div>
+      )}                                
     </section>
   );
 }

@@ -15,9 +15,14 @@ function ItemsList({ apiPath }) {
     const fetchItems = async () => {
       try {
         const resp = await callApi.getCategBaseURL(apiPath);
-        setItems(resp.data.results);
+        const enhancedItems = resp.data.results.map(item => ({
+          ...item,
+          type: item.release_date ? 'film' : 'series',  // Distinguer films et séries
+          detailUrl: `/${item.release_date ? 'films' : 'series'}/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}/${item.id}`
+        }));
+        setItems(enhancedItems);
       } catch (err) {
-          console.error("Erreur lors de la récupération des données", err);
+        console.error("Erreur lors de la récupération des données", err);
       }
     };
     fetchItems();
@@ -38,10 +43,9 @@ function ItemsList({ apiPath }) {
             />
             <div ref={elementRef} className='flex overflow-x-auto gap-2 md:gap-1.75 scrollbar-hide scroll-smooth py-4 px-3'>
               {items.map((item, index) => {
-                const detailUrl = `/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}`;
                 return (
                   <div key={index} className='inline-block item-container'>
-                    <Link to={detailUrl}>
+                    <Link to={item.detailUrl}>
                       <Card movie={item} />
                     </Link>
                   </div>
