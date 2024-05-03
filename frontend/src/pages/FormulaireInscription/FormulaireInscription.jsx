@@ -35,9 +35,21 @@ function FormulaireInscription() {
     <div className="relative bg-black overflow-hidden h-screen">
       <div className="flex items-center justify-center h-full">
         <div className="bg-cover bg-center w-full h-full absolute" style={{ backgroundImage: 'url("/images/SignUp_Background.png")' }}></div>
-        
+        {/* LOGO GAUCHE */}
+        <div className="absolute z-30 top-0 xl:top-56 mt-4 md:mr-80 lg:mr-64 xl:mr-80 flex justify-start md:w-1/2">
+          <a href="/">
+            <img src="/images/RondSansFond.png" alt="Logo" className="xl:brightness-50 w-28 h-28 -mt-4 mr-96 sm:w-24 sm:h-24 md:-mt-4 md:ml-28 md:w-28 md:h-28 lg:-mt-4 lg:ml-40 xl:w-48 xl:h-48 xl:ml-0" />
+          </a>
+        </div>
+        {/* LOGO DROITE */}
+        <div className="relative z-30 hidden xl:flex top-0 lg:ml-80 justify-end w-1/2">
+          <a href="/">
+            <img src="/images/RondSansFond.png" alt="Logo" className="brightness-50 w-24 h-24 sm:w-24 sm:h-24 md:w-32 md:h-32 lg:w-36 lg:h-36 lg:mr-24 xl:w-48 xl:h-48 xl:mr-0" />
+          </a>
+        </div>
+
 				<div className="z-10 absolute w-full h-full bg-black opacity-55"></div>
-        <div className="z-20 p-4 sm:p-8 m-4 w-full max-w-md bg-gray-700 rounded-lg shadow-lg relative">
+        <div className="z-10 p-4 sm:p-8 m-4 w-full max-w-md bg-gray-700 rounded-lg shadow-lg absolute">
           <div className="text-center text-white mb-4">
             <h1 className="text-2xl md:text-3xl font-semibold">Inscription</h1>
             <p className="text-base">Inscrivez-vous pour commencer votre aventure</p>
