@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "../../../../components/Header/SeriesHeader";
 import Footer from "../../../../components/Footer/Footer";
@@ -12,16 +12,20 @@ function SeriesDetails() {
   const api_key = "433cffe8b54a391f4a13ca5bc5baa0d0"
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const seasonRef = useRef(null);  // Référence pour la section des saisons
 
+
+  // useEffect pour charger les détails de base de la série, le cast, et les séries similaires
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchBaseData = async () => {
       setLoading(true);
       try {
-        const detailsUrl = `https://api.themoviedb.org/3/tv/${seriesId}?api_key=${api_key}&language=fr-FR&append_to_response=credits,videos,similar,season/${selectedSeason}`;
-        const response = await fetch(detailsUrl);
+        const baseUrl = `https://api.themoviedb.org/3/tv/${seriesId}?api_key=${api_key}&language=fr-FR&append_to_response=credits,similar`;
+        const response = await fetch(baseUrl);
         const data = await response.json();
         if (data) {
-          setSeries({
+          setSeries(prev => ({
+            ...prev,
             name: data.name,
             poster: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
             background: `https://image.tmdb.org/t/p/original${data.backdrop_path}`,
@@ -31,10 +35,17 @@ function SeriesDetails() {
             watchlistCount: data.popularity,
             commentCount: data.vote_count,
             seasons: data.seasons,
-            episodes: data[`season/${selectedSeason}`].episodes,
-            cast: data.credits.cast,
-            similarSeries: data.similar.results,
-          });
+            cast: data.credits.cast.map(actor => ({
+              name: actor.name,
+              character: actor.character,
+              photo: `https://image.tmdb.org/t/p/w500${actor.profile_path}`
+            })),
+            similarSeries: data.similar.results.map(series => ({
+              id: series.id,
+              name: series.name,
+              poster: `https://image.tmdb.org/t/p/w500${series.poster_path}`
+            })),
+          }));
           setLoading(false);
         } else {
           setError("Aucune donnée disponible pour cette série");
@@ -46,48 +57,29 @@ function SeriesDetails() {
         setLoading(false);
       }
     };
-    fetchData();
-  }, [seriesId, api_key, selectedSeason]); 
+    fetchBaseData();
+  }, [seriesId, api_key]);
 
+  // useEffect pour charger les épisodes spécifiques à la saison sélectionnée
   useEffect(() => {
-    async function fetchCast() {
-      const castUrl = `https://api.themoviedb.org/3/tv/${seriesId}/credits?api_key=${api_key}`;
-      const response = await fetch(castUrl);
-      const data = await response.json();
-      setSeries(prev => ({
-        ...prev,
-        cast: data.cast.map(actor => ({
-          name: actor.name,
-          character: actor.character,
-          photo: `https://image.tmdb.org/t/p/w500${actor.profile_path}`
-        }))
-      }));
+    const fetchEpisodes = async () => {
+      try {
+        const seasonUrl = `https://api.themoviedb.org/3/tv/${seriesId}/season/${selectedSeason}?api_key=${api_key}&language=fr-FR`;
+        const response = await fetch(seasonUrl);
+        const data = await response.json();
+        setSeries(prev => ({
+          ...prev,
+          episodes: data.episodes
+        }));
+      } catch (error) {
+        console.error("Erreur lors de la récupération des épisodes", error);
+      }
+    };
+    if (seriesId && selectedSeason) {
+      fetchEpisodes();
     }
-  
-    if (seriesId) {
-      fetchCast();
-    }
-  }, [seriesId]);
+  }, [seriesId, selectedSeason, api_key]);
 
-  useEffect(() => {
-    async function fetchSimilarSeries() {
-      const similarUrl = `https://api.themoviedb.org/3/tv/${seriesId}/recommendations?api_key=${api_key}&language=en-US`;
-      const response = await fetch(similarUrl);
-      const data = await response.json();
-      setSeries(prev => ({
-        ...prev,
-        similarSeries: data.results.map(series => ({
-          id: series.id,
-          name: series.name,
-          poster: `https://image.tmdb.org/t/p/w500${series.poster_path}`
-        }))
-      }));
-    }
-  
-    if (seriesId) {
-      fetchSimilarSeries();
-    }
-  }, [seriesId]);
 
 
   const handlePostComment = () => {
@@ -157,10 +149,10 @@ function SeriesDetails() {
       </div>
 
       {/* Episode Switcher */}
-      <div className='flex overflow-x-auto scroll-smooth bg-yellow-500 p-4 text-white'>
+      <div ref={seasonRef} className='flex overflow-x-auto scroll-smooth bg-yellow-500 p-4 text-white'>
         {series.seasons.map((season, index) => (
-          <button key={index} onClick={() => setSelectedSeason(season.season_number)} 
-                className={`mx-2 px-6 py-1 rounded-xl ${selectedSeason === season.season_number ? 'bg-yellow-700' : 'bg-yellow-500 hover:bg-yellow-600'}`}>
+          <button key={index} onClick={() => setSelectedSeason(season.season_number)}
+                  className={`mx-2 px-6 py-1 rounded-xl ${selectedSeason === season.season_number ? 'bg-yellow-700' : 'bg-yellow-500 hover:bg-yellow-600'}`}>
             Saison {season.season_number}
           </button>
         ))}
@@ -180,12 +172,12 @@ function SeriesDetails() {
       </div>
 
       {/* Affichage de la distribution */}
-      <div className='bg-yellow-600 px-16 md:pt-8 md:pb-10'>
+      <div className='bg-yellow-600 py-10 px-16 md:pt-8 md:pb-10'>
         <h1 className='text-white text-3xl mb-8 font-semibold'>Distribution</h1>
         <div className="flex overflow-x-auto">
           {series.cast?.map((actor, index) => (
             <div key={index} className="flex flex-col items-center mr-4" style={{ minWidth: '200px' }}>
-              <img src={actor.photo} alt={actor.name} className="w-38 h-38 md:w-48 md:h-48 rounded-full object-cover"/>
+              <img src={actor.photo} alt={actor.name} className="w-44 h-44 md:w-48 md:h-48 rounded-full object-cover"/>
               <p className="text-white mt-2 font-extrabold text-lg text-center">{actor.name}</p>
               <p className="text-white text-center font-semibold text-sm">{actor.character}</p>
             </div>
@@ -194,7 +186,7 @@ function SeriesDetails() {
       </div>
 
       {/* Affichage des séries similaires */}
-      <div className='bg-yellow-600 px-16 md:pt-8 md:pb-10'>
+      <div className='bg-yellow-600 py-10 px-16 md:pt-8 md:pb-10'>
         <h1 className='text-white text-3xl mb-4 font-semibold'>Les utilisateurs ont également regardé</h1>
         <div className="flex overflow-x-auto">
           {series.similarSeries?.map((similarSeries, index) => (
