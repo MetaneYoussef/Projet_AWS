@@ -159,7 +159,7 @@ function SeriesDetails() {
 
       {/* Liste des Épisodes */}
       <div className='bg-yellow-600 p-16'>
-        <h1 className='text-white text-3xl mb-4'>Episodes</h1>
+        <h1 className='text-white text-3xl mb-4 font-semibold'>Episodes</h1>
         <div className="overflow-y-auto max-h-[368px] grid grid-cols-1 md:grid-cols-2 gap-4">
           {series.episodes.map((episode, index) => (
             <div key={index} className="bg-yellow-950 p-4 rounded-lg">
