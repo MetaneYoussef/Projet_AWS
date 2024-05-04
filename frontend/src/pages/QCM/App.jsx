@@ -1,17 +1,16 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './QCM/Home'; // Chemin mis à jour pour Home.jsx
-import QCM from './QCM/QCM'; // Chemin mis à jour pour QCM.jsx
-import RecommendationsPage from './QCM/RecommendationsPage'; // Chemin mis à jour pour RecommendationsPage.jsx
+import HomePage from './components/HomePage';
+import QuestionPage from './components/QuestionPage';
+import RecommendationsPage from './components/RecommendationsPage';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/questions/:type" element={<QCM />} />
-        <Route path="/recommendations/:type" element={<RecommendationsPage />} />
-        {/* Ajouter d'autres routes si nécessaire */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/questions/:type" element={<SelectionQCM />} />
+        <Route path="/recommendations/:type" element={<ResultsPage />} />
       </Routes>
     </Router>
   );

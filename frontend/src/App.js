@@ -7,7 +7,6 @@ import Connexion from "./pages/Connexion/Connexion";
 import FilmsPage from "./pages/Genres/Films/PageFilms";
 import Series from "./pages/Genres/Series/PageSeries";
 import Accueil from "./pages/Accueil/Accueil";
-import QCMHomePage from "./pages/QCM/Home";
 import Evenement from "./pages/Divers/Evenement";
 import Watchlist from "./pages/Watchlist/Watchlist"; { /* Liens des Pages de Films et Séries */ }
 import GenrePage from "./pages/Genres/GenresPage";
@@ -15,8 +14,9 @@ import MovieHomePage from "./pages/Genres/Films/AccueilFilm";
 import SeriesHomePage from "./pages/Genres/Series/AccueilSeries";
 import MovieDetailPage from "./pages/Genres/Films/FicheDetail/MovieDetailPage";
 import SeriesDetailPage from "./pages/Genres/Series/FicheDetail/SeriesDetailPage"; { /* QCM */ }
+import SelectionQCM from "./pages/QCM/SelectionQCM";
 import Qcm from "./pages/QCM/QCM";
-import RecommendationsPage from "./pages/QCM/RecommendationsPage"; { /* Liens du Footer */ }
+import RecommendationsPage from "./pages/QCM/ResultsPage"; { /* Liens du Footer */ }
 import Contact from "./pages/InsideFooter/Contact";
 import FAQ from "./pages/Inscription/FAQ";
 import AboutUs from "./pages/InsideFooter/AboutUs";
@@ -64,10 +64,13 @@ function App() {
         Route path = "/series/details/:slug/:seriesId"
         element = { < SeriesDetailPage / > }
         /> <
-        Route path = "/questions"
-        element = { < QCMHomePage / > }
+        Route path = "/qcm"
+        element = { < Qcm / > }
         /> <
         Route path = "/questions/:type"
+        element = { < SelectionQCM / > }
+        /> <
+        Route path = "/qcm/:type"
         element = { < Qcm / > }
         /> <
         Route path = "/recommendations/:type"
