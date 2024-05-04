@@ -1,30 +1,42 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Header from '../../components/Header/QcmHeader';
-import Footer from '../../components/Footer/Footer';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const QcmSelectionPage = () => {
+function SelectionQCM() {
+  const { type } = useParams();
+  const [questions, setQuestions] = useState([]);
+  const [answers, setAnswers] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    axios.get(`/api/${type}/questions`)
+      .then(response => setQuestions(response.data))
+      .catch(error => console.error('Error fetching questions:', error));
+  }, [type]);
+
+  const handleAnswer = (answer, questionId) => {
+    setAnswers([...answers, { questionId, answer }]);
+  };
+
+  const handleSubmit = () => {
+    axios.post('/api/recommendations', { answers, type })
+      .then(response => navigate(`/recommendations/${type}`, { state: { recommendations: response.data } }))
+      .catch(error => console.error('Error submitting answers:', error));
+  };
 
   return (
     <div>
-      <Header />
-      <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-b from-blue-700 to-blue-400 text-white">
-        <h2 className="text-4xl sm:text-5xl font-bold mb-14 -mt-36">Choisissez votre QCM</h2>
-        <button 
-          onClick={() => navigate('/qcm/films') } 
-          className="bg-white border-4 text-red-700 text-2xl font-bold py-6 px-32 rounded-xl mb-6 hover:bg-blue-900 hover:text-white transition duration-300 ease-in-out">
-          FILMS
-        </button>
-        <button 
-          onClick={() => navigate('/qcm/series')} 
-          className="bg-white border-4 text-yellow-600 text-2xl font-bold py-6 px-32 rounded-xl hover:bg-blue-900 hover:text-white transition duration-300 ease-in-out">
-          SERIES
-        </button>
-      </div>
-      <Footer />
+      {questions.map((question) => (
+        <div key={question._id}>
+          <h2>{question.question}</h2>
+          {question.options.map(option => (
+            <button key={option} onClick={() => handleAnswer(option, question._id)}>{option}</button>
+          ))}
+        </div>
+      ))}
+      <button onClick={handleSubmit}>Submit Answers</button>
     </div>
   );
-};
+}
 
-export default QcmSelectionPage;
+export default SelectionQCM;
