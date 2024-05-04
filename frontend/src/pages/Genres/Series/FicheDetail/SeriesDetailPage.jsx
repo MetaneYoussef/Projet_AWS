@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "../../../../components/Header/SeriesHeader";
 import Footer from "../../../../components/Footer/Footer";
+import { useWatchlist } from '../../../Watchlist/WatchlistContext';
+
 
 function SeriesDetails() {
   const { seriesId } = useParams();
@@ -14,6 +16,35 @@ function SeriesDetails() {
   const [error, setError] = useState(null);
   const seasonRef = useRef(null);  // Référence pour la section des saisons
 
+  {/*GESTTION DE LA WATCHLIST*/}
+  const { watchlist, addToWatchlist, removeFromWatchlist, updateStatus, updateRating } = useWatchlist();
+  const seriesInWatchlist = watchlist.series.find(m => m.id === seriesId);
+  {/*GESTION DE LA NOTATION*/}
+  const [rating, setRating] = useState(seriesInWatchlist ? seriesInWatchlist.rating : '');
+
+  const handleAddToWatchlist = () => {
+    const item = {
+      id: seriesId,
+      title: series.name,
+      poster: series.poster
+    };
+    addToWatchlist(item, 'series');
+  };
+
+  const handleChangeStatus = (event) => {
+    if (event.target.value === 'Supprimer') {
+        removeFromWatchlist(seriesId, 'series');
+    } else {
+        updateStatus(seriesId, 'series', event.target.value);
+    }
+  };
+
+  {/*Notation*/}
+  const handleRatingChange = (e) => {
+    const newRating = e.target.value;
+    setRating(newRating);
+    updateRating(seriesId, newRating);
+  };
 
   useEffect(() => {
     const fetchBaseData = async () => {
@@ -140,8 +171,50 @@ function SeriesDetails() {
               <p className='font-bold text-2xl antialiased'>{series.commentCount}</p>
               <p>commentaires</p>
             </div>
-            <button className="bg-black hover:bg-yellow-900 hover:text-white text-yellow-600 border-2 border-yellow-400 font-bold py-2 px-4 rounded mb-4 w-full">+ Ajouter à la Watchlist</button>
-            <button className="bg-black hover:bg-yellow-900 hover:text-white text-yellow-600 border-2 border-yellow-400 font-bold py-2 px-4 rounded w-full">Noter le film</button>
+            <div>
+            {seriesInWatchlist ? (
+                <select onChange={handleChangeStatus} value={seriesInWatchlist.status} className="bg-yellow-900 hover:bg-yellow-950 text-white text-center border-2 border-yellow-400 font-bold py-2 px-24 rounded mb-4 w-max">
+                    <option value="En Cours" className="font-medium text-white bg-yellow-900">En Cours</option>
+                    <option value="Terminé" className="font-medium text-white bg-yellow-900">Terminé</option>
+                    <option value="En Pause" className="font-medium text-white bg-yellow-900">En Pause</option>
+                    <option value="Abandonné" className="font-medium text-white bg-yellow-900">Abandonné</option>
+                    <option value="Prévu" className="font-medium text-white bg-yellow-900">Prévu</option>
+                    <option value="Supprimer" className="font-bold text-white bg-yellow-950">Supprimer</option> {/* Option pour supprimer le film */}
+                </select>
+            ) : (
+                <button onClick={handleAddToWatchlist} className="bg-black hover:bg-yellow-900 hover:text-white text-yellow-600 border-2 border-yellow-400 font-bold py-2 px-16 rounded mb-4 w-max">
+                    + Ajouter à la Watchlist
+                </button>
+                )}
+            </div>            
+            <div>
+            {seriesInWatchlist ? (
+            <>
+              <div className="flex flex-row space-x-4">
+                <div className="bg-yellow-900 text-white border-2 border-yellow-400 font-bold py-2 px-4 rounded w-full flex items-center justify-between">
+                  <select value={rating} onChange={handleRatingChange} className="bg-yellow-900 text-white text-center border-2 border-yellow-400 font-bold py-2 rounded w-max">
+                    <option value="">Non noté</option>
+                    {Array.from({ length: 10 }, (_, i) => i + 1).map(number => (
+                      <option key={number} value={number}>{number}</option>
+                    ))}
+                  </select>
+                  <span className="ml-1 text-xl">/10</span>
+                </div>
+                <div className="bg-yellow-900 text-white border-2 border-yellow-400 font-bold py-2 px-4 rounded w-full">
+                  <label htmlFor="episode-select" className="mr-2">Épisodes:</label>
+                  <select id="episode-select" value={seriesInWatchlist?.watchedEpisodes || 0} className="bg-yellow-900 text-white border-2 border-yellow-400 font-bold py-2 rounded w-full">
+                    <option value="0">Non visionné</option>
+                    <option value="1">Visionné</option>
+                  </select>
+                </div>
+              </div>
+            </>
+            ) : (
+              <button className="bg-black hover:bg-yellow-900 hover:text-white text-yellow-600 border-2 border-yellow-400 font-bold py-2 px-[105px] rounded mb-4 w-max">
+                Noter le film
+              </button>
+            )}
+          </div>
           </div>
         </div>
         <br />

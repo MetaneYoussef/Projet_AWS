@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "../../../../components/Header/MovieHeader";
 import Footer from "../../../../components/Footer/Footer";
+import { useWatchlist } from '../../../Watchlist/WatchlistContext';
+
 
 function MovieDetails() {
   const { movieId } = useParams();  // Assurez-vous que le nom du paramètre correspond à celui défini dans vos routes
@@ -12,7 +14,67 @@ function MovieDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  {/*GESTION DE LA WATCHLIST*/}
+  const { watchlist, addToWatchlist, removeFromWatchlist, updateStatus, updateRating } = useWatchlist();
+  const movieInWatchlist = watchlist.movies.find(m => m.id === movieId);
+  {/*GESTION DE LA NOTATION*/}
+  const [rating, setRating] = useState(movieInWatchlist ? movieInWatchlist.rating : '');
+  {/*GESTION DES ÉPISODES*/}
+  const [currentEpisode, setCurrentEpisode] = useState(movieInWatchlist ? movieInWatchlist.watchedEpisodes : 0);
 
+
+  {/*Watchlist*/}
+  useEffect(() => {
+    if (movieInWatchlist && movieInWatchlist.rating) {
+      setRating(movieInWatchlist.rating);
+    } else {
+      setRating(''); // Réinitialiser la sélection quand il n'y a pas de note
+    }
+  }, [movieInWatchlist]);
+
+  useEffect(() => {
+    if (movieInWatchlist) {
+      setCurrentEpisode(movieInWatchlist.watchedEpisodes);
+    }
+  }, [movieInWatchlist?.watchedEpisodes]); // S'assurer de surveiller le bon attribut pour les re-rendus
+  
+  
+
+  {/*Notation*/}
+  const handleRatingChange = (e) => {
+    const newRating = e.target.value;
+    setRating(newRating);
+    updateRating(movieId, newRating);
+  };
+
+  const handleEpisodeChange = (e) => {
+    const newEpisodeCount = parseInt(e.target.value);
+    setCurrentEpisode(newEpisodeCount);  // Mettre à jour l'état local pour refléter le nouvel épisode regardé
+    if (newEpisodeCount === 1) {
+      updateStatus(movieId, 'movie', 'Terminé');  // Mettre à jour le statut du film comme "Terminé"
+    }
+  };
+
+  const handleAddToWatchlist = () => {
+    const item = {
+      id: movieId,
+      title: movie.title,
+      poster: movie.poster,
+      totalEpisodes: 1,  // Assuming one episode per movie
+      watchedEpisodes: 0
+    };
+    addToWatchlist(item, 'movie');
+  };
+
+  const handleChangeStatus = (event) => {
+    if (event.target.value === 'Supprimer') {
+        removeFromWatchlist(movieId, 'movie');
+    } else {
+        updateStatus(movieId, 'movie', event.target.value);
+    }
+  };
+
+  {/*MovieDetails*/}
   useEffect(() => {
     const fetchMovieDetails = async () => {
       setLoading(true);
@@ -44,6 +106,7 @@ function MovieDetails() {
     fetchMovieDetails();
   }, [movieId, api_key]);
 
+  {/*Casting*/}
   useEffect(() => {
     const fetchCast = async () => {
       const castUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${api_key}`;
@@ -61,6 +124,7 @@ function MovieDetails() {
     fetchCast();
   }, [movieId, api_key]);
 
+  {/*Recommandations*/}
   useEffect(() => {
     const fetchSimilarMovies = async () => {
       const similarUrl = `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${api_key}&language=en-US`;
@@ -85,6 +149,7 @@ function MovieDetails() {
     }
   };
   
+    {/*Trailer*/}
   useEffect(() => {
     const fetchTrailer = async () => {
       const trailerUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${api_key}&language=fr-FR`;
@@ -137,9 +202,49 @@ function MovieDetails() {
               <p className='font-bold text-2xl antialiased'>{movie.commentCount}</p>
               <p>commentaires</p>
             </div>
-            <button className="bg-black hover:bg-red-900 hover:text-white text-red-600 border-2 border-red-400 font-bold py-2 px-4 rounded mb-4 w-full">+ Ajouter à la Watchlist</button>
-            <button className="bg-black hover:bg-red-900 hover:text-white text-red-600 border-2 border-red-400 font-bold py-2 px-4 rounded w-full">Noter le film</button>
+            <div>
+            {movieInWatchlist ? (
+                <select onChange={handleChangeStatus} value={movieInWatchlist.status} className="bg-red-900 hover:bg-red-950 text-white text-center border-2 border-red-400 font-bold py-2 px-24 rounded mb-4 w-max">
+                    <option value="Prévu" className="font-medium text-white bg-red-900">Prévu</option>
+                    <option value="Terminé" className="font-medium text-white bg-red-900">Terminé</option>
+                    <option value="Abandonné" className="font-medium text-white bg-red-900">Abandonné</option>
+                    <option value="Supprimer" className="font-bold text-white bg-red-950">Supprimer</option> {/* Option pour supprimer le film */}
+                </select>
+            ) : (
+                <button onClick={handleAddToWatchlist} className="bg-black hover:bg-red-900 hover:text-white text-red-600 border-2 border-red-400 font-bold py-2 px-16 rounded mb-4 w-max">
+                    + Ajouter à la Watchlist
+                </button>
+                )}
+            </div>
+            <div>
+            {movieInWatchlist ? (
+            <>
+              <div className="flex flex-row space-x-4">
+                <div className="bg-red-900 text-white border-2 border-red-400 font-bold py-2 px-4 rounded w-full flex items-center justify-between">
+                  <select value={rating} onChange={handleRatingChange} className="bg-red-900 text-white text-center border-2 border-red-400 font-bold py-2 rounded w-max">
+                    <option value="">Non noté</option>
+                    {Array.from({ length: 10 }, (_, i) => i + 1).map(number => (
+                      <option key={number} value={number}>{number}</option>
+                    ))}
+                  </select>
+                  <span className="ml-1 text-xl">/10</span>
+                </div>
+                <div className="bg-red-900 text-white border-2 border-red-400 font-bold py-2 px-4 rounded w-full">
+                  <label htmlFor="episode-select" className="mr-2">Épisodes:</label>
+                  <select id="episode-select" onChange={handleEpisodeChange} value={movieInWatchlist?.watchedEpisodes || 0} className="bg-red-900 text-white border-2 border-red-400 font-bold py-2 rounded w-full">
+                    <option value="0">Non visionné</option>
+                    <option value="1">Visionné</option>
+                  </select>
+                </div>
+              </div>
+            </>
+            ) : (
+              <button className="bg-black hover:bg-red-900 hover:text-white text-red-600 border-2 border-red-400 font-bold py-2 px-[105px] rounded mb-4 w-max">
+                Noter le film
+              </button>
+            )}
           </div>
+        </div>
         </div>
         <br />
       </div>

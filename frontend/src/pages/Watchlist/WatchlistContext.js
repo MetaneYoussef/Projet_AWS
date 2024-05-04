@@ -1,64 +1,83 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import axios from 'axios';
+import React, { createContext, useState, useContext } from 'react';
 
 const WatchlistContext = createContext();
 
-export const WatchlistProvider = ({ children }) => {
-    const [watchlist, setWatchlist] = useState({
-        films: [],
-        series: []
-    });
-
-    const fetchWatchlist = useCallback(async (userId, token) => {
-        try {
-            const filmsResponse = await axios.get(`/api/user/${userId}/filmsWatchlist`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            const seriesResponse = await axios.get(`/api/user/${userId}/seriesWatchlist`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setWatchlist({
-                films: filmsResponse.data,
-                series: seriesResponse.data
-            });
-        } catch (error) {
-            console.error('Failed to fetch watchlist:', error);
-        }
-    }, []);
-
-    const addToWatchlist = useCallback(async (userId, token, item, type) => {
-        try {
-            const response = await axios.post(`/api/user/${userId}/${type}Watchlist`, item, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setWatchlist(prev => ({
-                ...prev,
-                [type]: [...prev[type], response.data]
-            }));
-        } catch (error) {
-            console.error('Failed to add to watchlist:', error);
-        }
-    }, []);
-
-    const removeFromWatchlist = useCallback(async (userId, token, tmdbId, type) => {
-        try {
-            await axios.delete(`/api/user/${userId}/${type}Watchlist/${tmdbId}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setWatchlist(prev => ({
-                ...prev,
-                [type]: prev[type].filter(item => item.tmdbId !== tmdbId)
-            }));
-        } catch (error) {
-            console.error('Failed to remove from watchlist:', error);
-        }
-    }, []);
-
-    return (
-        <WatchlistContext.Provider value={{ watchlist, fetchWatchlist, addToWatchlist, removeFromWatchlist }}>
-            {children}
-        </WatchlistContext.Provider>
-    );
-};
-
 export const useWatchlist = () => useContext(WatchlistContext);
+
+export const WatchlistProvider = ({ children }) => {
+  const [watchlist, setWatchlist] = useState({ movies: [], series: [] });
+
+  const addToWatchlist = (item, type) => {
+    const newItem = { ...item, status: 'Prévu', watchedEpisodes: 0, totalEpisodes: type === 'movie' ? 1 : item.totalEpisodes };
+    if (type === 'movie') {
+        if (!watchlist.movies.some(movie => movie.id === item.id)) {
+            setWatchlist(prev => ({ ...prev, movies: [...prev.movies, newItem] }));
+        } else {
+            alert("Ce film est déjà dans votre Watchlist!");
+        }
+    } else {
+        if (!watchlist.series.some(serie => serie.id === item.id)) {
+            setWatchlist(prev => ({ ...prev, series: [...prev.series, newItem] }));
+        } else {
+            alert("Cette série est déjà dans votre Watchlist!");
+        }
+    }
+  };
+
+  const removeFromWatchlist = (id, type) => {
+    if (type === 'movie') {
+        setWatchlist(prev => ({ ...prev, movies: prev.movies.filter(item => item.id !== id) }));
+    } else {
+        setWatchlist(prev => ({ ...prev, series: prev.series.filter(item => item.id !== id) }));
+    }
+  };
+
+  const updateStatus = (id, type, newStatus) => {
+    if (type === 'movie') {
+        setWatchlist(prev => ({
+            ...prev,
+            movies: prev.movies.map(movie => movie.id === id ? { ...movie, status: newStatus } : movie)
+        }));
+    } else {
+        setWatchlist(prev => ({
+            ...prev,
+            series: prev.series.map(serie => serie.id === id ? { ...serie, status: newStatus } : serie)
+        }));
+    }
+  };
+
+  const updateRating = (id, newRating) => {
+    setWatchlist(prev => ({
+      ...prev,
+      movies: prev.movies.map(movie =>
+        movie.id === id ? { ...movie, rating: newRating } : movie
+      )
+    }));
+  };
+
+  const updateWatchedEpisodes = (id, type, watchedEpisodes) => {
+    setWatchlist(prev => {
+      return {
+        ...prev,
+        movies: prev.movies.map(movie => {
+          if (movie.id === id) {
+            const updatedMovie = {
+              ...movie,
+              watchedEpisodes: parseInt(watchedEpisodes),
+              status: parseInt(watchedEpisodes) === movie.totalEpisodes ? 'Terminé' : movie.status
+            };
+            return updatedMovie;
+          }
+          return movie;
+        })
+      };
+    });
+  };
+  
+
+  return (
+    <WatchlistContext.Provider value={{ watchlist, addToWatchlist,removeFromWatchlist, updateStatus, updateRating, updateWatchedEpisodes}}>
+      {children}
+    </WatchlistContext.Provider>
+  );
+};
