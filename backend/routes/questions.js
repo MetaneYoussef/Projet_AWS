@@ -64,6 +64,7 @@ router.get('/initial', (req, res) => {
 
 // Route pour récupérer des questions aléatoires basées sur le type (film ou série)
 router.get('/:type/questions', async(req, res) => {
+    console.log("Received type:", req.params.type); // Cela devrait afficher 'film' ou 'série'
     const { type } = req.params; // 'film' ou 'série'
     let questionType = type === 'film' ? 'film' : 'series'; // Adapter le type de question
 

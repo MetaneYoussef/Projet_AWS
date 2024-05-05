@@ -13,16 +13,16 @@ const Qcm = () => {
   const [isQuizFinished, setIsQuizFinished] = useState(false);
   const [isAnswerSelected, setIsAnswerSelected] = useState(false);
   const [key, setKey] = useState(0);
-
-  useEffect(() => {
-    async function fetchQuestions() {
-      try {
-        const response = await axios.get(`https://what-you-watched-backend.vercel.app/api/questions/${type}/questions`);
-        setQuestions(response.data);
-      } catch (error) {
-        console.error("Error fetching questions:", error);
-      }
+  
+  async function fetchQuestions() {
+    try {
+      const response = await axios.get(`https://what-you-watched-backend.vercel.app/api/questions/${type}/questions`);
+      setQuestions(response.data);
+    } catch (error) {
+      console.error("Error fetching questions:", error);
     }
+  }
+  useEffect(() => {
     fetchQuestions();
   }, [type]);
 
