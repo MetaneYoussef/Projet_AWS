@@ -3,7 +3,8 @@ const {
     obtenirUtilisateurs,
     supprimerUtilisateur,
     obtenirUtilisateur,
-    majUtilisateur
+    majUtilisateur,
+    majmot_de_passe
 } = require('../controllers/utilisateursController');
 
 const {
@@ -30,6 +31,7 @@ router.get('/', verifyToken, adminOnly, obtenirUtilisateurs);
 router.get('/:id', verifyToken, userOnly, obtenirUtilisateur);
 router.delete('/:id', verifyToken, adminOnly, supprimerUtilisateur);
 router.patch('/:id', verifyToken, userOnly, majUtilisateur);
+router.patch('/:id/mot_de_passe',verifyToken,userOnly, majmot_de_passe);
 
 router.post('/:id/filmsWatchlist', verifyToken, userOnly, ajouterFilmWatchlist);
 router.delete('/:id/filmsWatchlist', verifyToken, userOnly, retirerFilmWatchlist);

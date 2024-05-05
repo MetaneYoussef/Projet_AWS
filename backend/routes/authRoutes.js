@@ -12,7 +12,7 @@ router.post('/signup', [
     check('prenom', 'Le prénom est requis').not().isEmpty(),
     check('username', 'le username est requis').not().isEmpty(),
     check('email', 'Veuillez fournir un email valide').isEmail(),
-    check('mot_de_passe', 'Le mot de passe doit comporter au moins 6 caractères').isLength({ min: 6 })
+    check('mot_de_passe', 'Le mot de passe doit comporter au moins 8 caractères').isLength({ min: 8 })
 ], async(req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
