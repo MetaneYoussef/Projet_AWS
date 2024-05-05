@@ -115,7 +115,7 @@ async function fetchRecommendations(answers, tmdbType) {
     console.log("Requesting URL:", url);
 
     try {
-        const response = await axios.get(url).headers(options);
+        const response = await axios.get(url, options);
         return response.data.results;
     } catch (error) {
         console.error('Error fetching data from TMDB:', error);
