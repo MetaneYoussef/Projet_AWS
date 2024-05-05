@@ -29,12 +29,12 @@ const QcmEndScreen = ({ userAnswers, onRestart, type }) => {
       <button 
         onClick={handleViewRecommendations} 
         className="bg-white border-2 border-blue-900 text-blue-700 font-medium py-4 px-5 mb-3 rounded hover:bg-blue-400 hover:text-white hover:border-white transition duration-300 ease-in-out">
-          {hasFetchedRecommendations ? "Voir les recommandations" : "Chercher les recommandations"}
+          Chercher les recommandations
       </button>
       {hasFetchedRecommendations && (
         <button 
           onClick={handleGoToRecommendations} 
-          className="bg-blue-900 border-2 text-white font-medium py-2 px-4 rounded hover:bg-blue-400 hover:text-white hover:border-blue-900 transition duration-300 ease-in-out">
+          className="bg-blue-900 border-2 text-white font-medium py-2 px-4 mb-3 rounded hover:bg-blue-400 hover:text-white hover:border-blue-900 transition duration-300 ease-in-out">
             Voir les recommandations
         </button>
       )}
