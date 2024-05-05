@@ -17,7 +17,7 @@ const Qcm = () => {
   useEffect(() => {
     async function fetchQuestions() {
       try {
-        const response = await axios.get(`https://what-you-watched-backend.vercel.app/api/qcm/${type}/questions`);
+        const response = await axios.get(`https://what-you-watched-backend.vercel.app/api/questions/${type}/questions`);
         setQuestions(response.data);
       } catch (error) {
         console.error("Error fetching questions:", error);
