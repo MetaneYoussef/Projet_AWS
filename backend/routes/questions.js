@@ -70,7 +70,8 @@ router.get('/:type/questions', async(req, res) => {
 
     try {
         const questions = await Question.find({ type: questionType }); // Utiliser find pour récupérer toutes les questions pertinentes
-        res.json(questions);
+        console.log("Questions:", questions); // Cela devrait afficher un tableau de questions
+        res.status(200).json(questions);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
