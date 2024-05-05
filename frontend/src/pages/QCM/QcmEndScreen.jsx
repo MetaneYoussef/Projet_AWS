@@ -9,7 +9,7 @@ const QcmEndScreen = ({ userAnswers, onRestart, type }) => {
 
   const handleViewRecommendations = async () => {
     try {
-      const response = await axios.post(`/api/qcm/recommendations`, { answers: userAnswers, type });
+      const response = await axios.post(`https://what-you-watched-backend.vercel.app/api/questions/recommendations`, { answers: userAnswers, type });
       setRecommendations(response.data.recommendations);
       setHasFetchedRecommendations(true);
     } catch (error) {
