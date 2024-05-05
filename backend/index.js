@@ -23,7 +23,7 @@ const questionsRoutes = require('./routes/questions');
 
 app.use(helmet());
 app.use(cors({
-    origin: ["https://what-you-watched.vercel.app", "https://what-you-watched-backend.vercel.app", "https://localhost:3000", "https://localhost:4000","http://localhost:3000","http://localhost:4000"],
+    origin: ["https://what-you-watched.vercel.app", "https://what-you-watched-backend.vercel.app", "https://localhost:3000", "https://localhost:3001", "https://localhost:4000", "http://localhost:3000", "http://localhost:4000"],
     methods: ["POST", "GET", "PATCH"],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],

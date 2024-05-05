@@ -13,7 +13,7 @@ const RecommendationsPage = () => {
   useEffect(() => {
     async function fetchDetails() {
       try {
-        const response = await axios.get(`/api/qcm/${type}/detail/${id}`);
+        const response = await axios.get(`https://what-you-watched-backend.vercel.app/api/questions/${type}/detail/${id}`);
         setDetails(response.data);
       } catch (error) {
         console.error("Error fetching details:", error);
