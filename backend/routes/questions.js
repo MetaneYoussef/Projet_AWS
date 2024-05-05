@@ -75,6 +75,15 @@ router.get('/:type/questions', async(req, res) => {
     }
 });
 
+
+const options = {
+    method: 'GET',
+    headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer ' + process.env.TMDBAPIKEY
+    }
+};
+
 router.post('/recommendations', async(req, res) => {
     console.log("Received answers:", req.body.answers);
     const { answers, type } = req.body;
@@ -82,7 +91,7 @@ router.post('/recommendations', async(req, res) => {
 
     try {
         const recommendations = await fetchRecommendations(answers, tmdbType);
-        res.json({ recommendations });
+        res.status(200).json({ recommendations });
     } catch (error) {
         console.error('Error fetching data from TMDB:', error);
         res.status(500).json({ message: error.message });
@@ -91,7 +100,7 @@ router.post('/recommendations', async(req, res) => {
 
 async function fetchRecommendations(answers, tmdbType) {
     const queryParams = new URLSearchParams({
-        api_key: TMDB_API_KEY,
+        include_adult: false,
         language: 'fr-FR'
     });
 
@@ -106,7 +115,7 @@ async function fetchRecommendations(answers, tmdbType) {
     console.log("Requesting URL:", url);
 
     try {
-        const response = await axios.get(url);
+        const response = await axios.get(url).headers(options);
         return response.data.results;
     } catch (error) {
         console.error('Error fetching data from TMDB:', error);
