@@ -30,6 +30,25 @@ const obtenirUtilisateur = async(req, res) => {
     }
 };
 
+const obtenirNometPrenom = async(req, res) => {
+    const { id } = req.params;
+
+    try {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ error: "Cet utilisateur n'existe pas" });
+        }
+
+        const utilisateur = await Utilisateur.findById(id).select("nom prenom");
+
+        if (!utilisateur) {
+            return res.status(404).json({ error: "Utilisateur non trouvé" });
+        }
+        res.status(200).json(utilisateur);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 const supprimerUtilisateur = async(req, res) => {
     const { id } = req.params;
 
@@ -108,5 +127,6 @@ module.exports = {
     supprimerUtilisateur,
     obtenirUtilisateur,
     majUtilisateur,
-    majmot_de_passe
+    majmot_de_passe,
+    obtenirNometPrenom
 };

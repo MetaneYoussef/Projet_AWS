@@ -4,7 +4,8 @@ const {
     supprimerUtilisateur,
     obtenirUtilisateur,
     majUtilisateur,
-    majmot_de_passe
+    majmot_de_passe,
+    obtenirNometPrenom
 } = require('../controllers/utilisateursController');
 
 const {
@@ -32,6 +33,7 @@ router.get('/:id', verifyToken, userOnly, obtenirUtilisateur);
 router.delete('/:id', verifyToken, adminOnly, supprimerUtilisateur);
 router.patch('/:id', verifyToken, userOnly, majUtilisateur);
 router.patch('/:id/mot_de_passe',verifyToken,userOnly, majmot_de_passe);
+router.get('/:id/nometprenom', obtenirNometPrenom);
 
 router.post('/:id/filmsWatchlist', verifyToken, userOnly, ajouterFilmWatchlist);
 router.delete('/:id/filmsWatchlist', verifyToken, userOnly, retirerFilmWatchlist);
