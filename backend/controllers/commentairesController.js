@@ -62,7 +62,7 @@ const ajouterCommentaire = async (req, res) => {
 
     try {
         const commentaire = await Commentaire.create({ contenu, idutilisateur, idmedia });
-        res.status(200).json("commentaire ajouté avec succès");
+        res.status(200).json(commentaire);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
