@@ -3,7 +3,8 @@ import { useParams, Link } from "react-router-dom";
 import Header from "../../../../components/Header/MovieHeader";
 import Footer from "../../../../components/Footer/Footer";
 import { useWatchlist } from '../../../Watchlist/WatchlistContext';
-
+import { useAuth } from '../../../../context/AuthContext';
+import axios from 'axios';
 
 function MovieDetails() {
   const { movieId } = useParams();  // Assurez-vous que le nom du paramètre correspond à celui défini dans vos routes
@@ -14,16 +15,15 @@ function MovieDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  {/*GESTION DE LA WATCHLIST*/}
+  {/*GESTION DE LA WATCHLIST*/ }
   const { watchlist, addToWatchlist, removeFromWatchlist, updateStatus, updateRating } = useWatchlist();
   const movieInWatchlist = watchlist.movies.find(m => m.id === movieId);
-  {/*GESTION DE LA NOTATION*/}
+  {/*GESTION DE LA NOTATION*/ }
   const [rating, setRating] = useState(movieInWatchlist ? movieInWatchlist.rating : '');
-  {/*GESTION DES ÉPISODES*/}
+  {/*GESTION DES ÉPISODES*/ }
   const [currentEpisode, setCurrentEpisode] = useState(movieInWatchlist ? movieInWatchlist.watchedEpisodes : 0);
 
-
-  {/*Watchlist*/}
+  {/*Watchlist*/ }
   useEffect(() => {
     if (movieInWatchlist && movieInWatchlist.rating) {
       setRating(movieInWatchlist.rating);
@@ -37,10 +37,10 @@ function MovieDetails() {
       setCurrentEpisode(movieInWatchlist.watchedEpisodes);
     }
   }, [movieInWatchlist?.watchedEpisodes]); // S'assurer de surveiller le bon attribut pour les re-rendus
-  
-  
 
-  {/*Notation*/}
+
+
+  {/*Notation*/ }
   const handleRatingChange = (e) => {
     const newRating = e.target.value;
     setRating(newRating);
@@ -68,13 +68,13 @@ function MovieDetails() {
 
   const handleChangeStatus = (event) => {
     if (event.target.value === 'Supprimer') {
-        removeFromWatchlist(movieId, 'movie');
+      removeFromWatchlist(movieId, 'movie');
     } else {
-        updateStatus(movieId, 'movie', event.target.value);
+      updateStatus(movieId, 'movie', event.target.value);
     }
   };
 
-  {/*MovieDetails*/}
+  {/*MovieDetails*/ }
   useEffect(() => {
     const fetchMovieDetails = async () => {
       setLoading(true);
@@ -106,7 +106,7 @@ function MovieDetails() {
     fetchMovieDetails();
   }, [movieId, api_key]);
 
-  {/*Casting*/}
+  {/*Casting*/ }
   useEffect(() => {
     const fetchCast = async () => {
       const castUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${api_key}`;
@@ -124,7 +124,7 @@ function MovieDetails() {
     fetchCast();
   }, [movieId, api_key]);
 
-  {/*Recommandations*/}
+  {/*Recommandations*/ }
   useEffect(() => {
     const fetchSimilarMovies = async () => {
       const similarUrl = `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${api_key}&language=en-US`;
@@ -142,14 +142,97 @@ function MovieDetails() {
     fetchSimilarMovies();
   }, [movieId, api_key]);
 
-  const handlePostComment = () => {
+  {/*Chercher les Commentaires d'un film*/ }
+  useEffect(() => {
+    const fetchComments = async () => {
+      const commentsUrl = `https://what-you-watched-backend.vercel.app/api/commentaires/${movieId}`;
+      const response = await fetch(commentsUrl);
+      const data = await response.json();
+      for (let i = 0; i < data.length; i++) {
+        try {
+          const response = await fetch(`https://what-you-watched-backend.vercel.app/api/utilisateurs/${data[i].idutilisateur}/nometprenom`);
+
+          if (!response.ok) {
+            throw new Error("Utilisateur n'existe pas");
+          }
+          const details = await response.json();
+          data[i].idutilisateur = { nom: details.nom, prenom: details.prenom };
+        } catch (error) {
+          console.error("Erreur lors de la récupération des détails de l'utilisateur", error);
+          data[i].idutilisateur = { nom: "utilisateur", prenom: "n'existe pas" };
+        }
+      }
+      setComments(data.map(commentaire => ({
+        id: commentaire._id,
+        Username: commentaire.idutilisateur.nom + " " + commentaire.idutilisateur.prenom,
+        Texte: commentaire.contenu,
+        Date: commentaire.date,
+        likesnumber: commentaire.likes.number || 0,
+        likes: commentaire.likes.idutilisateurs
+      })));
+    };
+    fetchComments();
+  }, [movieId]);
+
+
+
+
+  const { token } = useAuth();
+
+  const handlePostComment = async () => {
     if (newComment.trim()) {
-      setComments(prevComments => [...prevComments, { user: "Utilisateur", text: newComment }]);
-      setNewComment("");  // Réinitialiser l'entrée de texte après l'envoi
+      //check if user is logged in
+      if (!localStorage.getItem('token')) {
+        alert('Vous devez être connecté pour commenter');
+        return;
+      }
+      console.log(token);
+      // get user from the jwt token
+
+      const response = await axios.get('http://localhost:4000/api/authRoutes/profile', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (response.status !== 200) {
+        alert('Erreur lors de la récupération de l\'utilisateur');
+        return;
+      }
+
+      const user = response.data.utilisateur;
+      console.log(user);
+      console.log(user.newComment);
+      const sentComment = {
+        contenu: newComment,
+        idutilisateur: user._id,
+        idmedia: movieId
+      };
+
+      try {
+        const response = await axios.post('http://localhost:4000/api/commentaires/', sentComment, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const thenewcomment = response.data;
+        console.log(thenewcomment);
+        setComments(prevComments => [{
+          id: thenewcomment._id,
+          Username: user.nom + " " + user.prenom,
+          Texte: thenewcomment.contenu,
+          Date: thenewcomment.date,
+          likesnumber: thenewcomment.likes.number || 0,
+          likes: thenewcomment.likes.idutilisateurs
+        }, ...prevComments]);
+        setNewComment("");  // Réinitialiser l'entrée de texte après l'envoi
+      } catch (error) {
+        console.error("Erreur lors de l'envoi du commentaire", error);
+        alert("Erreur lors de l'envoi du commentaire");
+        return;
+      }
+
+
     }
   };
-  
-    {/*Trailer*/}
+
+  {/*Trailer*/ }
   useEffect(() => {
     const fetchTrailer = async () => {
       const trailerUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${api_key}&language=fr-FR`;
@@ -160,12 +243,12 @@ function MovieDetails() {
         setMovie(prev => ({ ...prev, trailer: `https://www.youtube.com/watch?v=${trailers[0].key}` }));
       }
     };
-  
+
     if (movieId) {
       fetchTrailer();
     }
   }, [movieId]);
-  
+
 
   if (loading) return <div className="flex bg-red-600 h-full py-1/2 text-2xl text-white font-bold justify-center" >.........</div>;
   if (error) return <div className="bg-red-600">Erreur: {error}</div>;
@@ -177,7 +260,7 @@ function MovieDetails() {
         <Header />
         <div className="flex flex-col md:flex-row p-8 bg-black bg-opacity-70 text-white rounded-xl m-5 items-center md:items-start">
           <div className="md:w-1/4 flex flex-col items-center md:items-start">
-            <img src={movie.poster} alt="Poster du film" className="w-64 md:w-52 lg:w-64 h-96 md:h-72 lg:h-96 rounded-lg shadow-lg mb-5"/>
+            <img src={movie.poster} alt="Poster du film" className="w-64 md:w-52 lg:w-64 h-96 md:h-72 lg:h-96 rounded-lg shadow-lg mb-5" />
             <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded md:ml-4 mb-3"
               onClick={() => window.open(movie.trailer, '_blank')}>
               Lancer la Bande Annonce
@@ -203,48 +286,48 @@ function MovieDetails() {
               <p>commentaires</p>
             </div>
             <div>
-            {movieInWatchlist ? (
+              {movieInWatchlist ? (
                 <select onChange={handleChangeStatus} value={movieInWatchlist.status} className="bg-red-900 hover:bg-red-950 text-white text-center border-2 border-red-400 font-bold py-2 px-24 rounded mb-4 w-max">
-                    <option value="Prévu" className="font-medium text-white bg-red-900">Prévu</option>
-                    <option value="Terminé" className="font-medium text-white bg-red-900">Terminé</option>
-                    <option value="Abandonné" className="font-medium text-white bg-red-900">Abandonné</option>
-                    <option value="Supprimer" className="font-bold text-white bg-red-950">Supprimer</option> {/* Option pour supprimer le film */}
+                  <option value="Prévu" className="font-medium text-white bg-red-900">Prévu</option>
+                  <option value="Terminé" className="font-medium text-white bg-red-900">Terminé</option>
+                  <option value="Abandonné" className="font-medium text-white bg-red-900">Abandonné</option>
+                  <option value="Supprimer" className="font-bold text-white bg-red-950">Supprimer</option> {/* Option pour supprimer le film */}
                 </select>
-            ) : (
+              ) : (
                 <button onClick={handleAddToWatchlist} className="bg-black hover:bg-red-900 hover:text-white text-red-600 border-2 border-red-400 font-bold py-2 px-16 rounded mb-4 w-max">
-                    + Ajouter à la Watchlist
+                  + Ajouter à la Watchlist
                 </button>
-                )}
+              )}
             </div>
             <div>
-            {movieInWatchlist ? (
-            <>
-              <div className="flex flex-row space-x-4">
-                <div className="bg-red-900 text-white border-2 border-red-400 font-bold py-2 px-4 rounded w-full flex items-center justify-between">
-                  <select value={rating} onChange={handleRatingChange} className="bg-red-900 text-white text-center border-2 border-red-400 font-bold py-2 rounded w-max">
-                    <option value="">Non noté</option>
-                    {Array.from({ length: 10 }, (_, i) => i + 1).map(number => (
-                      <option key={number} value={number}>{number}</option>
-                    ))}
-                  </select>
-                  <span className="ml-1 text-xl">/10</span>
-                </div>
-                <div className="bg-red-900 text-white border-2 border-red-400 font-bold py-2 px-4 rounded w-full">
-                  <label htmlFor="episode-select" className="mr-2">Épisodes:</label>
-                  <select id="episode-select" onChange={handleEpisodeChange} value={movieInWatchlist?.watchedEpisodes || 0} className="bg-red-900 text-white border-2 border-red-400 font-bold py-2 rounded w-full">
-                    <option value="0">Non visionné</option>
-                    <option value="1">Visionné</option>
-                  </select>
-                </div>
-              </div>
-            </>
-            ) : (
-              <button className="bg-black hover:bg-red-900 hover:text-white text-red-600 border-2 border-red-400 font-bold py-2 px-[105px] rounded mb-4 w-max">
-                Noter le film
-              </button>
-            )}
+              {movieInWatchlist ? (
+                <>
+                  <div className="flex flex-row space-x-4">
+                    <div className="bg-red-900 text-white border-2 border-red-400 font-bold py-2 px-4 rounded w-full flex items-center justify-between">
+                      <select value={rating} onChange={handleRatingChange} className="bg-red-900 text-white text-center border-2 border-red-400 font-bold py-2 rounded w-max">
+                        <option value="">Non noté</option>
+                        {Array.from({ length: 10 }, (_, i) => i + 1).map(number => (
+                          <option key={number} value={number}>{number}</option>
+                        ))}
+                      </select>
+                      <span className="ml-1 text-xl">/10</span>
+                    </div>
+                    <div className="bg-red-900 text-white border-2 border-red-400 font-bold py-2 px-4 rounded w-full">
+                      <label htmlFor="episode-select" className="mr-2">Épisodes:</label>
+                      <select id="episode-select" onChange={handleEpisodeChange} value={movieInWatchlist?.watchedEpisodes || 0} className="bg-red-900 text-white border-2 border-red-400 font-bold py-2 rounded w-full">
+                        <option value="0">Non visionné</option>
+                        <option value="1">Visionné</option>
+                      </select>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <button className="bg-black hover:bg-red-900 hover:text-white text-red-600 border-2 border-red-400 font-bold py-2 px-[105px] rounded mb-4 w-max">
+                  Noter le film
+                </button>
+              )}
+            </div>
           </div>
-        </div>
         </div>
         <br />
       </div>
@@ -255,7 +338,7 @@ function MovieDetails() {
         <div className="flex overflow-x-auto">
           {movie.cast?.map((actor, index) => (
             <div key={index} className="flex flex-col items-center mr-4" style={{ minWidth: '200px' }}>
-              <img src={actor.photo} alt={actor.name} className="w-44 h-44 md:w-48 md:h-48 rounded-full object-cover"/>
+              <img src={actor.photo} alt={actor.name} className="w-44 h-44 md:w-48 md:h-48 rounded-full object-cover" />
               <p className="text-white mt-2 font-extrabold text-lg text-center">{actor.name}</p>
               <p className="text-white text-center font-semibold text-sm">{actor.character}</p>
             </div>
@@ -270,7 +353,7 @@ function MovieDetails() {
           {movie.similarMovies?.map((simMovie, index) => (
             <Link key={index} to={`/films/details/${simMovie.title.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}}/${simMovie.id}`}>
               <div className="inline-block min-w-40 mr-4">
-                <img src={simMovie.poster} alt={simMovie.title} className="w-40 h-60 rounded-lg shadow-lg"/>
+                <img src={simMovie.poster} alt={simMovie.title} className="w-40 h-60 rounded-lg shadow-lg" />
                 <p className="text-white mt-2">{simMovie.title}</p>
               </div>
             </Link>
@@ -280,33 +363,41 @@ function MovieDetails() {
 
       {/* Zone de commentaires */}
       <div className="bg-red-700 p-16">
-      <h1 className='text-white text-3xl mb-4 font-semibold'>Commentaires</h1>
-      <div className="mb-8">
-        <textarea
-          className="w-full bg-red-900 text-white p-4 rounded-lg border-2 border-red-400"
-          placeholder="Ajoutez votre commentaire..."
-          rows="3"
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-        ></textarea>
-        <button
-          className="bg-black text-white hover:bg-white hover:text-red-700 font-bold py-2 px-4 rounded mt-4"
-          onClick={handlePostComment}
-        >
-          Publier
+        <h1 className='text-white text-3xl mb-4 font-semibold'>Commentaires</h1>
+        <div className="mb-8">
+          <textarea
+            className="w-full bg-red-900 text-white p-4 rounded-lg border-2 border-red-400"
+            placeholder="Ajoutez votre commentaire..."
+            rows="3"
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+          ></textarea>
+          <button
+            className="bg-black text-white hover:bg-white hover:text-red-700 font-bold py-2 px-4 rounded mt-4"
+            onClick={handlePostComment}
+          >
+            Publier
+          </button>
+        </div>
+        {comments?.map((comment, index) => (
+          <div key={index} className="bg-red-900 p-4 rounded-lg mb-4 border-2 border-black">
+            <p className="text-red-200 font-bold mb-1">{comment.Username}</p>
+            <p className="text-red-200 text-sm mb-1">{comment.Date}</p>
+
+            <p className="text-white">{comment.Texte}</p>
+            <button
+              className="bg-black text-white hover:bg-white hover:text-red-700 font-bold py-2 px-4 rounded mt-4"
+              onClick={() => handleLikeComment(comment.id)}
+            >
+              {comment.likesnumber} Like(s)
+            </button>
+          </div>
+        ))}
+        <button className="w-full bg-black text-white hover:bg-white hover:text-red-700 font-bold py-2 px-4 rounded">
+          Voir tous les commentaires
         </button>
       </div>
-      {comments.map((comment, index) => (
-        <div key={index} className="bg-red-900 p-4 rounded-lg mb-4 border-2 border-black">
-          <p className="text-red-200 font-bold mb-1">{comment.user}</p>
-          <p className="text-white">{comment.text}</p>
-        </div>
-      ))}
-      <button className="w-full bg-black text-white hover:bg-white hover:text-red-700 font-bold py-2 px-4 rounded">
-        Voir tous les commentaires
-      </button>
-    </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
