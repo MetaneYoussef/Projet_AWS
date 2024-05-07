@@ -189,7 +189,7 @@ function MovieDetails() {
       console.log(token);
       // get user from the jwt token
 
-      const response = await axios.get('http://localhost:4000/api/authRoutes/profile', {
+      const response = await axios.get('https://what-you-watched-backend.vercel.app/api/authRoutes/profile', {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -208,7 +208,7 @@ function MovieDetails() {
       };
 
       try {
-        const response = await axios.post('http://localhost:4000/api/commentaires/', sentComment, {
+        const response = await axios.post('https://what-you-watched-backend.vercel.app/api/commentaires/', sentComment, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const thenewcomment = response.data;
