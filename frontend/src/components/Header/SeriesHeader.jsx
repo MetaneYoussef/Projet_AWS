@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import SearchComponent from "../NavigationBar/SeriesSearch"; // Vérifiez le chemin pour correspondre à votre structure de projet
 import SearchComponentMobile from "../NavigationBar/SeriesSearchMobile";
+import { useAuth } from "../../context/AuthContext";
 
 function Header() {
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Nouvel état pour le menu
+  const { isAuthenticated } = useAuth();
+
 
 
   return (
@@ -30,7 +33,17 @@ function Header() {
         <div className="flex items-center space-x-4">
           <Link to="/UserProfile" className="hover:text-yellow-200">Profil</Link>
           <Link to="/watchlist" className="hover:text-yellow-300">Ma Watchlist</Link>
-          <Link to="/connexion" className="bg-white hover:bg-yellow-600 hover:text-white text-black font-bold py-2 px-4 rounded">Connexion</Link>
+          {isAuthenticated ? (
+            // Affichez l'avatar si l'utilisateur est connecté
+            <Link to="/UserProfile" className="hover:text-yellow-300">
+              <img src="../../../public/images/Genres/RondSansFond.png" alt="Avatar" className="h-8 w-8 rounded-full" /> {/* Assurez-vous d'avoir un avatar ou utilisez un placeholder */}
+            </Link>
+          ) : (
+            // Affichez le bouton de connexion si l'utilisateur n'est pas connecté
+            
+            <Link to="/connexion" className="bg-white hover:bg-gray-600 hover:text-white text-black font-bold py-2 px-4 rounded">Connexion</Link>
+
+          )}
         </div>
       )}
     </header>

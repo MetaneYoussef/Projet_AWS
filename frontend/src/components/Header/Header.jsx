@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import SearchComponent from "../NavigationBar/SearchComponent"; // Vérifiez le chemin pour correspondre à votre structure de projet
+import SearchComponent from "../NavigationBar/SearchComponent"; 
 import SearchComponentMobile from "../NavigationBar/SearchMobile";
 import { useAuth } from "../../context/AuthContext";
 
