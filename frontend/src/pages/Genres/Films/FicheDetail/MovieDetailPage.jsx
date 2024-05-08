@@ -6,6 +6,7 @@ import { useWatchlist } from '../../../Watchlist/WatchlistContext';
 import { useAuth } from '../../../../context/AuthContext';
 import axios from 'axios';
 
+
 function MovieDetails() {
   const { movieId } = useParams();  // Assurez-vous que le nom du paramètre correspond à celui défini dans vos routes
   const [movie, setMovie] = useState(null);
@@ -167,7 +168,7 @@ function MovieDetails() {
         Username: commentaire.idutilisateur.nom + " " + commentaire.idutilisateur.prenom,
         Texte: commentaire.contenu,
         Date: commentaire.date,
-        likesnumber: commentaire.likes.number || 0,
+        likesnumber: commentaire.likes.Number || 0,
         likes: commentaire.likes.idutilisateurs
       })));
     };
@@ -177,7 +178,65 @@ function MovieDetails() {
 
 
 
-  const { token } = useAuth();
+  const token = localStorage.getItem('token');
+
+  const handlelikeComment = (comment) => async () => {
+    if (!localStorage.getItem('token')) {
+      alert('Vous devez être connecté pour aimer un commentaire');
+      return;
+    }
+    comment = { ...comment };
+    const userrep = await axios.get('http://localhost:4000/api/authRoutes/profile', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (userrep.status !== 200) {
+      console.log('Erreur lors de la récupération de l\'utilisateur');
+      return;
+    }
+    console.log(comment);
+    console.log(typeof comment);
+    console.log(comment.likes);
+    console.log(typeof comment.likes);
+    if (comment.likes.includes(userrep.data.utilisateur._id)) {
+      const response = await axios.post(`http://localhost:4000/api/commentaires/dislike/${comment.id}`, { idutilisateur: userrep.data.utilisateur._id }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.status !== 200) {
+        console.log('Erreur lors de l\'envoi ');
+        return;
+      }
+      comment.likes.pop(userrep.data.utilisateur._id);
+      if (comment.likesnumber > 0) {
+        comment.likesnumber = comment.likesnumber - 1;
+      }
+    } else {
+      const response = await axios.post(`https://what-you-watched-backend.vercel.app/api/commentaires/like/${comment.id}`, { idutilisateur: userrep.data.utilisateur._id }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.status !== 200) {
+        console.log('Erreur lors de l\'envoi ');
+        return;
+      }
+
+      comment.likes.push(userrep.data.utilisateur._id);
+      comment.likesnumber = comment.likesnumber + 1;
+    }
+
+    setComments(comments => comments.map(commenta => {
+      if (commenta.id === comment.id) {
+        return {
+          ...commenta,
+          likesnumber: comment.likesnumber,
+          likes: comment.likes
+        };
+      }
+      return commenta;
+    }));
+
+  };
+
+
 
   const handlePostComment = async () => {
     if (newComment.trim()) {
@@ -186,7 +245,7 @@ function MovieDetails() {
         alert('Vous devez être connecté pour commenter');
         return;
       }
-      console.log(token);
+
       // get user from the jwt token
 
       const response = await axios.get('https://what-you-watched-backend.vercel.app/api/authRoutes/profile', {
@@ -199,8 +258,7 @@ function MovieDetails() {
       }
 
       const user = response.data.utilisateur;
-      console.log(user);
-      console.log(user.newComment);
+
       const sentComment = {
         contenu: newComment,
         idutilisateur: user._id,
@@ -387,9 +445,14 @@ function MovieDetails() {
             <p className="text-white">{comment.Texte}</p>
             <button
               className="bg-black text-white hover:bg-white hover:text-red-700 font-bold py-2 px-4 rounded mt-4"
-              onClick={() => handleLikeComment(comment.id)}
+
+
+              onClick={handlelikeComment(comment)}
             >
-              {comment.likesnumber} Like(s)
+              J'aime ({comment.likesnumber})
+
+
+
             </button>
           </div>
         ))}

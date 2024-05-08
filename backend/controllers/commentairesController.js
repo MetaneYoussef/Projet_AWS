@@ -135,8 +135,48 @@ const likeCommentaire = async (req, res) => {
         }
         commentaire.likes.Number += 1;
         commentaire.likes.idutilisateurs.push(idutilisateur);
-        await commentaire.save();
+        const savesucc = await commentaire.save();
+        if (!savesucc) {
+            return res.status(400).json({ error: "Erreur lors de l'ajout du like" });
+        }
         res.status(200).json({ message: "Like ajouté avec succès" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+const dislikeCommentaire = async (req, res) => {
+    const id = req.params.id;
+    const idutilisateur = req.body.idutilisateur;
+
+    try {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ error: "Ce commentaire n'existe pas" });
+        }
+        if (!mongoose.Types.ObjectId.isValid(idutilisateur)) {
+            return res.status(400).json({ error: "Cet utilisateur n'existe pas" });
+        }
+        user = await Utilisateur.findById(idutilisateur);
+        if (!user) {
+            return res.status(400).json({ error: "Cet utilisateur n'existe pas" });
+        }
+
+        const commentaire = await Commentaire.findById(id);
+        if (!commentaire) {
+            return res.status(404).json({ error: "Commentaire non trouvé" });
+        }
+        if (commentaire.likes.idutilisateurs.includes(idutilisateur)) {
+            commentaire.likes.Number -= 1;
+            commentaire.likes.idutilisateurs.pop(idutilisateur);
+            const savesucc = await commentaire.save();
+            if (!savesucc) {
+                return res.status(400).json({ error: "Erreur lors de l'ajout du like" });
+            }
+            res.status(200).json({ message: "Like supprimé avec succès" });
+        } else {
+            return res.status(400).json({ error: "Vous n'avez pas liké ce commentaire" });
+        }
+
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -146,5 +186,6 @@ module.exports = {
     ajouterCommentaire,
     supprimerCommentaire,
     consulterCommentairesDeMedia,
-    likeCommentaire
+    likeCommentaire,
+    dislikeCommentaire
 }
