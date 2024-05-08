@@ -126,22 +126,22 @@ function UserProfile() {
                     <form>
                     <div className="">
                     <label className="block text-base md:text-xl font-medium text-slate-200 mb-1">Nom</label>
-                        <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.nom}</span>
+                        <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 md:py-0.5 px-10 md:px-24 font-medium text-slate-300">{userPreferences.nom}</span>
                         {errors.nom && <p className="text-red-500 text-xs italic">{errors.nom}</p>}
                     </div>
                     <div className="md:mt-2">
                     <label className="block text-base md:text-xl font-medium text-slate-200 mb-1">Prenom</label>
-                        <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.prenom}</span>
+                        <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 md:py-0.5 px-10 md:px-24 font-medium text-slate-300">{userPreferences.prenom}</span>
                         {errors.prenom && <p className="text-red-500 text-xs italic">{errors.prenom}</p>}
                     </div>
                     <div className="md:mt-2">
                     <label className="block text-base md:text-xl font-medium text-slate-200 mb-1">Nom d'utilisateur</label>
-                        <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.username}</span>
+                        <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 md:py-0.5 px-10 md:px-24 font-medium text-slate-300">{userPreferences.username}</span>
                         {errors.username && <p className="text-red-500 text-xs italic">{errors.username}</p>}
                     </div>
                     <div className="md:mt-2">
                     <label className="block text-base md:text-xl font-medium text-slate-200 mb-1">Email</label>
-                        <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:px-24 font-medium text-slate-300">{userPreferences.email}</span>
+                        <span className="text-xs md:text-base text-start bg-neutral-600 rounded ml-0 px-10 md:py-0.5 md:px-24 font-medium text-slate-300">{userPreferences.email}</span>
                         {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
                     </div>
 

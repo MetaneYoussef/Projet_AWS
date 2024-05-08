@@ -36,7 +36,7 @@ function Header() {
           {isAuthenticated ? (
             // Affichez l'avatar si l'utilisateur est connecté
             <Link to="/UserProfile" className="hover:text-yellow-300">
-              <img src="../../../public/images/Genres/RondSansFond.png" alt="Avatar" className="h-8 w-8 rounded-full" /> {/* Assurez-vous d'avoir un avatar ou utilisez un placeholder */}
+              <img src="images/RondSansFond.png" alt="Avatar" className="h-8 w-8 rounded-full" /> {/* Assurez-vous d'avoir un avatar ou utilisez un placeholder */}
             </Link>
           ) : (
             // Affichez le bouton de connexion si l'utilisateur n'est pas connecté
@@ -68,8 +68,18 @@ function Header() {
             <ul className="mt-48 space-y-6 text-center">
               <li><Link to="/UserProfile" className="hover:text-yellow-200 font-semibold">Profil</Link></li>
               <li><Link to="/watchlist" className="hover:text-yellow-300 font-semibold">Ma Watchlist</Link></li>
-              <li><Link to="/connexion" className="bg-white hover:bg-yellow-600 hover:text-white text-black font-bold py-2 px-4 rounded">Connexion</Link></li>
-            </ul>
+              {isAuthenticated ? (
+            // Affichez l'avatar si l'utilisateur est connecté
+            <Link to="/UserProfile" className="hover:text-indigo-300">
+              <img src="images/RondSansFond.png" alt="Avatar" className="ml-2 mt-4 h-20 w-20 rounded-full" /> {/* Assurez-vous d'avoir un avatar ou utilisez un placeholder */}
+            </Link>
+          ) : (
+            // Affichez le bouton de connexion si l'utilisateur n'est pas connecté
+            
+            <Link to="/connexion" className="bg-white hover:bg-gray-600 hover:text-white text-black font-bold py-2 px-4 rounded">Connexion</Link>
+
+          )}            
+          </ul>
           </div>
         </div>
       <Link to="/" className="flex items-center">
