@@ -105,7 +105,7 @@ router.post('/login', [
 
         jwt.sign(
             payload,
-            process.env.JWT_SECRET, { expiresIn: '1h' },
+            process.env.JWT_SECRET, { expiresIn: '24h' },
             (err, token) => {
                 if (err) {
                     console.error(err);

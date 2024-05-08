@@ -6,15 +6,17 @@ const {
     ajouterCommentaire,
     supprimerCommentaire,
     consulterCommentairesDeMedia,
-    likeCommentaire
+    likeCommentaire,
+    dislikeCommentaire
 } = require('../controllers/commentairesController');
 
-const { verifyToken } = require('../middleware/authMiddleware');
+const { verifyToken, userOnly } = require('../middleware/authMiddleware');
 
 
-router.post('/', ajouterCommentaire);
+router.post('/', verifyToken, ajouterCommentaire);
 router.get('/:idmedia', consulterCommentairesDeMedia);
-router.delete('/:idmedia/:id', supprimerCommentaire);
-router.post('/like/:id', likeCommentaire);
+router.delete('/:idmedia/:id', verifyToken, supprimerCommentaire);
+router.post('/like/:id', verifyToken, likeCommentaire);
+router.post('/dislike/:id', verifyToken, dislikeCommentaire);
 
 module.exports = router;
