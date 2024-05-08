@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import Header from "../../../../components/Header/SeriesHeader";
 import Footer from "../../../../components/Footer/Footer";
 import { useWatchlist } from '../../../Watchlist/WatchlistContext';
-
+import axios from 'axios';
 
 function SeriesDetails() {
   const { seriesId } = useParams();
@@ -16,10 +16,10 @@ function SeriesDetails() {
   const [error, setError] = useState(null);
   const seasonRef = useRef(null);  // Référence pour la section des saisons
 
-  {/*GESTTION DE LA WATCHLIST*/}
+  {/*GESTTION DE LA WATCHLIST*/ }
   const { watchlist, addToWatchlist, removeFromWatchlist, updateStatus, updateRating } = useWatchlist();
   const seriesInWatchlist = watchlist.series.find(m => m.id === seriesId);
-  {/*GESTION DE LA NOTATION*/}
+  {/*GESTION DE LA NOTATION*/ }
   const [rating, setRating] = useState(seriesInWatchlist ? seriesInWatchlist.rating : '');
 
   const handleAddToWatchlist = () => {
@@ -33,13 +33,13 @@ function SeriesDetails() {
 
   const handleChangeStatus = (event) => {
     if (event.target.value === 'Supprimer') {
-        removeFromWatchlist(seriesId, 'series');
+      removeFromWatchlist(seriesId, 'series');
     } else {
-        updateStatus(seriesId, 'series', event.target.value);
+      updateStatus(seriesId, 'series', event.target.value);
     }
   };
 
-  {/*Notation*/}
+  {/*Notation*/ }
   const handleRatingChange = (e) => {
     const newRating = e.target.value;
     setRating(newRating);
@@ -112,13 +112,150 @@ function SeriesDetails() {
 
 
 
-  const handlePostComment = () => {
+  {/*Chercher les Commentaires d'un film*/ }
+  useEffect(() => {
+    const fetchComments = async () => {
+      const commentsUrl = `https://what-you-watched-backend.vercel.app/api/commentaires/${seriesId}`;
+      const response = await fetch(commentsUrl);
+      const data = await response.json();
+      for (let i = 0; i < data.length; i++) {
+        try {
+          const response = await fetch(`https://what-you-watched-backend.vercel.app/api/utilisateurs/${data[i].idutilisateur}/nometprenom`);
+
+          if (!response.ok) {
+            throw new Error("Utilisateur n'existe pas");
+          }
+          const details = await response.json();
+          data[i].idutilisateur = { nom: details.nom, prenom: details.prenom };
+        } catch (error) {
+          console.error("Erreur lors de la récupération des détails de l'utilisateur", error);
+          data[i].idutilisateur = { nom: "utilisateur", prenom: "n'existe pas" };
+        }
+      }
+      setComments(data.map(commentaire => ({
+        id: commentaire._id,
+        Username: commentaire.idutilisateur.nom + " " + commentaire.idutilisateur.prenom,
+        Texte: commentaire.contenu,
+        Date: commentaire.date.split('T')[0] + " at " + commentaire.date.split('T')[1].split('.')[0],
+        likesnumber: commentaire.likes.Number || 0,
+        likes: commentaire.likes.idutilisateurs
+      })));
+    };
+    fetchComments();
+  }, [seriesId]);
+
+
+
+
+  const token = localStorage.getItem('token');
+
+  const handlelikeComment = (comment) => async () => {
+    if (!localStorage.getItem('token')) {
+      alert('Vous devez être connecté pour aimer un commentaire');
+      return;
+    }
+    comment = { ...comment };
+    const userrep = await axios.get('https://what-you-watched-backend.vercel.app/api/authRoutes/profile', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (userrep.status !== 200) {
+      console.log('Erreur lors de la récupération de l\'utilisateur');
+      return;
+    }
+
+    if (comment.likes.includes(userrep.data.utilisateur._id)) {
+      const response = await axios.post(`https://what-you-watched-backend.vercel.app/api/commentaires/dislike/${comment.id}`, { idutilisateur: userrep.data.utilisateur._id }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.status !== 200) {
+        console.log('Erreur lors de l\'envoi ');
+        return;
+      }
+      comment.likes.pop(userrep.data.utilisateur._id);
+      if (comment.likesnumber > 0) {
+        comment.likesnumber = comment.likesnumber - 1;
+      }
+    } else {
+      const response = await axios.post(`https://what-you-watched-backend.vercel.app/api/commentaires/like/${comment.id}`, { idutilisateur: userrep.data.utilisateur._id }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.status !== 200) {
+        console.log('Erreur lors de l\'envoi ');
+        return;
+      }
+
+      comment.likes.push(userrep.data.utilisateur._id);
+      comment.likesnumber = comment.likesnumber + 1;
+    }
+
+    setComments(comments => comments.map(commenta => {
+      if (commenta.id === comment.id) {
+        return {
+          ...commenta,
+          likesnumber: comment.likesnumber,
+          likes: comment.likes
+        };
+      }
+      return commenta;
+    }));
+
+  };
+
+
+
+  const handlePostComment = async () => {
     if (newComment.trim()) {
-      setComments(prevComments => [...prevComments, { user: "Utilisateur", text: newComment }]);
-      setNewComment("");  // Réinitialiser l'entrée de texte après l'envoi
+      //check if user is logged in
+      if (!localStorage.getItem('token')) {
+        alert('Vous devez être connecté pour commenter');
+        return;
+      }
+
+      // get user from the jwt token
+
+      const response = await axios.get('https://what-you-watched-backend.vercel.app/api/authRoutes/profile', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (response.status !== 200) {
+        alert('Erreur lors de la récupération de l\'utilisateur');
+        return;
+      }
+
+      const user = response.data.utilisateur;
+
+      const sentComment = {
+        contenu: newComment,
+        idutilisateur: user._id,
+        idmedia: seriesId
+      };
+
+      try {
+        const response = await axios.post('https://what-you-watched-backend.vercel.app/api/commentaires/', sentComment, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const thenewcomment = response.data;
+        console.log(thenewcomment);
+        setComments(prevComments => [{
+          id: thenewcomment._id,
+          Username: user.nom + " " + user.prenom,
+          Texte: thenewcomment.contenu,
+          Date: thenewcomment.date.split('T')[0] + " at " + thenewcomment.date.split('T')[1].split('.')[0],
+          likesnumber: thenewcomment.likes.number || 0,
+          likes: thenewcomment.likes.idutilisateurs
+        }, ...prevComments]);
+        setNewComment("");  // Réinitialiser l'entrée de texte après l'envoi
+      } catch (error) {
+        console.error("Erreur lors de l'envoi du commentaire", error);
+        alert("Erreur lors de l'envoi du commentaire");
+        return;
+      }
+
+
     }
   };
-  
+
   useEffect(() => {
     const fetchTrailer = async () => {
       const trailerUrl = `https://api.themoviedb.org/3/tv/${seriesId}/videos?api_key=${api_key}&language=en-US`;
@@ -129,7 +266,7 @@ function SeriesDetails() {
         setSeries(prev => ({ ...prev, trailer: `https://www.youtube.com/watch?v=${trailers[0].key}` }));
       }
     };
-  
+
     if (seriesId) {
       fetchTrailer();
     }
@@ -146,7 +283,7 @@ function SeriesDetails() {
         <Header />
         <div className="flex flex-col md:flex-row p-8 bg-black bg-opacity-70 text-white rounded-xl m-5 items-center md:items-start">
           <div className="md:w-1/4 flex flex-col items-center md:items-start">
-            <img src={series.poster} alt="Poster du film" className="w-64 md:w-52 lg:w-64 h-96 md:h-72 lg:h-96 rounded-lg shadow-lg mb-5"/>
+            <img src={series.poster} alt="Poster du film" className="w-64 md:w-52 lg:w-64 h-96 md:h-72 lg:h-96 rounded-lg shadow-lg mb-5" />
             <button className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded md:ml-4 mb-3"
               onClick={() => window.open(series.trailer, '_blank')}>
               Lancer la Bande Annonce
@@ -172,49 +309,49 @@ function SeriesDetails() {
               <p>commentaires</p>
             </div>
             <div>
-            {seriesInWatchlist ? (
+              {seriesInWatchlist ? (
                 <select onChange={handleChangeStatus} value={seriesInWatchlist.status} className="bg-yellow-900 hover:bg-yellow-950 text-white text-center border-2 border-yellow-400 font-bold py-2 px-24 rounded mb-4 w-max">
-                    <option value="En Cours" className="font-medium text-white bg-yellow-900">En Cours</option>
-                    <option value="Terminé" className="font-medium text-white bg-yellow-900">Terminé</option>
-                    <option value="En Pause" className="font-medium text-white bg-yellow-900">En Pause</option>
-                    <option value="Abandonné" className="font-medium text-white bg-yellow-900">Abandonné</option>
-                    <option value="Prévu" className="font-medium text-white bg-yellow-900">Prévu</option>
-                    <option value="Supprimer" className="font-bold text-white bg-yellow-950">Supprimer</option> {/* Option pour supprimer le film */}
+                  <option value="En Cours" className="font-medium text-white bg-yellow-900">En Cours</option>
+                  <option value="Terminé" className="font-medium text-white bg-yellow-900">Terminé</option>
+                  <option value="En Pause" className="font-medium text-white bg-yellow-900">En Pause</option>
+                  <option value="Abandonné" className="font-medium text-white bg-yellow-900">Abandonné</option>
+                  <option value="Prévu" className="font-medium text-white bg-yellow-900">Prévu</option>
+                  <option value="Supprimer" className="font-bold text-white bg-yellow-950">Supprimer</option> {/* Option pour supprimer le film */}
                 </select>
-            ) : (
+              ) : (
                 <button onClick={handleAddToWatchlist} className="bg-black hover:bg-yellow-900 hover:text-white text-yellow-600 border-2 border-yellow-400 font-bold py-2 px-16 rounded mb-4 w-max">
-                    + Ajouter à la Watchlist
+                  + Ajouter à la Watchlist
                 </button>
-                )}
-            </div>            
+              )}
+            </div>
             <div>
-            {seriesInWatchlist ? (
-            <>
-              <div className="flex flex-row space-x-4">
-                <div className="bg-yellow-900 text-white border-2 border-yellow-400 font-bold py-2 px-4 rounded w-full flex items-center justify-between">
-                  <select value={rating} onChange={handleRatingChange} className="bg-yellow-900 text-white text-center border-2 border-yellow-400 font-bold py-2 rounded w-max">
-                    <option value="">Non noté</option>
-                    {Array.from({ length: 10 }, (_, i) => i + 1).map(number => (
-                      <option key={number} value={number}>{number}</option>
-                    ))}
-                  </select>
-                  <span className="ml-1 text-xl">/10</span>
-                </div>
-                <div className="bg-yellow-900 text-white border-2 border-yellow-400 font-bold py-2 px-4 rounded w-full">
-                  <label htmlFor="episode-select" className="mr-2">Épisodes:</label>
-                  <select id="episode-select" value={seriesInWatchlist?.watchedEpisodes || 0} className="bg-yellow-900 text-white border-2 border-yellow-400 font-bold py-2 rounded w-full">
-                    <option value="0">Non visionné</option>
-                    <option value="1">Visionné</option>
-                  </select>
-                </div>
-              </div>
-            </>
-            ) : (
-              <button className="bg-black hover:bg-yellow-900 hover:text-white text-yellow-600 border-2 border-yellow-400 font-bold py-2 px-[105px] rounded mb-4 w-max">
-                Noter le film
-              </button>
-            )}
-          </div>
+              {seriesInWatchlist ? (
+                <>
+                  <div className="flex flex-row space-x-4">
+                    <div className="bg-yellow-900 text-white border-2 border-yellow-400 font-bold py-2 px-4 rounded w-full flex items-center justify-between">
+                      <select value={rating} onChange={handleRatingChange} className="bg-yellow-900 text-white text-center border-2 border-yellow-400 font-bold py-2 rounded w-max">
+                        <option value="">Non noté</option>
+                        {Array.from({ length: 10 }, (_, i) => i + 1).map(number => (
+                          <option key={number} value={number}>{number}</option>
+                        ))}
+                      </select>
+                      <span className="ml-1 text-xl">/10</span>
+                    </div>
+                    <div className="bg-yellow-900 text-white border-2 border-yellow-400 font-bold py-2 px-4 rounded w-full">
+                      <label htmlFor="episode-select" className="mr-2">Épisodes:</label>
+                      <select id="episode-select" value={seriesInWatchlist?.watchedEpisodes || 0} className="bg-yellow-900 text-white border-2 border-yellow-400 font-bold py-2 rounded w-full">
+                        <option value="0">Non visionné</option>
+                        <option value="1">Visionné</option>
+                      </select>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <button className="bg-black hover:bg-yellow-900 hover:text-white text-yellow-600 border-2 border-yellow-400 font-bold py-2 px-[105px] rounded mb-4 w-max">
+                  Noter le film
+                </button>
+              )}
+            </div>
           </div>
         </div>
         <br />
@@ -224,7 +361,7 @@ function SeriesDetails() {
       <div ref={seasonRef} className='flex overflow-x-auto scroll-smooth bg-yellow-500 p-4 text-white'>
         {series.seasons.map((season, index) => (
           <button key={index} onClick={() => setSelectedSeason(season.season_number)}
-                  className={`mx-2 px-6 py-1 rounded-xl ${selectedSeason === season.season_number ? 'bg-yellow-700' : 'bg-yellow-500 hover:bg-yellow-600'}`}>
+            className={`mx-2 px-6 py-1 rounded-xl ${selectedSeason === season.season_number ? 'bg-yellow-700' : 'bg-yellow-500 hover:bg-yellow-600'}`}>
             Saison {season.season_number}
           </button>
         ))}
@@ -249,7 +386,7 @@ function SeriesDetails() {
         <div className="flex overflow-x-auto">
           {series.cast?.map((actor, index) => (
             <div key={index} className="flex flex-col items-center mr-4" style={{ minWidth: '200px' }}>
-              <img src={actor.photo} alt={actor.name} className="w-44 h-44 md:w-48 md:h-48 rounded-full object-cover"/>
+              <img src={actor.photo} alt={actor.name} className="w-44 h-44 md:w-48 md:h-48 rounded-full object-cover" />
               <p className="text-white mt-2 font-extrabold text-lg text-center">{actor.name}</p>
               <p className="text-white text-center font-semibold text-sm">{actor.character}</p>
             </div>
@@ -265,7 +402,7 @@ function SeriesDetails() {
             <Link key={index} to={`/series/details/${similarSeries.name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}/${similarSeries.id}`}>
               <div className="inline-block min-w-40 mr-4">
                 <img src={similarSeries.poster} alt={similarSeries.name}
-                className="w-40 h-60 rounded-lg shadow-lg"
+                  className="w-40 h-60 rounded-lg shadow-lg"
                 />
                 <p className="text-white mt-2">{similarSeries.name}</p>
               </div>
@@ -274,34 +411,44 @@ function SeriesDetails() {
         </div>
       </div>
 
-      {/* Section Commentaires */}
-      <div className="bg-yellow-700 p-16">
-      <h1 className='text-white text-3xl mb-4 font-semibold'>Commentaires</h1>
-      <div className="mb-8">
-        <textarea
-          className="w-full bg-yellow-900 text-white p-4 rounded-lg border-2 border-yellow-400"
-          placeholder="Ajoutez votre commentaire..."
-          rows="3"
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-        ></textarea>
-        <button
-          className="bg-black text-white hover:bg-white hover:text-yellow-700 font-bold py-2 px-4 rounded mt-4"
-          onClick={handlePostComment}
-        >
-          Publier
-        </button>
-      </div>
-      {comments.map((comment, index) => (
-        <div key={index} className="bg-yellow-900 p-4 rounded-lg mb-4 border-2 border-black">
-          <p className="text-yellow-200 font-bold mb-1">{comment.user}</p>
-          <p className="text-white">{comment.text}</p>
+      {/* Zone de commentaires */}
+      <div className="bg-yellow-600 p-16">
+        <h1 className='text-white text-3xl mb-4 font-semibold'>Commentaires</h1>
+        <div className="mb-8">
+          <textarea
+            className="w-full bg-yellow-900 text-white p-4 rounded-lg border-2 border-yellow-400"
+            placeholder="Ajoutez votre commentaire..."
+            rows="3"
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+          ></textarea>
+          <button
+            className="bg-black text-white hover:bg-white hover:text-yellow-700 font-bold py-2 px-4 rounded mt-4"
+            onClick={handlePostComment}
+          >
+            Publier
+          </button>
         </div>
-      ))}
-      <button className="w-full bg-black text-white hover:bg-white hover:text-yellow-700 font-bold py-2 px-4 rounded">
-        Voir tous les commentaires
-      </button>
-    </div>
+        {comments?.map((comment, index) => (
+          <div key={index} className="bg-yellow-900 p-4 rounded-lg mb-4 border-2 border-black">
+            <p className="text-yellow-200 font-bold mb-1">{comment.Username}</p>
+            <p className="text-yellow-200 text-sm mb-1">{comment.Date}</p>
+
+            <p className="text-white">{comment.Texte}</p>
+            <button
+              className="bg-black text-white hover:bg-white hover:text-yellow-700 font-bold py-2 px-4 rounded mt-4"
+
+
+              onClick={handlelikeComment(comment)}
+            >
+              J'aime ({comment.likesnumber})
+
+
+
+            </button>
+          </div>
+        ))}
+      </div>
       <Footer />
     </div>
   );

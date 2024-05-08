@@ -3,7 +3,6 @@ import { useParams, Link } from "react-router-dom";
 import Header from "../../../../components/Header/MovieHeader";
 import Footer from "../../../../components/Footer/Footer";
 import { useWatchlist } from '../../../Watchlist/WatchlistContext';
-import { useAuth } from '../../../../context/AuthContext';
 import axios from 'axios';
 
 
@@ -186,7 +185,7 @@ function MovieDetails() {
       return;
     }
     comment = { ...comment };
-    const userrep = await axios.get('http://localhost:4000/api/authRoutes/profile', {
+    const userrep = await axios.get('https://what-you-watched-backend.vercel.app/api/authRoutes/profile', {
       headers: { Authorization: `Bearer ${token}` }
     });
 
@@ -194,12 +193,9 @@ function MovieDetails() {
       console.log('Erreur lors de la récupération de l\'utilisateur');
       return;
     }
-    console.log(comment);
-    console.log(typeof comment);
-    console.log(comment.likes);
-    console.log(typeof comment.likes);
+
     if (comment.likes.includes(userrep.data.utilisateur._id)) {
-      const response = await axios.post(`http://localhost:4000/api/commentaires/dislike/${comment.id}`, { idutilisateur: userrep.data.utilisateur._id }, {
+      const response = await axios.post(`https://what-you-watched-backend.vercel.app/api/commentaires/dislike/${comment.id}`, { idutilisateur: userrep.data.utilisateur._id }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.status !== 200) {
@@ -456,9 +452,6 @@ function MovieDetails() {
             </button>
           </div>
         ))}
-        <button className="w-full bg-black text-white hover:bg-white hover:text-red-700 font-bold py-2 px-4 rounded">
-          Voir tous les commentaires
-        </button>
       </div>
       <Footer />
     </div>
