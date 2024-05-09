@@ -36,7 +36,7 @@ function Features() {
               <img
                 loading="lazy"
                 className="w-full h-auto max-w-xs sm:max-w-sm md:max-w-md lg:w-auto lg:h-full rounded-xl shadow-2xl ring-1 ring-black ring-opacity-5 lg:absolute lg:left-0 lg:max-w-none"
-                src="https://www.energyclubgarches.com/media/uploaded/sites/746/actualite/5e1bed16da53a_DSC0007.JPG"
+                src="images/Watchlist.png"
                 alt=""
               />
             </div>
@@ -80,8 +80,8 @@ function Features() {
         <div class="mt-12 sm:mt-16 lg:mt-0 flex justify-center lg:block">
           <div class="lg:relative lg:m-0 lg:h-full lg:px-0">
             <img alt="Inbox user interface" loading="lazy"
-              class="max-w-xs sm:max-w-sm md:max-w-md lg:w-auto lg:h-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5"
-              src="https://s3.static-footeo.com/1200/uploads/fcc78/teams/debutant-1__mxjgkz.jpg"/>
+              class="max-w-xs sm:max-w-sm md:max-w-xl lg:w-auto lg:h-5/6 rounded-xl shadow-xl ring-1 ring-black ring-opacity-5"
+              src="images/QCM.png"/>
           </div>
         </div>
       </div>
@@ -117,7 +117,7 @@ function Features() {
               <img
                 loading="lazy"
                 className="w-full h-auto max-w-xs sm:max-w-sm md:max-w-md lg:w-auto lg:h-full rounded-xl shadow-2xl ring-1 ring-black ring-opacity-5 lg:absolute lg:left-0 lg:max-w-none"
-                src="	http://easqy.athle.org/upload/ssites/news/72/78272_small.jpg"
+                src="/images/Commentaires.png"
                 alt=""
               />
             </div>
