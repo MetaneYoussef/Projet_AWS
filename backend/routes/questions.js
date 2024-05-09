@@ -62,18 +62,23 @@ router.get('/initial', (req, res) => {
 
 // Route pour récupérer des questions aléatoires basées sur le type (film ou série)
 router.get('/:type/questions', async(req, res) => {
-    console.log("Received type:", req.params.type);
     const { type } = req.params;
-    const questionType = type === 'film' ? 'film' : 'series';
+    const validTypes = ['film', 'series']; // Define valid types
+    const normalizedType = type.toLowerCase(); // Normalize the type to lower case
+
+    if (!validTypes.includes(normalizedType)) {
+        return res.status(400).json({ message: "Invalid type specified" });
+    }
 
     try {
-        const questions = await Question.find({ type: questionType }).limit(5);
-        console.log("Questions:", questions);
+        const questions = await Question.find({ type: normalizedType }).limit(5);
         res.status(200).json(questions);
     } catch (error) {
+        console.error("Error fetching questions for type:", normalizedType, error);
         res.status(500).json({ message: error.message });
     }
 });
+
 
 
 const options = {
