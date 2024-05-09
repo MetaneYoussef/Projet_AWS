@@ -62,7 +62,6 @@ function Header() {
             <li><Link to="/films" className="text-red-500 hover:text-red-600 font-bold text-2xl">FILMS</Link></li>
             <li><Link to="/series" className="hover:text-yellow-600 font-bold text-2xl">SÉRIES</Link></li>
             <li><Link to="/qcm" className="hover:text-blue-600 font-bold text-2xl">QCM</Link></li>
-            <li><Link to="/evenement" className="hover:text-green-600 font-bold text-2xl">ÉVÉNEMENTS</Link></li>
               {/* Ajoute le reste de tes liens ici */}
             </ul>
             <ul className="mt-48 space-y-6 text-center">
