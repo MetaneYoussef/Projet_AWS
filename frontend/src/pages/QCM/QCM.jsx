@@ -19,7 +19,7 @@ const Qcm = () => {
     async function fetchQuestions() {
       try {
         const response = await axios.get(`https://what-you-watched-backend.vercel.app/api/questions/${type}/questions`);
-        console.log("Response:", response.data);
+        console.log("Response:", type, response.data);
         setQuestions(response.data);
       } catch (error) {
         console.error("Error fetching questions:", error);
