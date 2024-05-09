@@ -55,7 +55,6 @@ function App() {
           <Route path="/qcm-selection" element={<SelectionQCM />} />
           <Route path="/qcm/:type" element={<Qcm />} />
           <Route path="/recommendations/:type" element={<RecommendationsPage />} />
-          <Route path="/Evenement" element={<Evenement />} />
           <Route path="/Inscription" element={<Signup />} />
           <Route path="/signup" element={<FormulaireInscription />} />
           <Route path="/UserProfile" element={<UserProfile />} />

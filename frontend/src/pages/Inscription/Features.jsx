@@ -106,7 +106,7 @@ function Features() {
             <h2 class="text-3xl font-bold tracking-tight text-white">
               Communiquez vos avis avec la communauté What You Watched !                
             </h2>
-            <p class="mt-4 text-lg text-gray-300">
+            <p class="mt-4 text-sm md:text-lg text-gray-300">
               Partagez vos évaluations, laissez des commentaires et connectez-vous avec d'autres passionnés de séries et films.
             </p>
           </div>
