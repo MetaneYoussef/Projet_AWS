@@ -64,7 +64,7 @@ function SeriesDetails() {
             watchlistCount: data.popularity,
             commentCount: data.vote_count,
             seasons: data.seasons,
-            episodes: [], // Initially empty, will be filled by the episodes fetch
+            episodes: [],
             cast: data.credits.cast.map(actor => ({
               name: actor.name,
               character: actor.character,
@@ -111,7 +111,6 @@ function SeriesDetails() {
   }, [seriesId, selectedSeason, api_key]);
 
 
-
   {/*Chercher les Commentaires d'un film*/ }
   useEffect(() => {
     const fetchComments = async () => {
@@ -143,9 +142,6 @@ function SeriesDetails() {
     };
     fetchComments();
   }, [seriesId]);
-
-
-
 
   const token = localStorage.getItem('token');
 
@@ -201,8 +197,6 @@ function SeriesDetails() {
     }));
 
   };
-
-
 
   const handlePostComment = async () => {
     if (newComment.trim()) {
@@ -302,11 +296,12 @@ function SeriesDetails() {
           <div className="md:w-1/4 flex flex-col items-center md:items-start md:ml-8 mx-10 px-4">
             <div className="bg-black p-4 rounded-lg mb-4 text-center w-full">
               <p className='font-bold text-2xl antialiased'>{series.watchlistCount}</p>
-              <p>ont ajouté ce film à leur Watchlist</p>
+              <p>Ont ajouté ce film à leur Watchlist</p>
             </div>
             <div className="bg-black p-4 rounded-lg mb-4 text-center w-full">
               <p className='font-bold text-2xl antialiased'>{series.commentCount}</p>
-              <p>commentaires</p>
+              <p>Commentaires</p>
+              <p>(IMDb)</p>
             </div>
             <div>
               {seriesInWatchlist ? (

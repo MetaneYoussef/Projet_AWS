@@ -10,7 +10,6 @@ function Header() {
   const { isAuthenticated } = useAuth();
 
 
-
   return (
     <><header className="hidden md:flex bg-black text-white p-4 justify-between items-center border-b border-red-900 relative">
       <Link to="/" className="flex items-center ml-5">
@@ -22,7 +21,6 @@ function Header() {
             <li><Link to="/films" className="text-red-500 hover:text-red-600 font-bold">FILMS</Link></li>
             <li><Link to="/series" className="hover:text-yellow-600 font-bold">SÉRIES</Link></li>
             <li><Link to="/qcm" className="hover:text-blue-600 font-bold">QCM</Link></li>
-            <li><Link to="/evenement" className="hover:text-green-600 font-bold">ÉVÉNEMENTS</Link></li>
           </ul>
         </nav>
       )}

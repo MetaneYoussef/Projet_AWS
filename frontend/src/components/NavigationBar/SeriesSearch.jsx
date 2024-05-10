@@ -36,7 +36,7 @@ const SearchComponent = ({ isExpanded, setExpanded }) => {
     <div className={`flex items-center transition-all duration-500 ease-in-out ${isExpanded ? 'w-full' : 'w-68'} relative mr-10`}>
       <input
         type="text"
-        placeholder="Search..."
+        placeholder="Recherchez..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onFocus={() => setExpanded(true)}

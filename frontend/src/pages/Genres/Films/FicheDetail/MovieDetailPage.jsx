@@ -176,7 +176,7 @@ function MovieDetails() {
 
 
 
-
+  {/*Commentaires*/ }
   const token = localStorage.getItem('token');
 
   const handlelikeComment = (comment) => async () => {
@@ -231,8 +231,6 @@ function MovieDetails() {
     }));
 
   };
-
-
 
   const handlePostComment = async () => {
     if (newComment.trim()) {

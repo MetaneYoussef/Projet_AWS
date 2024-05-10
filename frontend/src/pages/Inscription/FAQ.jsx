@@ -59,14 +59,14 @@ function FAQ() {
                     </svg>
                   </span>
               </summary>
-              <p class="group-open:animate-fadeIn mt-3 text-neutral-600">Le site a été lancé en mai 2024.
+              <p class="group-open:animate-fadeIn mt-3 text-neutral-600">Le site a été lancé le 14 mai 2024.
               </p>
             </details>
           </div>
           <div class="py-5">
               <details class="group">
                 <summary class="flex cursor-pointer list-none items-center justify-between font-medium">
-                  <span> Is there a free trial?</span>
+                  <span> Y'a-t-il un abonnement premium pour les amoureux de WYW ?</span>
                   <span class="transition group-open:rotate-180">
                     <svg fill="none" height="24" shape-rendering="geometricPrecision"
                       stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -75,9 +75,8 @@ function FAQ() {
                     </svg>
                   </span>
                 </summary>
-                <p class="group-open:animate-fadeIn mt-3 text-neutral-600">We offer a free trial of our software
-                  for a limited time. During the trial period, you will have access to a limited set of
-                  features and functionality, but you will not be charged.
+                <p class="group-open:animate-fadeIn mt-3 text-neutral-600">Non, pas encore mais de nouvelles fonctionnalités arrivent
+                prochainement, on les réservera peut-être à nos amoureux ! ;)
                 </p>
               </details>
           </div>
@@ -96,24 +95,6 @@ function FAQ() {
               <p class="group-open:animate-fadeIn mt-3 text-neutral-600">Si vous avez besoin d'aide avec notre plateforme ou
                 si vous avez d'autres questions, vous pouvez contacter l'équipe d'assistance en soumettant un rapport via la
                 section "Contact" au pied de la page du site Web ou par e-mail à cestjusteunprojet@wyw.com.
-              </p>
-            </details>
-          </div>
-          <div class="py-5">
-            <details class="group">
-              <summary class="flex cursor-pointer list-none items-center justify-between font-medium">
-                <span> Do you offer any discounts or promotions?</span>
-                <span class="transition group-open:rotate-180">
-                  <svg fill="none" height="24" shape-rendering="geometricPrecision"
-                    stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="1.5" viewBox="0 0 24 24" width="24">
-                    <path d="M6 9l6 6 6-6"></path>
-                  </svg>
-                </span>
-              </summary>
-              <p class="group-open:animate-fadeIn mt-3 text-neutral-600">We may offer discounts or promotions
-                from time to time. To stay up-to-date on the latest deals and special offers, you can sign
-                up for the company's newsletter or follow it on social media.
               </p>
             </details>
           </div>

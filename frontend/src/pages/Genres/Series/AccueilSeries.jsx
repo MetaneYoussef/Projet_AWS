@@ -40,8 +40,6 @@ const SeriesHomePage = () => {
 
   // Base de données des genres
   const genres = [
-    { name: "Toutes les séries", image: `${process.env.PUBLIC_URL}/images/Genres/Series/ToutesLesSeries.jpg` },
-    { name: "Classiques", image: `${process.env.PUBLIC_URL}/images/Genres/Series/Classiques.png` },
     { name: "Action", image: `${process.env.PUBLIC_URL}/images/Genres/Series/Action.png` },
     { name: "Comédie", image: `${process.env.PUBLIC_URL}/images/Genres/Series/Comedie.png` },
     { name: "Science-Fiction", image: `${process.env.PUBLIC_URL}/images/Genres/Series/S-FX.jpg` },
@@ -70,7 +68,7 @@ const SeriesHomePage = () => {
         <Header />
       </div>
       <div className="flex-grow bg-yellow-600">
-        <section className="bg-yellow-600">
+        <section className="bg-gradient-to-b from-yellow-600 to-yellow-900">
           <div className='mb-6'>
             <h1 className="text-white text-3xl font-semibold mx-12 mb-2 mt-8 ml-8 md:ml-20">Series</h1>
             {/*LOGIQUE IMPLEMENTER POUR L'AFFICHAGE DE LA BANNIERE*/}

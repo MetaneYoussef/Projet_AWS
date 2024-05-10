@@ -18,8 +18,6 @@ const MovieHomePage = () => {
 
   // Base de données des genres
   const genres = [
-    { name: "Tous les films", image: `${process.env.PUBLIC_URL}/images/Genres/Films/TousLesFilms.png` },
-    { name: "Classiques", image: `${process.env.PUBLIC_URL}/images/Genres/Films/Classiques.png` },
     { name: "Action", image: `${process.env.PUBLIC_URL}/images/Genres/Films/Action.png` },
     { name: "Comédie", image: `${process.env.PUBLIC_URL}/images/Genres/Films/Comedie.png` },
     { name: "Science-Fiction", image: `${process.env.PUBLIC_URL}/images/Genres/Films/S-FX.png` },
@@ -49,8 +47,8 @@ const MovieHomePage = () => {
         <Header />
       </div>
       <div className="flex-grow bg-red-700">
-        <section className="bg-red-700">
-          <div className='mb-6'>
+        <section className="bg-gradient-to-b from-red-700 to-red-950">
+          <div className='mb-6 bg-red-700'>
             <h1 className="text-white text-3xl font-semibold mx-12 mb-2 mt-8 ml-8 md:ml-20">Films</h1>
             {/*LOGIQUE IMPLEMENTER POUR L'AFFICHAGE DE LA BANNIERE*/}
             <Slider />
