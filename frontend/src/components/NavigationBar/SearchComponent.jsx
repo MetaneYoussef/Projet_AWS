@@ -36,7 +36,7 @@ const SearchComponent = ({ isExpanded, setExpanded }) => {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onFocus={() => setExpanded(true)}
-        className="p-1.5 bg-gradient-to-b from-gray-700 to-blue-700  text-white border-2 border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300 hover:bg-indigo-700-600 transition-all duration-500 ease-in-out w-full"
+        className="p-1.5 bg-gradient-to-b from-blue-900 to-blue-700  text-white border-2 border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300 hover:bg-indigo-700-600 transition-all duration-500 ease-in-out w-full"
       />
       {isExpanded && (
         <button onClick={() => { setExpanded(false); setResults([]); }} className="absolute right-0 text-2xl text-white mr-4">×</button>

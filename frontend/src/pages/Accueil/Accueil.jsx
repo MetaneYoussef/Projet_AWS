@@ -6,6 +6,8 @@ import Footer from "../../components/Footer/Footer";
 import Bienvenue from '../../components/Bannieres/Bienvenue';
 import Slider from '../../components/Bannieres/Slider';
 import Affichage from './Categories/Affichage';
+import CustomScrollBarS from '../../utiles/CustomScrollBar.css';
+
 
 
 // Pour chaque genre, utilisez Link pour naviguer
@@ -23,17 +25,15 @@ function Accueil() {
 
   // Base de données des genres
   const genres = [
-    { name: "Tous les films", image:"https://www.borneonews.co.id/images/upload/2021/07/31/1627691695-20191226-alexander-arnold-liverpool.jpg" },
-    { name: "Classiques", image:  "https://www.oncuisine.fr/images/recettes/sauce-big-mac.gif"},
     { name: "Action", image: "https://images-3.rakuten.tv/storage/snapshot/shot/1d6c33e4-e71f-4338-94f9-88b86900a911-snapshot-1590662744-width936-quality90.jpeg", id: 28 },
     { name: "Comédie", image: "https://www.programme-tv.net/imgre/fit/~1~tel~2023~08~02~509b09f4-c91d-426f-a656-68f52680f232.jpeg/1200x600/crop-from/top/quality/80/case-depart-ces-scenes-inspirees-de-l-epoque-coloniale-particulierement-difficiles-a-jouer-pour-thomas-ngijol-et-fabrice-eboue.jpg", id: 35 },
     { name: "Science-Fiction", image: "https://leclaireur.fnac.com/wp-content/uploads/2023/12/iron-man.jpg", id: 878 },
-    { name: "Émotion", image: "https://centredelattentionsuisse.ch/wp-content/uploads/2017/02/Emotions-vice-versa.jpg", id: 18 },
-    { name: "Policier", image: "https://i.f1g.fr/media/cms/orig/2020/09/02/04a003d94a549d900c75d6b7d325279771f3a020944d55bdf29b2cbae95e27a8.jpeg", id: 80 },
+    { name: "Drame", image: "https://assetsio.gnwcdn.com/squid-game-board-game-artwork.jpg?width=1200&height=1200&fit=bounds&quality=70&format=jpg&auto=webp", id: 18 },
+    { name: "Crime", image: "https://i.f1g.fr/media/cms/orig/2020/09/02/04a003d94a549d900c75d6b7d325279771f3a020944d55bdf29b2cbae95e27a8.jpeg", id: 80 },
     { name: "Animation", image: "https://images.rtl.fr/~c/1200v800/rtl/www/1245070-muphasa-et-simba-dans-le-roi-lion.jpg", id: 16 },
     { name: "Horreur", image: "https://www.micromania.fr/on/demandware.static/-/Sites-Micromania-Library/default/dw924fcce3/fanzone/dossier/ca/ca-clown.jpg", id: 27 },
-    { name: "Suspense", image: "https://media.vanityfair.fr/photos/6127abf261d8f6d5e24e60dd/16:9/w_2560%2Cc_limit/Netflix%2520:%2520courtesy%2520Everett%2520Collection4.jpg", id:9648 },
-    { name: "Jeunesse", image: "https://static.bandainamcoent.eu/high/paw-patrol/paw-patrol-world/00-page-setup/PPW-mobile-header.jpg", id: 10751 },
+    { name: "Mystère", image: "https://media.vanityfair.fr/photos/6127abf261d8f6d5e24e60dd/16:9/w_2560%2Cc_limit/Netflix%2520:%2520courtesy%2520Everett%2520Collection4.jpg", id:9648 },
+    { name: "Famille", image: "https://static.bandainamcoent.eu/high/paw-patrol/paw-patrol-world/00-page-setup/PPW-mobile-header.jpg", id: 10751 },
   ];
 
   return (

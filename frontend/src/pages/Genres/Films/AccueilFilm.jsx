@@ -7,6 +7,7 @@ import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 import Affichage from './Categories/Affichage';
 
 
+
 // Genre Banner Component
 const GenreBanner = ({ genre }) => (
   <Link to={`/films/${genre.name}`} className="inline-block item-container cursor-pointer rounded-lg mr-3 md:mr-6 mb-2 mt-3 bg-red-800 hover:bg-red-900 text-white">

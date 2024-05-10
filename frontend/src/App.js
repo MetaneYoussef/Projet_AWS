@@ -9,7 +9,6 @@ import FilmsPage from "./pages/Genres/Films/PageFilms";
 import Series from "./pages/Genres/Series/PageSeries";
 import Accueil from "./pages/Accueil/Accueil";
 import QCMHomePage from "./pages/QCM/Home";
-import Evenement from "./pages/Divers/Evenement";
 import Watchlist from "./pages/Watchlist/Watchlist";
 {/* Liens des Pages de Films et Séries */}
 import GenrePage from "./pages/Genres/GenresPage";
@@ -20,7 +19,6 @@ import SeriesDetailPage from "./pages/Genres/Series/FicheDetail/SeriesDetailPage
 {/* QCM */}
 import SelectionQCM from "./pages/QCM/SelectionQCM";
 import Qcm from "./pages/QCM/QCM";
-import SeriesQcm from "./pages/QCM/QCM";
 import RecommendationsPage from "./pages/QCM/ResultsPage";
 {/* Liens du Footer */}
 import Contact from "./pages/InsideFooter/Contact";
