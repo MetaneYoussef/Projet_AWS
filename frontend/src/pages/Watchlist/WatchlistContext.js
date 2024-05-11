@@ -8,19 +8,28 @@ export const WatchlistProvider = ({ children }) => {
   const [watchlist, setWatchlist] = useState({ movies: [], series: [] });
 
   const addToWatchlist = (item, type) => {
-    const newItem = { ...item, status: 'Prévu', watchedEpisodes: 0, totalEpisodes: type === 'movie' ? 1 : item.totalEpisodes };
+    // Définir le status initial basé sur le type
+    const initialStatus = type === 'movie' ? 'Prévu' : 'En Cours';
+
+    const newItem = {
+      ...item,
+      status: initialStatus, // Utiliser le status initial ici
+      watchedEpisodes: 0,
+      totalEpisodes: type === 'movie' ? 1 : item.totalEpisodes
+    };
+
     if (type === 'movie') {
-        if (!watchlist.movies.some(movie => movie.id === item.id)) {
-            setWatchlist(prev => ({ ...prev, movies: [...prev.movies, newItem] }));
-        } else {
-            alert("Ce film est déjà dans votre Watchlist!");
-        }
-    } else {
-        if (!watchlist.series.some(serie => serie.id === item.id)) {
-            setWatchlist(prev => ({ ...prev, series: [...prev.series, newItem] }));
-        } else {
-            alert("Cette série est déjà dans votre Watchlist!");
-        }
+      if (!watchlist.movies.some(movie => movie.id === item.id)) {
+        setWatchlist(prev => ({ ...prev, movies: [...prev.movies, newItem] }));
+      } else {
+        alert("Ce film est déjà dans votre Watchlist!");
+      }
+    } else { // pour les séries
+      if (!watchlist.series.some(serie => serie.id === item.id)) {
+        setWatchlist(prev => ({ ...prev, series: [...prev.series, newItem] }));
+      } else {
+        alert("Cette série est déjà dans votre Watchlist!");
+      }
     }
   };
 

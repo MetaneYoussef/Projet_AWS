@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Header from "../../components/Header/Header";
+import Header from "../../components/Header/SeriesHeader";
 import Footer from "../../components/Footer/Footer";
 import FilmsSection from './FilmsSection';
 import SeriesSection from './SeriesSection';
