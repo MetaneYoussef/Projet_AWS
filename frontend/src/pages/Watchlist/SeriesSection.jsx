@@ -6,7 +6,7 @@ function SeriesSection() {
   const { watchlist, removeFromWatchlist } = useWatchlist();
   const [showSeriesEnCours, setShowSeriesEnCours] = useState(true);
   const [showSeriesTermines, setShowSeriesTermines] = useState(false);
-  const [showSeriesPrevu, setShowSeriesPrevu] = useState(false);
+  const [showSeriesPrevu, setShowSeriesPrevu] = useState(true);
   const [showSeriesEnPause, setShowSeriesEnPause] = useState(false);
   const [showSeriesAbandonnes, setShowSeriesAbandonnes] = useState(false);
 
@@ -78,11 +78,11 @@ function SeriesSection() {
         <span className="mr-4 text-xl text-white font-bold">
           {showSeriesPrevu ? '▼' : '☰'}
         </span>
-        Prévu
+        Prévus
       </h2>
       {showSeriesPrevu && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {watchlist.series.filter(serie => serie.status === '').map(serie => (
+          {watchlist.series.filter(serie => serie.status === 'Prévu').map(serie => (
             <WatchlistItem key={serie.id} {...serie} type='series' removeItem={() => removeFromWatchlist(serie.id, 'series')} />
           ))}
         </div>

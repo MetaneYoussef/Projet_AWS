@@ -21,12 +21,13 @@ function SeriesDetails() {
   const seriesInWatchlist = watchlist.series.find(m => m.id === seriesId);
   {/*GESTION DE LA NOTATION*/ }
   const [rating, setRating] = useState(seriesInWatchlist ? seriesInWatchlist.rating : '');
-
+ 
   const handleAddToWatchlist = () => {
     const item = {
       id: seriesId,
       title: series.name,
-      poster: series.poster
+      poster: series.poster,
+      totalEpisodes: series.totalEpisodes // Ajouter cette ligne pour inclure le nombre total d'épisodes
     };
     addToWatchlist(item, 'series');
   };
@@ -99,7 +100,8 @@ function SeriesDetails() {
         const data = await response.json();
         setSeries(prev => ({
           ...prev,
-          episodes: data.episodes
+          episodes: data.episodes,
+          totalEpisodes: data.episodes.length // Stocker le nombre total d'épisodes de la saison
         }));
       } catch (error) {
         console.error("Erreur lors de la récupération des épisodes", error);
@@ -109,6 +111,7 @@ function SeriesDetails() {
       fetchEpisodes();
     }
   }, [seriesId, selectedSeason, api_key]);
+  
 
 
   {/*Chercher les Commentaires d'un film*/ }
@@ -335,10 +338,12 @@ function SeriesDetails() {
                     <div className="bg-yellow-900 text-white border-2 border-yellow-400 font-bold py-2 px-4 rounded w-full">
                       <label htmlFor="episode-select" className="mr-2">Épisodes:</label>
                       <select id="episode-select" value={seriesInWatchlist?.watchedEpisodes || 0} className="bg-yellow-900 text-white border-2 border-yellow-400 font-bold py-2 rounded w-full">
-                        <option value="0">Non visionné</option>
-                        <option value="1">Visionné</option>
+                        {Array.from({ length: series.totalEpisodes }, (_, i) => (
+                          <option key={i} value={i + 1}>{i + 1}</option>
+                        ))}
                       </select>
                     </div>
+
                   </div>
                 </>
               ) : (

@@ -8,12 +8,9 @@ export const WatchlistProvider = ({ children }) => {
   const [watchlist, setWatchlist] = useState({ movies: [], series: [] });
 
   const addToWatchlist = (item, type) => {
-    // Définir le status initial basé sur le type
-    const initialStatus = type === 'movie' ? 'Prévu' : 'En Cours';
-
     const newItem = {
       ...item,
-      status: initialStatus, // Utiliser le status initial ici
+      status: 'Prévu', // Utiliser le status initial ici
       watchedEpisodes: 0,
       totalEpisodes: type === 'movie' ? 1 : item.totalEpisodes
     };

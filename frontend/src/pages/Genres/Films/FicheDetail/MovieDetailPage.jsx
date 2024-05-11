@@ -16,7 +16,7 @@ function MovieDetails() {
   const [error, setError] = useState(null);
 
   {/*GESTION DE LA WATCHLIST*/ }
-  const { watchlist, addToWatchlist, removeFromWatchlist, updateStatus, updateRating } = useWatchlist();
+  const { watchlist, addToWatchlist, removeFromWatchlist, updateStatus, updateRating, updateWatchedEpisodes } = useWatchlist();
   const movieInWatchlist = watchlist.movies.find(m => m.id === movieId);
   {/*GESTION DE LA NOTATION*/ }
   const [rating, setRating] = useState(movieInWatchlist ? movieInWatchlist.rating : '');
@@ -49,11 +49,13 @@ function MovieDetails() {
 
   const handleEpisodeChange = (e) => {
     const newEpisodeCount = parseInt(e.target.value);
-    setCurrentEpisode(newEpisodeCount);  // Mettre à jour l'état local pour refléter le nouvel épisode regardé
+    setCurrentEpisode(newEpisodeCount);
     if (newEpisodeCount === 1) {
-      updateStatus(movieId, 'movie', 'Terminé');  // Mettre à jour le statut du film comme "Terminé"
+      updateWatchedEpisodes(movieId, 'movie', newEpisodeCount);  // Mise à jour du nombre d'épisodes visionnés
+      updateStatus(movieId, 'movie', 'Terminé');  // Mise à jour du statut du film comme "Terminé"
     }
   };
+  
 
   const handleAddToWatchlist = () => {
     const item = {
