@@ -8,7 +8,6 @@ const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
 router.get('/addQuestions', async (req, res) => {
     await Question.deleteMany({});
-    console.log('Cleared Question collection');
 
     const questions = [
         // Questions pour les films
@@ -45,7 +44,6 @@ router.get('/addQuestions', async (req, res) => {
         { type: 'series', question: 'Aimez-vous les séries qui incluent des éléments surnaturels ou fantastiques?', options: ['Oui', 'Non'], tags: ['with_keywords'] }
     ];
     await Question.insertMany(questions);
-    console.log('Questions inserted successfully!');
     res.json({
         msg: "ok"
 
@@ -71,7 +69,11 @@ router.get('/:type/questions', async (req, res) => {
     }
 
     try {
-        const questions = await Question.find({ type: normalizedType }).limit(5);
+        // Fetch 5 random questions based on the type
+        const questions = await Question.aggregate([
+            { $match: { type: normalizedType } },
+            { $sample: { size: 5 } }
+        ]);
         res.status(200).json(questions);
     } catch (error) {
         console.error("Error fetching questions for type:", normalizedType, error);
@@ -90,8 +92,7 @@ const options = {
 };
 
 router.post('/recommendations', async (req, res) => {
-    console.log("Received answers:", req.body.answers);
-    const { answers, type } = req.body;
+    let { answers, type } = req.body;
     const tmdbType = type === 'films' ? 'movie' : 'tv';
 
     try {
@@ -103,30 +104,56 @@ router.post('/recommendations', async (req, res) => {
     }
 });
 
+
 async function fetchRecommendations(answers, tmdbType) {
     const queryParams = new URLSearchParams({
         include_adult: false,
         language: 'fr-FR'
     });
-
     // Supposons que answers est un tableau d'objets où chaque objet a une clé et une valeur correspondant aux paramètres de l'API
     answers.forEach(answer => {
         const key = Object.keys(answer)[0];
         const value = answer[key];
-        queryParams.append(key, value);
+        switch (key) {
+            case 'with_genres':
+                if (tmdbType === 'movie') {
+                    queryParams.append(key, getGenreId(value));
+                } else {
+                    queryParams.append(key, getGenreIdseries(value));
+                }
+                break;
+            case 'with_runtime':
+                const runtimeparams = getRuntime(value);
+                Object.keys(runtimeparams).forEach(key => {
+                    queryParams.append(key, runtimeparams[key]);
+                });
+                break;
+            case 'with_number_of_seasons':
+                break;
+            case 'primary_release_year':
+                const yearsparams = getYear(value);
+                Object.keys(yearsparams).forEach(key => {
+                    queryParams.append(key, yearsparams[key]);
+                });
+                break;
+            case 'with_companies':
+                queryParams.append(key, getCompanyId(value));
+                break;
+            case 'with_crew':
+                queryParams.append(key, getCrewId(value));
+                break;
+            default:
+                queryParams.append(key, value);
+        }
     });
 
     const url = `https://api.themoviedb.org/3/discover/${tmdbType}?${queryParams.toString()}`;
-    console.log("Requesting URL:", url);
-
     try {
         const response = await axios.get(url, options);
         let searchParamsSize = [...new Set(queryParams.keys())].length;
         while (response.data.results.length < 5 && searchParamsSize >= 0) {
-            console.log(response.data);
             // Remove the last search parameter
             queryParams.delete([...new Set(queryParams.keys())][searchParamsSize - 1]);
-            console.log("New query params:", queryParams);
             const url = `https://api.themoviedb.org/3/discover/${tmdbType}?${queryParams.toString()}`;
             const newResponse = await axios.get(url, options);
             response.data.results.push(...newResponse.data.results);
@@ -139,5 +166,114 @@ async function fetchRecommendations(answers, tmdbType) {
         throw new Error('TMDB API request failed: ' + error.message);
     }
 }
+
+
+const getYear = (year) => {
+    const yearsparams = {};
+    switch (year) {
+        case 'Films classiques':
+            yearsparams["primary_release_year.lte"] = 1980;
+            yearsparams["primary_release_year.gte"] = 1900;
+            break;
+        case 'Films modernes':
+            yearsparams["primary_release_year.lte"] = 2019;
+            yearsparams["primary_release_year.gte"] = 1981;
+            break;
+        case 'Films contemporains':
+            yearsparams["primary_release_year.gte"] = 2020;
+            break;
+        default:
+            break;
+    }
+    return yearsparams;
+}
+
+const getGenreId = (genre) => {
+    const genres = {
+        'Action': 28,
+        'Comédie': 35,
+        'Drame': 18,
+        'Fantaisie': 14,
+        'Thriller': 53,
+        'Science-fiction': 878,
+        'Documentaire': 99,
+        'Comédie romantique': 10749
+    };
+    return genres[genre];
+}
+
+const getGenreIdseries = (genre) => {
+    const genres = {
+        'Thriller': 53,
+        'Science-fiction': 878,
+        'Documentaire': 99,
+        'Comédie romantique': 10749
+    };
+    return genres[genre];
+}
+
+
+const getRuntime = (runtime) => {
+    runtimeparams = {};
+    switch (runtime) {
+        case 'Moins de 90 minutes':
+            runtimeparams["with_runtime.lte"] = 90;
+            break;
+
+        case 'Entre 90 et 120 minutes':
+            runtimeparams["with_runtime.gte"] = 90;
+            runtimeparams["with_runtime.lte"] = 120;
+            break;
+
+        case 'Plus de 120 minutes':
+            runtimeparams["with_runtime.gte"] = 120;
+            break;
+
+        case 'Moins de 30 minutes':
+            runtimeparams["with_runtime.lte"] = 30;
+            break;
+
+        case '30 à 60 minutes':
+            runtimeparams["with_runtime.gte"] = 30;
+            runtimeparams["with_runtime.lte"] = 60;
+            break;
+        case 'Plus de 60 minutes':
+            runtimeparams["with_runtime.gte"] = 60;
+            break;
+        default:
+            break;
+    }
+    return runtimeparams;
+}
+
+
+
+const getCompanyId = (company) => {
+    const companies = {
+        'Oui': 420,
+        'Non': 0
+    };
+    return companies[company];
+}
+
+const getCrewId = (crew) => {
+    const crewMembers = {
+        'Christopher Nolan': 525,
+        'Steven Spielberg': 488,
+        'Martin Scorsese': 217,
+        'Quentin Tarantino': 233,
+        'Vince Gilligan': 66633,
+        'Shonda Rhimes': 694,
+        'David Benioff & D.B. Weiss': 2379,
+        'Aaron Sorkin': 1532
+    };
+    return crewMembers[crew];
+}
+
+
+
+
+
+
 
 module.exports = router;
