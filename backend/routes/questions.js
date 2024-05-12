@@ -92,7 +92,7 @@ const options = {
 router.post('/recommendations', async (req, res) => {
     console.log("Received answers:", req.body.answers);
     const { answers, type } = req.body;
-    const tmdbType = type === 'film' ? 'movie' : 'tv';
+    const tmdbType = type === 'films' ? 'movie' : 'tv';
 
     try {
         const recommendations = await fetchRecommendations(answers, tmdbType);
