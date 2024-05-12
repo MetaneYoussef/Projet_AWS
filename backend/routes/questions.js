@@ -6,7 +6,7 @@ const Question = require('../models/Question');
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
 
-router.get('/addQuestions', async(req, res) => {
+router.get('/addQuestions', async (req, res) => {
     await Question.deleteMany({});
     console.log('Cleared Question collection');
 
@@ -61,9 +61,9 @@ router.get('/initial', (req, res) => {
 });
 
 // Route pour récupérer des questions aléatoires basées sur le type (film ou série)
-router.get('/:type/questions', async(req, res) => {
+router.get('/:type/questions', async (req, res) => {
     const { type } = req.params;
-    const validTypes = ['film', 'series']; // Define valid types
+    const validTypes = ['films', 'series']; // Define valid types
     const normalizedType = type.toLowerCase(); // Normalize the type to lower case
 
     if (!validTypes.includes(normalizedType)) {
@@ -89,7 +89,7 @@ const options = {
     }
 };
 
-router.post('/recommendations', async(req, res) => {
+router.post('/recommendations', async (req, res) => {
     console.log("Received answers:", req.body.answers);
     const { answers, type } = req.body;
     const tmdbType = type === 'film' ? 'movie' : 'tv';
@@ -121,6 +121,18 @@ async function fetchRecommendations(answers, tmdbType) {
 
     try {
         const response = await axios.get(url, options);
+        let searchParamsSize = [...new Set(queryParams.keys())].length;
+        while (response.data.results.length < 5 && searchParamsSize >= 0) {
+            console.log(response.data);
+            // Remove the last search parameter
+            queryParams.delete([...new Set(queryParams.keys())][searchParamsSize - 1]);
+            console.log("New query params:", queryParams);
+            const url = `https://api.themoviedb.org/3/discover/${tmdbType}?${queryParams.toString()}`;
+            const newResponse = await axios.get(url, options);
+            response.data.results.push(...newResponse.data.results);
+            searchParamsSize = [...new Set(queryParams.keys())].length;
+        }
+
         return response.data.results;
     } catch (error) {
         console.error('Error fetching data from TMDB:', error);
