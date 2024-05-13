@@ -36,9 +36,9 @@ function Creators() {
                     </li>
 
                     <li>
-                        <img class="aspect-[1] w-1/2 md:w-full rounded-2xl object-cover" src="https://assets-fr.imgfoot.com/media/cache/1200x1200/erling-haaland-2324-xf.jpg" alt=""/>
+                        <img class="aspect-[1] w-1/2 md:w-full rounded-2xl object-cover" src="https://resize.elle.fr/original/var/plain_site/storage/images/loisirs/cinema/news/sabrina-ouazani-on-me-prend-toujours-pour-un-homme-au-telephone-4019963/96676571-1-fre-FR/Sabrina-Ouazani-On-me-prend-toujours-pour-un-homme-au-telephone-!.jpg" alt=""/>
                         <h3 class="mt-6 text-base md:text-xl font-bold leading-8 mb-2 tracking-tight text-gray-200">Sarra</h3>
-                        <p class="text-xs md:text-base leading-7 text-gray-200">*Description*</p>
+                        <p class="text-xs md:text-base leading-7 text-gray-200">Je suis une jeune étudiante passionnée par l'Informatique.</p>
                         <ul role="list" class="mt-6 flex gap-x-6">
                         <li>
 
@@ -48,9 +48,9 @@ function Creators() {
                     </li>
 
                     <li>
-                        <img class="aspect-[1] w-1/2 md:w-full rounded-2xl object-cover" src="https://fr.hespress.com/wp-content/uploads/2024/04/hakimi-retour.jpg" alt=""/>
+                        <img class="aspect-[1] w-1/2 md:w-full rounded-2xl object-cover" src="https://prod.cdn-medias.jeuneafrique.com/cdn-cgi/image/q=auto,f=auto,metadata=none,width=1215,fit=cover,gravity=0.5269x0.4820/https://prod.cdn-medias.jeuneafrique.com/medias/2023/10/17/jad20231017-mmo-guerre-israel-hamas-youcef-atal.jpg" alt=""/>
                         <h3 class="mt-6 text-base md:text-xl font-bold leading-8 mb-2 tracking-tight text-gray-200">Youssef</h3>
-                        <p class="text-xs md:text-base leading-7 text-gray-200">*Description*</p>
+                        <p class="text-xs md:text-base leading-7 text-gray-200">Je suis un jeune étudiant qui adore coder et découvrir de nouvelles choses.</p>
                         <ul role="list" class="mt-6 flex gap-x-6">
                         <li>
 
