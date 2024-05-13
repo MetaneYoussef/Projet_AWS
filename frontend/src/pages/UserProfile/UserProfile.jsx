@@ -111,7 +111,7 @@ function UserProfile() {
     </div>
     <div className="flex min-h-screen">
       <div className="w-full md:w-1/2 flex flex-col -mt-20 md:mt-0 items-center justify-center bg-neutral-900">
-      <div className="relative text-center md:mt-10 mb-8">
+      <div className="relative text-center xl:-mt-20 -mb-8">
               <Link to="/">
                 <img src={require("./RondSansFond.png")} alt="Votre logo" className="w-28 md:w-36 h-auto relative z-20" />
               </Link>
