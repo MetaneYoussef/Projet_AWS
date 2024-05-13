@@ -52,30 +52,43 @@ export const WatchlistProvider = ({ children }) => {
     }
   };
 
-  const updateRating = (id, newRating) => {
+  const updateRating = (id, type, newRating) => {
+    if (type === 'movie') {
     setWatchlist(prev => ({
-      ...prev,
-      movies: prev.movies.map(movie =>
-        movie.id === id ? { ...movie, rating: newRating } : movie
-      )
-    }));
-  };
+        ...prev,
+        movies: prev.movies.map(movie =>
+          movie.id === id ? { ...movie, rating: newRating } : movie
+        )
+      }));
+    } else {
+      setWatchlist(prev => ({
+        ...prev,
+        series: prev.series.map(serie => 
+          serie.id === id ? { ...serie, rating: newRating } : serie)
+      }));
+    };
+  }   
 
   const updateWatchedEpisodes = (id, type, watchedEpisodes) => {
     setWatchlist(prev => {
+      const newMovies = prev.movies.map(movie => {
+        if (movie.id === id) {
+          return { ...movie, watchedEpisodes: parseInt(watchedEpisodes) };
+        }
+        return movie;
+      });
+  
+      const newSeries = prev.series.map(serie => {
+        if (serie.id === id) {
+          return { ...serie, watchedEpisodes: parseInt(watchedEpisodes) };
+        }
+        return serie;
+      });
+  
       return {
         ...prev,
-        movies: prev.movies.map(movie => {
-          if (movie.id === id) {
-            const updatedMovie = {
-              ...movie,
-              watchedEpisodes: parseInt(watchedEpisodes),
-              status: parseInt(watchedEpisodes) === movie.totalEpisodes ? 'Terminé' : movie.status
-            };
-            return updatedMovie;
-          }
-          return movie;
-        })
+        movies: newMovies,
+        series: newSeries
       };
     });
   };
@@ -85,5 +98,5 @@ export const WatchlistProvider = ({ children }) => {
     <WatchlistContext.Provider value={{ watchlist, addToWatchlist,removeFromWatchlist, updateStatus, updateRating, updateWatchedEpisodes}}>
       {children}
     </WatchlistContext.Provider>
-  );
+  )
 };

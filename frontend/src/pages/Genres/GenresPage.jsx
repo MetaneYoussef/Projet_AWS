@@ -41,11 +41,11 @@ const GenrePage = () => {
       <Link to="/" className="flex items-center justify-center mb-3 -mt-4">
         <img src={`${process.env.PUBLIC_URL}/images/RondSansFond.png`} alt="Logo" className="h-32 shadow-sm rounded-full shadow-white" />
       </Link>
-      <h1 className='flex flex-auto justify-center text-white py-6 font-bold text-3xl border-x-8 border-b-8 rounded-full'>Bienvenue dans le coin : {genreName.toUpperCase()}</h1>
+      <h1 className='flex flex-auto justify-center text-white py-6 font-bold text-xl md:text-3xl border-x-8 border-b-8 rounded-full'>Bienvenue dans le coin : {genreName.toUpperCase()}</h1>
       <div className="container mx-auto">
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {content.map((item) => {
-            const detailUrl = `/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}`;
+            const detailUrl = `/${item.release_date ? 'films' : 'series'}/details/${(item.title || item.name).toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}/${item.id}`
             return (
               <Link key={item.id} to={detailUrl} className="block transform transition duration-300 hover:scale-105">
                 <div className="m-4 border-2 border-white rounded-lg overflow-hidden shadow-lg shadow-white">

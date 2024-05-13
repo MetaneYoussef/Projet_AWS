@@ -51,9 +51,9 @@ function Signup() {
             />*/}
             <Link 
               to="/signup"
-              className="w-3/4 md:w-1/2 text-center text-sm bg-slate-200 md:text-xl ml-4 hover:bg-gray-500 text-black font-bold rounded-lg py-4 px-6 focus:outline-none border-4 border-black focus:shadow-outline"
+              className="w-3/4 md:w-1/2 text-center text-sm bg-slate-200 md:text-xl ml-4 hover:bg-gray-400 text-black font-bold rounded-lg py-4 px-6 focus:outline-none border-4 border-black focus:shadow-outline"
             >
-              Commencer»
+              Commencer »
             </Link>
           </div>
 

@@ -66,16 +66,18 @@ function Header() {
               <li><Link to="/UserProfile" className="hover:text-yellow-200 font-semibold">Profil</Link></li>
               <li><Link to="/watchlist" className="hover:text-red-300 font-semibold">Ma Watchlist</Link></li>
               {isAuthenticated ? (
-            // Affichez l'avatar si l'utilisateur est connecté
-            <Link to="/UserProfile" className="hover:text-indigo-300">
-              <img src="images/RondSansFond.png" alt="Avatar" className="ml-2 mt-4 h-20 w-20 rounded-full" /> {/* Assurez-vous d'avoir un avatar ou utilisez un placeholder */}
-            </Link>
-          ) : (
-            // Affichez le bouton de connexion si l'utilisateur n'est pas connecté
-            
-            <Link to="/connexion" className="bg-white hover:bg-gray-600 hover:text-white text-black font-bold py-2 px-4 rounded">Connexion</Link>
-
-          )}            
+              // Affichez l'avatar si l'utilisateur est connecté
+              <li>
+                <Link to="/UserProfile" className="hover:text-indigo-300">
+                  <img src="images/RondSansFond.png" alt="Avatar" className="ml-2 mt-4 h-20 w-20 rounded-full" /> {/* Assurez-vous d'avoir un avatar ou utilisez un placeholder */}
+                </Link>
+              </li>
+            ) : (
+              // Affichez le bouton de connexion si l'utilisateur n'est pas connecté
+              <li>
+                <Link to="/connexion" className="bg-white hover:bg-gray-600 hover:text-white text-black font-bold py-2 px-4 rounded">Connexion</Link>
+              </li>
+            )}            
           </ul>
           </div>
         </div>

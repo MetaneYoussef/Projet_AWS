@@ -22,16 +22,19 @@ import Qcm from "./pages/QCM/QCM";
 import RecommendationsPage from "./pages/QCM/ResultsPage";
 {/* Liens du Footer */}
 import Contact from "./pages/InsideFooter/Contact";
-import FAQ from "./pages/Inscription/FAQ";
+import FAQ from "./pages/InsideFooter/FoireAQ";
 import AboutUs from "./pages/InsideFooter/AboutUs";
 import Creators from "./pages/InsideFooter/Creators";
 import Privacy from "./pages/InsideFooter/Privacy";
+import CGU from "./pages/InsideFooter/CGU";
+import SupportPage from './pages/InsideFooter/SupportPage';
 {/* Autres */}
 import { WatchlistProvider } from './pages/Watchlist/WatchlistContext';
 import Signup from "./pages/Inscription/Inscription";
 import FormulaireInscription from "./pages/FormulaireInscription/FormulaireInscription";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import ErrorPage from "./pages/Divers/Page404";
+
 
 
 
@@ -61,6 +64,8 @@ function App() {
           <Route path="/A-Propos" element={<AboutUs />} />
           <Route path="/Creators" element={<Creators />} />
           <Route path="/privacy-policy" element={<Privacy />} />
+          <Route path="/CGU" element={<CGU />} />
+          <Route path="/Support-Page" element={<SupportPage />} />
           <Route path="/FAQ" element={<FAQ />} />
           <Route path="*" element={<ErrorPage />} />
           <Route path="/" element={<Accueil />} />

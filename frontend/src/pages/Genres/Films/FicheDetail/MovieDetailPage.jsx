@@ -44,7 +44,7 @@ function MovieDetails() {
   const handleRatingChange = (e) => {
     const newRating = e.target.value;
     setRating(newRating);
-    updateRating(movieId, newRating);
+    updateRating(movieId, 'movie',newRating);
   };
 
   const handleEpisodeChange = (e) => {

@@ -17,11 +17,22 @@ function SeriesDetails() {
   const seasonRef = useRef(null);  // Référence pour la section des saisons
 
   {/*GESTTION DE LA WATCHLIST*/ }
-  const { watchlist, addToWatchlist, removeFromWatchlist, updateStatus, updateRating } = useWatchlist();
+  const { watchlist, addToWatchlist, removeFromWatchlist, updateStatus, updateRating, updateWatchedEpisodes  } = useWatchlist();
   const seriesInWatchlist = watchlist.series.find(m => m.id === seriesId);
   {/*GESTION DE LA NOTATION*/ }
   const [rating, setRating] = useState(seriesInWatchlist ? seriesInWatchlist.rating : '');
- 
+
+  const [currentEpisode, setCurrentEpisode] = useState(0); // Définit à 0 initialement, ou toute autre logique d'initialisation adaptée
+
+   {/*Watchlist*/ }
+   useEffect(() => {
+    if (seriesInWatchlist && seriesInWatchlist.rating) {
+      setRating(seriesInWatchlist.rating);
+    } else {
+      setRating(''); // Réinitialiser la sélection quand il n'y a pas de note
+    }
+  }, [seriesInWatchlist]);
+
   const handleAddToWatchlist = () => {
     const item = {
       id: seriesId,
@@ -31,6 +42,19 @@ function SeriesDetails() {
     };
     addToWatchlist(item, 'series');
   };
+
+  const handleEpisodeChange = (event) => {
+    const newEpisodeCount = parseInt(event.target.value);
+    setCurrentEpisode(newEpisodeCount);  // Mettre à jour l'état local avec le nouvel épisode visionné
+    updateWatchedEpisodes(seriesId, 'series', newEpisodeCount);  // Mise à jour du nombre d'épisodes visionnés dans le contexte global
+  
+    // Si un nouvel épisode est sélectionné et que ce n'est pas le premier, changer le statut en "En Cours"
+    if (newEpisodeCount > 0 && seriesInWatchlist && seriesInWatchlist.status !== 'En Cours') {
+      updateStatus(seriesId, 'series', 'En Cours');
+    }
+  };
+  
+  
 
   const handleChangeStatus = (event) => {
     if (event.target.value === 'Supprimer') {
@@ -44,7 +68,7 @@ function SeriesDetails() {
   const handleRatingChange = (e) => {
     const newRating = e.target.value;
     setRating(newRating);
-    updateRating(seriesId, newRating);
+    updateRating(seriesId, 'series', newRating);
   };
 
   useEffect(() => {
@@ -337,13 +361,12 @@ function SeriesDetails() {
                     </div>
                     <div className="bg-yellow-900 text-white border-2 border-yellow-400 font-bold py-2 px-4 rounded w-full">
                       <label htmlFor="episode-select" className="mr-2">Épisodes:</label>
-                      <select id="episode-select" value={seriesInWatchlist?.watchedEpisodes || 0} className="bg-yellow-900 text-white border-2 border-yellow-400 font-bold py-2 rounded w-full">
+                      <select id="episode-select" value={currentEpisode} onChange={handleEpisodeChange} className="bg-yellow-900 text-white border-2 border-yellow-400 font-bold py-2 rounded w-full">
                         {Array.from({ length: series.totalEpisodes }, (_, i) => (
                           <option key={i} value={i + 1}>{i + 1}</option>
                         ))}
                       </select>
                     </div>
-
                   </div>
                 </>
               ) : (

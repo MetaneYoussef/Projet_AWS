@@ -28,7 +28,7 @@ function Footer() {
           </div>
           <div className="ml-4 md:ml-14 pt-12 md:pt-0 justify-center flex flex-col font-bold items-center mb-14">
             <p className="mb-3 md:mx-2 text-gray-500 text-xs" >LIENS UTILES</p>
-            <Link to="/A-Propos" className="mb-3 md:mb-3 md:mx-2 hover:underline">Support</Link>
+            <Link to="/Support-Page" className="mb-3 md:mb-3 md:mx-2 hover:underline">Support</Link>
             <Link to="/Contact" className="mb-3 md:mb-3 md:mx-2 hover:underline">Contact</Link>
           </div>
           <div className="ml-4 md:ml-14 justify-center flex flex-col font-bold items-center mb-5">

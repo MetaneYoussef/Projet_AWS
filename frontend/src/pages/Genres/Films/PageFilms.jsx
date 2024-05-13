@@ -6,11 +6,11 @@ import MovieList from "./MovieList";
 import GenresList from './GenresList';
 import LoadingSpinner from "../../../utiles/LoadingSpinner"
 
-const categories = ["Tous les films", ...GenresList.genere.map(g => g.name)];
+const categories = [...GenresList.genere.map(g => g.name)];
 
 function FilmsPage2() {
   const { genre } = useParams();
-  const [activeCategory, setActiveCategory] = useState(genre || "Tous les films");
+  const [activeCategory, setActiveCategory] = useState(genre);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 

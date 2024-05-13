@@ -10,7 +10,7 @@ function Creators() {
 
                 <div class="mx-auto max-w-7xl px-6 lg:px-8">
                     <div class="mx-auto max-w-2xl lg:mx-0">
-                    <h2 class="text-3xl font-bold tracking-tight text-gray-300 sm:text-4xl">Our team</h2>
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-300 sm:text-4xl">Notre Équipe</h2>
                     </div>
                     <ul role="list" class="mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                     <li>
@@ -27,7 +27,7 @@ function Creators() {
                     <li>
                         <img class="aspect-[1] w-1/2 md:w-full rounded-2xl object-cover" src="https://media.licdn.com/dms/image/D4E03AQF58IxRzj3-Uw/profile-displayphoto-shrink_200_200/0/1711677652568?e=2147483647&v=beta&t=urziO8OwyJUt3I_bkXJbA3aL14pqkKtTDJQbooRgYcE" alt=""/>
                         <h3 class="mt-6 text-base md:text-xl font-bold leading-8 mb-2 tracking-tight text-gray-200">Jermissen</h3>
-                        <p class="text-xs md:text-base leading-7 text-gray-200">*Description*</p>
+                        <p class="text-xs md:text-base leading-7 text-gray-200">Jeune entrepreneur en devenir et étudiant en Master 1 Informatique, j'ai décidé d'élargir ma palette de compétence en rejoingnant mes camarades sur ce projet qui nous tenait à coeur (et parce que c'est noté). Après plusieurs projets de programmation à mon actif, la programmation web vient ajouter sa pierre à l'édifice. Signé un passionné de création audiovisuel et d'UI/UX.</p>
                         <ul role="list" class="mt-6 flex gap-x-6">
                         <li>
 
