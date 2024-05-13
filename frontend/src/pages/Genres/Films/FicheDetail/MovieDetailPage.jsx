@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import Header from "../../../../components/Header/MovieHeader";
 import Footer from "../../../../components/Footer/Footer";
 import { useWatchlist } from '../../../Watchlist/WatchlistContext';
+import RatingStars from "../../../../components/Rating/RatingStars";
 import axios from 'axios';
 
 
@@ -22,6 +23,38 @@ function MovieDetails() {
   const [rating, setRating] = useState(movieInWatchlist ? movieInWatchlist.rating : '');
   {/*GESTION DES ÉPISODES*/ }
   const [currentEpisode, setCurrentEpisode] = useState(movieInWatchlist ? movieInWatchlist.watchedEpisodes : 0);
+
+    {/*MovieDetails*/ }
+    useEffect(() => {
+      const fetchMovieDetails = async () => {
+        setLoading(true);
+        try {
+          const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${api_key}&language=fr-FR`;
+          const response = await fetch(url);
+          const data = await response.json();
+          if (data) {
+            setMovie({
+              title: data.title,
+              poster: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
+              background: `https://image.tmdb.org/t/p/original${data.backdrop_path}`,
+              rating: data.vote_average,
+              genres: data.genres.map(genre => genre.name),
+              synopsis: data.overview,
+              watchlistCount: data.popularity,
+              commentCount: data.vote_count
+            });
+          } else {
+            setError("Aucune donnée disponible pour ce film");
+          }
+          setLoading(false);
+        } catch (error) {
+          console.error("Erreur lors de la récupération des détails du film", error);
+          setError("Erreur lors du chargement des données");
+          setLoading(false);
+        }
+      };
+      fetchMovieDetails();
+    }, [movieId, api_key]);
 
   {/*Watchlist*/ }
   useEffect(() => {
@@ -76,37 +109,6 @@ function MovieDetails() {
     }
   };
 
-  {/*MovieDetails*/ }
-  useEffect(() => {
-    const fetchMovieDetails = async () => {
-      setLoading(true);
-      try {
-        const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${api_key}&language=fr-FR`;
-        const response = await fetch(url);
-        const data = await response.json();
-        if (data) {
-          setMovie({
-            title: data.title,
-            poster: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
-            background: `https://image.tmdb.org/t/p/original${data.backdrop_path}`,
-            rating: `${data.vote_average} ★★★★☆`,
-            genres: data.genres.map(genre => genre.name),
-            synopsis: data.overview,
-            watchlistCount: data.popularity,
-            commentCount: data.vote_count
-          });
-        } else {
-          setError("Aucune donnée disponible pour ce film");
-        }
-        setLoading(false);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des détails du film", error);
-        setError("Erreur lors du chargement des données");
-        setLoading(false);
-      }
-    };
-    fetchMovieDetails();
-  }, [movieId, api_key]);
 
   {/*Casting*/ }
   useEffect(() => {
@@ -175,8 +177,6 @@ function MovieDetails() {
     };
     fetchComments();
   }, [movieId]);
-
-
 
   {/*Commentaires*/ }
   const token = localStorage.getItem('token');
@@ -323,7 +323,7 @@ function MovieDetails() {
           <div className="md:ml-4 md:w-2/3">
             <div className="flex flex-col md:ml-4">
               <h2 className="text-4xl font-bold mb-2 text-center md:text-start">{movie.title}</h2>
-              <p className="mb-2 text-center md:text-start">{movie.rating}</p>
+              <p className="mb-2 text-center md:text-start">{movie.rating} <RatingStars rating={movie.rating} /></p>
               <p className="mb-2 text-sm md:text-xs text-center md:text-start">{movie.genres.join(", ")}</p>
               <br />
               <p className="flex mb-4 text-xl font-bold justify-center md:justify-start">SYNOPSIS :</p>

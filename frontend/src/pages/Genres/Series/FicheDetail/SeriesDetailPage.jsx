@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import Header from "../../../../components/Header/SeriesHeader";
 import Footer from "../../../../components/Footer/Footer";
 import { useWatchlist } from '../../../Watchlist/WatchlistContext';
+import RatingStars from "../../../../components/Rating/RatingStars";
 import axios from 'axios';
 
 function SeriesDetails() {
@@ -55,7 +56,6 @@ function SeriesDetails() {
   };
   
   
-
   const handleChangeStatus = (event) => {
     if (event.target.value === 'Supprimer') {
       removeFromWatchlist(seriesId, 'series');
@@ -83,7 +83,7 @@ function SeriesDetails() {
             name: data.name,
             poster: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
             background: `https://image.tmdb.org/t/p/original${data.backdrop_path}`,
-            rating: `${data.vote_average} ★★★★☆`,
+            rating: data.vote_average,
             genres: data.genres.map(genre => genre.name),
             synopsis: data.overview,
             watchlistCount: data.popularity,
@@ -136,7 +136,6 @@ function SeriesDetails() {
     }
   }, [seriesId, selectedSeason, api_key]);
   
-
 
   {/*Chercher les Commentaires d'un film*/ }
   useEffect(() => {
@@ -313,7 +312,7 @@ function SeriesDetails() {
           <div className="md:ml-4 md:w-2/3">
             <div className="flex flex-col md:ml-4">
               <h2 className="text-4xl font-bold mb-2 text-center md:text-start">{series.name}</h2>
-              <p className="mb-2 text-center md:text-start">{series.rating}</p>
+              <p className="mb-2 text-center md:text-start">{series.rating} <RatingStars rating={series.rating}/> </p>
               <p className="mb-2 text-sm md:text-xs text-center md:text-start">{series.genres.join(", ")}</p>
               <br />
               <p className="flex mb-4 text-xl font-bold justify-center md:justify-start">SYNOPSIS :</p>

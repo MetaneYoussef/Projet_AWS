@@ -5,7 +5,7 @@ function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Nouvel état pour le menu
 
   return (
-    <><header className="hidden md:flex bg-black text-white p-4 justify-between items-center border-b border-green-900 relative">
+    <><header className="hidden md:flex bg-black text-white p-4 justify-between items-center border-b border-orange-900 relative">
       <Link to="/" className="flex items-center ml-5 md:ml-5">
         <img src={`${process.env.PUBLIC_URL}/images/WYW.png`} alt="Logo" className="h-10 mr-5"/>
       </Link>
@@ -24,7 +24,7 @@ function Header() {
       </div>
     </header>
 
-    <header className="flex md:hidden lg:hidden bg-black text-white p-4 justify-between items-center border-b border-green-900 relative">
+    <header className="flex md:hidden lg:hidden bg-black text-white p-4 justify-between items-center border-b border-orange-900 relative">
       <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="z-20 font-semibold text-5xl -mt-2 mr-4">
         {/* Icône du bouton menu*/}
         ☰

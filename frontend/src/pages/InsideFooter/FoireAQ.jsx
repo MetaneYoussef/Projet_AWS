@@ -6,13 +6,15 @@ import FAQ from "../Inscription/FAQ";
 
 function FoireAuxQuestions() {
   return(
-    <div className="bg-black min-h-screen"> 
-        <Header />
-        <FAQ />
+    <div>
+      <div className="min-h-screen bg-black"> 
+          <Header />
+          <FAQ />
+      </div>
       <div classname="bg-white">
         <Footer />
       </div>
-  </div>
+    </div>
   );
 };
 

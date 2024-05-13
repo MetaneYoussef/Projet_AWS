@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 import axios from 'axios';
 
@@ -55,8 +56,14 @@ function Contact() {
                 <label htmlFor="message" className="absolute left-3 -top-6 bg-transparent text-sm leading-7 text-indigo-500 transition-all peer-placeholder-shown:left-3 peer-placeholder-shown:top-2 peer-placeholder-shown:bg-gray-900 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:left-3 peer-focus:-top-6 peer-focus:text-sm peer-focus:text-indigo-500">Message</label>
               </div>
             </div>
-            <div className="w-full p-2">
-              <button type="submit" className="mx-auto flex rounded border-0 bg-indigo-500 py-2 px-8 text-lg text-white hover:bg-indigo-600 focus:outline-none">Envoyer</button>
+            <div className="w-full p-2 space-y-3">
+              <button type="submit" className="mx-auto flex rounded border-0 bg-indigo-500 py-2 px-8 text-lg text-white hover:bg-indigo-600 focus:outline-none font-bold">Envoyer</button>
+              <button className="mx-auto flex rounded border-0 bg-indigo-700 py-2 px-8 text-lg text-white hover:bg-indigo-900 focus:outline-none">
+                <Link to="/">
+                  Revenir sur la page d'accueil
+                </Link>
+              </button>
+
             </div>
           </div>
         </form>
