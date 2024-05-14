@@ -20,7 +20,7 @@ function Header() {
           <ul className="flex justify-normal space-x-8 ml-5">
             <li><Link to="/films" className="hover:text-red-600 font-bold">FILMS</Link></li>
             <li><Link to="/series" className="hover:text-yellow-600 font-bold">SÉRIES</Link></li>
-            <li><Link to="/qcm" className="hover:text-blue-600 font-bold">QCM</Link></li>
+            <li><Link to="/qcm" className="text-blue-500 hover:text-blue-600 font-bold">QCM</Link></li>
           </ul>
         </nav>
       )}
