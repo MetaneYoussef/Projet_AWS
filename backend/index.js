@@ -19,7 +19,6 @@ const authRoutes = require('./routes/authRoutes');
 const commentairesRoutes = require('./routes/commentairesRoutes');
 const app = express();
 const questionsRoutes = require('./routes/questions');
-const watchlistRoutes = require('./routes/watchlistRoutes');
 
 
 app.use(helmet());
@@ -48,7 +47,6 @@ app.use('/api/acteurs', acteursRoutes);
 app.use('/api/series', seriesRoutes);
 app.use('/api/commentaires', commentairesRoutes);
 app.use('/api/questions', questionsRoutes);
-app.use('/api/watchlist', watchlistRoutes);
 
 
 // Integration de Swagger UI

@@ -111,7 +111,7 @@ router.post('/login', [
                     console.error(err);
                     return res.status(500).send('Erreur serveur lors de la création du token');
                 }
-                res.json({ token, id:utilisateur._id });
+                res.json({ token });
             }
         );
     } catch (error) {
