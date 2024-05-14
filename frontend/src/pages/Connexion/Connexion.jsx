@@ -37,7 +37,6 @@ function Connexion() {
       if (response.data.token) {
         login(response.data.token); // Utilisez la fonction login de votre contexte pour mettre à jour l'état global d'authentification
         navigate("/"); // Redirigez l'utilisateur après la connexion réussie
-        localStorage.setItem("id", response.data.id);
       }
     } catch (err) {
       const errorMessage = err.response?.data?.msg;

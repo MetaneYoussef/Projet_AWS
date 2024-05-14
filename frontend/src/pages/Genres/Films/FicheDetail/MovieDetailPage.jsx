@@ -91,28 +91,15 @@ function MovieDetails() {
   
 
   const handleAddToWatchlist = () => {
-    const userId = localStorage.getItem("id"); // Assurez-vous que l'ID utilisateur est récupéré correctement
     const item = {
-      userId: userId,
-      mediaId: movieId,
-      mediaType: 'movie', // Assumons que c'est toujours un film ici, adapte si nécessaire
-      status: 'Prévu', // Status par défaut
-      watchedEpisodes: 0,
-      totalEpisodes: 1 // Adapté pour un film, ajuste si tu gères aussi les séries
+      id: movieId,
+      title: movie.title,
+      poster: movie.poster,
+      totalEpisodes: 1,  // Assuming one episode per movie
+      watchedEpisodes: 0
     };
-  
-    axios.post("https://what-you-watched.vercel.app/api/watchlist/add", item)
-      .then(response => {
-        alert("Film ajouté à la Watchlist !");
-        console.log(response.data);
-        // Ici tu pourrais aussi mettre à jour l'état local pour refléter ce changement
-      })
-      .catch(error => {
-        console.error('Erreur lors de l\'ajout à la Watchlist', error);
-        alert("Erreur lors de l'ajout à la Watchlist.");
-      });
+    addToWatchlist(item, 'movie');
   };
-  
 
   const handleChangeStatus = (event) => {
     if (event.target.value === 'Supprimer') {
