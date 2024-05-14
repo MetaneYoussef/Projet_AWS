@@ -43,6 +43,15 @@ const serieWatchlistSchema = new Schema({
     }
 }, { _id: false });
 
+const watchlistSchema = new Schema({
+  userId: { type: String, required: true },
+  mediaId: { type: String, required: true },
+  mediaType: { type: String, required: true },
+  status: { type: String, default: 'Prévu' },
+  episodesWatched: { type: Number, default: 0 },
+  rating: { type: Number }
+});
+
 
 const utilisateurSchema = new Schema({
     nom: {
@@ -72,8 +81,7 @@ const utilisateurSchema = new Schema({
         enum: ['user', 'admin'],
         default: 'user'
     },
-    filmsWatchlist: [filmWatchlistSchema],
-    seriesWatchlist: [serieWatchlistSchema]
+    Watchlist: [watchlistSchema]
 }, { timestamps: true });
 
 utilisateurSchema.index({ email: 1 });

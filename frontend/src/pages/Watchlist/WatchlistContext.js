@@ -1,34 +1,39 @@
 import React, { createContext, useState, useContext } from 'react';
+import axios from 'axios';
 
 const WatchlistContext = createContext();
 
 export const useWatchlist = () => useContext(WatchlistContext);
 
+ 
 export const WatchlistProvider = ({ children }) => {
-  const [watchlist, setWatchlist] = useState({ movies: [], series: [] });
-
-  const addToWatchlist = (item, type) => {
-    const newItem = {
-      ...item,
-      status: 'Prévu', // Utiliser le status initial ici
-      watchedEpisodes: 0,
-      totalEpisodes: type === 'movie' ? 1 : item.totalEpisodes
+    const [watchlist, setWatchlist] = useState({ movies: [], series: [] });
+  
+    const addToWatchlist = async (item, type) => {
+      const userId = localStorage.getItem("id"); // S'assurer que l'ID utilisateur est stocké dans le localStorage
+      const newItem = {
+        userId,
+        mediaId: item.id,
+        mediaType: type,
+        status: 'Prévu', // Utiliser le status initial ici
+        watchedEpisodes: 0,
+        totalEpisodes: type === 'movie' ? 1 : item.totalEpisodes
+      };
+  
+      try {
+        const response = await axios.post("https://what-you-watched.vercel.app/api/watchlist/add", newItem);
+        console.log('Item added to watchlist', response.data);
+        // Mettre à jour l'état local après confirmation du serveur
+        if (type === 'movie') {
+          setWatchlist(prev => ({ ...prev, movies: [...prev.movies, response.data] }));
+        } else {
+          setWatchlist(prev => ({ ...prev, series: [...prev.series, response.data] }));
+        }
+      } catch (error) {
+        console.error('Error adding item to watchlist', error);
+        alert("Erreur lors de l'ajout à la Watchlist!");
+      }
     };
-
-    if (type === 'movie') {
-      if (!watchlist.movies.some(movie => movie.id === item.id)) {
-        setWatchlist(prev => ({ ...prev, movies: [...prev.movies, newItem] }));
-      } else {
-        alert("Ce film est déjà dans votre Watchlist!");
-      }
-    } else { // pour les séries
-      if (!watchlist.series.some(serie => serie.id === item.id)) {
-        setWatchlist(prev => ({ ...prev, series: [...prev.series, newItem] }));
-      } else {
-        alert("Cette série est déjà dans votre Watchlist!");
-      }
-    }
-  };
 
   const removeFromWatchlist = (id, type) => {
     if (type === 'movie') {

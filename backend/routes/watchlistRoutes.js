@@ -8,3 +8,4 @@ router.delete('/remove/:id', removeWatchlistItem);
 router.put('/update/:id', updateWatchlistItem);
 
 module.exports = router;
+
