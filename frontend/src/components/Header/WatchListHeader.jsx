@@ -5,23 +5,39 @@ function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Nouvel état pour le menu
 
   return (
-    <><header className="hidden md:flex bg-black text-white p-4 justify-between items-center border-b border-orange-900 relative">
-      <Link to="/" className="flex items-center ml-5 md:ml-5">
-        <img src={`${process.env.PUBLIC_URL}/images/WYW.png`} alt="Logo" className="h-10 mr-5"/>
+    <><header className="hidden md:flex bg-black text-white p-4 justify-between items-center border-b border-yellow-900 relative">
+      <Link to="/" className="flex items-center ml-5">
+        <img src={`${process.env.PUBLIC_URL}/images/WYW.png`} alt="Logo" className="h-10 mr-5" />
       </Link>
-      <nav className={`flex-grow mx-4`}>
-        <ul className="flex justify-normal space-x-8 ml-5">
-          <li><Link to="/films" className="hover:text-red-600 font-bold">FILMS</Link></li>
-          <li><Link to="/series" className="hover:text-yellow-600 font-bold">SÉRIES</Link></li>
-          <li><Link to="/qcm" className="hover:text-blue-600 font-bold">QCM</Link></li>
-        </ul>
-      </nav>
+      {!isSearchExpanded && (
+        <nav className={`flex-grow mx-4 ${isSearchExpanded ? 'hidden' : ''}`}>
+          <ul className="flex justify-normal space-x-8 ml-5">
+            <li><Link to="/films" className=" hover:text-red-600 font-bold">FILMS</Link></li>
+            <li><Link to="/series" className="hover:text-yellow-600 font-bold">SÉRIES</Link></li>
+            <li><Link to="/qcm" className="hover:text-blue-600 font-bold">QCM</Link></li>
+          </ul>
+        </nav>
+      )}
 
-      <div className="flex items-center space-x-4">
-        <Link to="/UserProfile" className="hover:text-red-400">Profil</Link>
-        <Link to="/watchlist" className="hover:text-yellow-400">Ma Watchlist</Link>
-        <Link to="/connexion" className="bg-white hover:bg-orange-600 hover:text-white text-black font-bold py-2 px-4 rounded">Connexion</Link>
-      </div>
+      <SearchComponent isExpanded={isSearchExpanded} setExpanded={setIsSearchExpanded} />
+
+      {!isSearchExpanded && (
+        <div className="flex items-center space-x-4">
+          <Link to="/UserProfile" className="hover:text-yellow-200">Profil</Link>
+          <Link to="/watchlist" className="hover:text-yellow-300">Ma Watchlist</Link>
+          {isAuthenticated ? (
+            // Affichez l'avatar si l'utilisateur est connecté
+            <Link to="/UserProfile" className="hover:text-yellow-300">
+              <img src="images/RondSansFond.png" alt="Avatar" className="h-8 w-8 rounded-full" /> {/* Assurez-vous d'avoir un avatar ou utilisez un placeholder */}
+            </Link>
+          ) : (
+            // Affichez le bouton de connexion si l'utilisateur n'est pas connecté
+            
+            <Link to="/connexion" className="bg-white hover:bg-gray-600 hover:text-white text-black font-bold py-2 px-4 rounded">Connexion</Link>
+
+          )}
+        </div>
+      )}
     </header>
 
     <header className="flex md:hidden lg:hidden bg-black text-white p-4 justify-between items-center border-b border-orange-900 relative">
