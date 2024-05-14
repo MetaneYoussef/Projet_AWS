@@ -8,8 +8,6 @@ import Slider from '../../components/Bannieres/Slider';
 import Affichage from './Categories/Affichage';
 import CustomScrollBarS from '../../utiles/CustomScrollBar.css';
 
-
-
 // Pour chaque genre, utilisez Link pour naviguer
 const GenreBanner = ({ genre }) => (
   <Link to={`/genre/${genre.id}`} className="inline-block cursor-pointer mr-4 mb-2 mt-3 rounded-xl bg-gray-800 hover:bg-white text-white relative">
@@ -35,6 +33,7 @@ function Accueil() {
     { name: "Mystère", image: "https://media.vanityfair.fr/photos/6127abf261d8f6d5e24e60dd/16:9/w_2560%2Cc_limit/Netflix%2520:%2520courtesy%2520Everett%2520Collection4.jpg", id:9648 },
     { name: "Famille", image: "https://static.bandainamcoent.eu/high/paw-patrol/paw-patrol-world/00-page-setup/PPW-mobile-header.jpg", id: 10751 },
   ];
+
 
   return (
     <div className="flex flex-col min-h-screen">

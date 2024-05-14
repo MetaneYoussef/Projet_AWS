@@ -9,6 +9,8 @@ function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Nouvel état pour le menu
   const { isAuthenticated } = useAuth();
   console.log(isAuthenticated);
+  console.log("aaaaaaaaaaa" + localStorage.getItem("id"))
+
 
 
   return (
