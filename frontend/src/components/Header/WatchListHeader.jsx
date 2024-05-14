@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import SearchComponent from "../NavigationBar/MovieSearch"; // Vérifiez le chemin pour correspondre à votre structure de projet
+import SearchComponentMobile from "../NavigationBar/MovieSearchMobile";
+import { useAuth } from "../../context/AuthContext";
 
 function Header() {
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Nouvel état pour le menu
+  const { isAuthenticated } = useAuth();
 
   return (
     <><header className="hidden md:flex bg-black text-white p-4 justify-between items-center border-b border-yellow-900 relative">
